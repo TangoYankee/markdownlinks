@@ -1,11 +1,11 @@
 {
-    "name": "slack-flightcheck",
-    "version": "0.0.2",
-    "description": "FlightStats integration with Slack",
+    "name": "markdownlinks",
+    "version": "0.0.1",
+    "description": "Markdown syntax for links in Slack messages",
     "author": "Timothy Miller miller.tim108@gmail.com",
     "repository": {
         "type": "git",
-        "url": "github.com/tangoyankee/slack-flightcheck.git"
+        "url": "github.com/tangoyankee/markdownlinks.git"
     },
     "license": "MIT",
     "main": "main/main.js",

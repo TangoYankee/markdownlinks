@@ -4,9 +4,9 @@
 
 Dockerize
 
-`docker build -t <your username>/slack-flightcheck .`
+`docker build -t <your username>/markdownlinks .`
 
-`docker run -p 4390:4390 -d <your username>/slack-flightcheck`
+`docker run -p 4390:4390 -d <your username>/markdownlinks`
 
 [Lint](https://eslint.org/docs/user-guide/getting-started)
 

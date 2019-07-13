@@ -1,6 +1,5 @@
-const flightstats = require('./apps/flightcheck/flightstats.js');
-const slack = require('./apps/slack/slack.js');
-const methods = require('./apps/markdownlinks/methods.js');
+const slack_oauth = require('./apps/slack/oauth.js');
+const markdownlinks = require('./apps/markdownlinks/methods.js');
 var config = require('./config.js');
 
 var express = require('express');
@@ -15,22 +14,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(PORT);
 
-app.get('/', (request, response) => {
-    response.sendFile(path.join(__dirname + '/templates/markdownlinks.html'))
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname + '/templates/markdownlinks.html'))
 });
 
-app.get('/oauth', (request, response) => {
-    slack.data.oauth(request, response);
+app.get('/oauth', (req, res) => {
+    slack_oauth(req, res);
 });
 
-app.post('/flightcheck', (request, response) => {
-    flightstats.data.controlInput(request.body.text, response);
+app.post('/publish', (req, res) => {
+    markdownlinks.data.publish(req.body, res);
 });
 
-app.post('/publish', (request, response) => {
-    methods.data.publish(request.body, response);
-});
-
-app.post('/delete' , (request, response) => {
-    methods.data.delete(JSON.parse(request.body.payload), response);
+app.post('/delete' , (req, res) => {
+    markdownlinks.data.delete(JSON.parse(req.body.payload), res);
 })
