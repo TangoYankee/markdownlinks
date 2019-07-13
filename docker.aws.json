@@ -1,5 +1,5 @@
 {
-    "AWSEBDockerrunVersion": "0.1",
+    "AWSEBDockerrunVersion": "1",
     "Image": { 
         "Name": "tangoyankee/markdownlinks",
         "Update": true
