@@ -4,19 +4,19 @@ var format = require('./format.js');
 var methods = {};
 
 
-methods.publish = (request_body, response) => {
+methods.publish = (request_body, res) => {
     var text = request_body.text;
     var response_url = request_body.response_url;
     var user_id = request_body.user_id;
     if (checkHelp()) {
-        response.json(messages.data.helpMessage(`welcome to markdownlinks, <@${user_id}>!`));
+        res.json(messages.data.helpMessage(`welcome to markdownlinks, <@${user_id}>!`));
     } else if (text) {
-        response.send()
+        res.send()
         formatted_text = format(text);
         markdown_message = messages.data.markdownMessage(formatted_text);
         postMessage(response_url, markdown_message);
     } else {
-        response.json(messages.data.helpMessage(":warning:please provide input"))
+        res.json(messages.data.helpMessage(":warning:please provide input"))
     }
 }
 
@@ -28,8 +28,8 @@ checkHelp = (text) =>{
 }
 
 
-methods.delete = (response_payload, response) => {
-    response.send();
+methods.delete = (response_payload, res) => {
+    res.send();
     var value = response_payload.actions[0].value;
     var response_url = response_payload.response_url;
     if (value == "delete"){
