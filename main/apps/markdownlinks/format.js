@@ -22,9 +22,9 @@ format = (text) => {
 }
 
 
-allIndexOf = (string, search_char) => {
+allIndexOf = (text, search_char) => {
     var start_index = 0, index, indices = [], count = 0;
-    while ((index = string.indexOf(search_char, start_index)) > -1 && count < 20) {
+    while ((index = text.indexOf(search_char, start_index)) > -1 && count < 20) {
         indices.push(index);
         start_index = index + 1;
         count++;

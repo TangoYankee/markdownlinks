@@ -10,7 +10,8 @@
     "license": "MIT",
     "main": "main/main.js",
     "scripts": {
-        "start": "node main/main.js"
+        "start": "node main/main.js",
+        "test": "jest"
     },
     "dependencies": {
         "body-parser": "^1.18.3",
@@ -19,6 +20,7 @@
     },
     "devDependencies": {
         "eslint": "^5.16.0",
+        "jest": "^24.8.0",
         "nodemon": "^1.19.1"
     }
 }
