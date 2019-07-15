@@ -9,14 +9,14 @@ methods.publish = (request_body, res) => {
     var response_url = request_body.response_url;
     var user_id = request_body.user_id;
     if (checkHelp(text)) {
-        res.json(messages.data.helpMessage(`Welcome to markdownlinks, <@${user_id}>!`));
+        res.json(messages.data.helpMessage(user_id));
     } else if (text) {
         res.send()
         formatted_text = format(text);
         markdown_message = messages.data.markdownMessage(formatted_text, user_id);
         postMessage(response_url, markdown_message);
     } else {
-        res.json(messages.data.helpMessage(":warning:Please provide input"))
+        res.json(messages.data.errorMessage(":warning:please provide input"))
     }
 }
 
