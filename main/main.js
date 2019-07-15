@@ -25,7 +25,3 @@ app.get('/oauth', (req, res) => {
 app.post('/publish', (req, res) => {
     markdownlinks.data.publish(req.body, res);
 });
-
-app.post('/delete' , (req, res) => {
-    markdownlinks.data.delete(JSON.parse(req.body.payload), res);
-})
