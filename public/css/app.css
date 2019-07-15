@@ -2,6 +2,10 @@ html {
     position: relative;
     min-height: 100%;
   }
+
+body {
+  padding-bottom: 3rem;
+}
   
 footer {
     position: absolute;
@@ -9,10 +13,13 @@ footer {
     left: 0;
     height: auto;
     width: 100%;
-    background-color: gray;
     display: flex;
     flex-flow: wrap;
     justify-content: space-around;
     align-items: center;
-    padding: 1.0rem 1.0rem 1.5rem;
   }
+
+footer a {
+  color: black;
+  padding: 0.5rem 0.5rem 0.75rem;
+}
