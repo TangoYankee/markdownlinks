@@ -2,6 +2,16 @@ html {
     position: relative;
     min-height: 100%;
   }
+
+header {
+  background-color: black;
+  color: white;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
   
 footer {
     position: absolute;
