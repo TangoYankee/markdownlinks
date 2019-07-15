@@ -27,7 +27,6 @@ test_texts = ["My Car", "Safety First", "Registered Domain", "GitHub Repository"
 
 
 // This will (probably) break link previews
-// [[test_message_two, expected_message_two]]
 test.each(fromat_text)(
     'converts markdown syntax to slack links', (input, output) => {
         expect(format(input)).toEqual(output);
