@@ -16,10 +16,10 @@ const PORT = config.port;
 app.set('view engine', 'pug');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, 'main/public')));
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('main/index');
 });
 
 app.get('/oauth', (req, res) => {
