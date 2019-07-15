@@ -20,7 +20,7 @@ Load Keys from configuration file
 
 Auto-load changes with nodemon
 
-`npx nodem`
+`npx nodemon`
 
 Slack Slash Commands
 

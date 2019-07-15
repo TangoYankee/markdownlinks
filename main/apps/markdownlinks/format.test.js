@@ -67,5 +67,3 @@ test.each(http_links)(
     'ensure http or https', (input_link, expected_link) => {
         expect(httpLinkAddress(input_link)).toEqual(expected_link);
     });
-
-
