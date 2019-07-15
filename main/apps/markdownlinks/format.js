@@ -84,7 +84,7 @@ findOpenBracket = (brackets, current_position, previous_position) => {
 
 
 validLinkPositions = (link_positions) => {
-    let has_values = link_positions.every(value => value);
+    let has_values = link_positions.every(value => value >=0);
     let correct_length = link_positions.length == 3;
     let correct_order = (link_positions[0] < link_positions[1] && link_positions[1] < link_positions[2])
     return (correct_length && has_values && correct_order)

@@ -41,7 +41,7 @@ messages.helpMessage = (feedback) => {
             "elements": [
                 {
                     "type": "mrkdwn",
-                    "text": "visit markdownlinks.io"
+                    "text": "visit https://markdownlinks.io"
                 },
                 {
                     "type": "mrkdwn",
@@ -115,7 +115,7 @@ messages.errorMessage = () => {
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": ":warning:command not recongized"
+                    "text": ":warning:command not recognized"
                 }
             }
         ]

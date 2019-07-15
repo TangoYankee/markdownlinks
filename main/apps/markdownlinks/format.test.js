@@ -4,6 +4,9 @@ const { format, allIndexOf, allLinkPositions, validLinkPositions,
 // Format
 var test_message = "Here[ in my [car](dmv.ca.gov) I) feel [safest of all](https://www.osha.com/). [Example site](example.com)";
 var expected_message = "Here[ in my <https://dmv.ca.gov|car> I) feel <https://www.osha.com/|safest of all>. <https://example.com|Example site>";
+var test_message_two = "[code](codeforamerica.com)"
+var expected_message_two = "<https://codeforamerica.com|code>"
+var fromat_text = [[test_message, expected_message],[test_message_two, expected_message_two]]
 // All link positions
 var brackets_parentheses = [16, 52, 91];
 var parentheses = [28, 31, 75, 104];
@@ -24,8 +27,8 @@ test_texts = ["My Car", "Safety First", "Registered Domain", "GitHub Repository"
 
 
 // This will (probably) break link previews
-
-test.each([[test_message, expected_message]])(
+// [[test_message_two, expected_message_two]]
+test.each(fromat_text)(
     'converts markdown syntax to slack links', (input, output) => {
         expect(format(input)).toEqual(output);
     },
