@@ -10,7 +10,7 @@ function headerAlign(){
     $('header').css('height', 'auto');
     var headerHeight = $('header').outerHeight();
     $('body').css('padding-top', headerHeight);
-    $('header').css('height', footerHeight);
+    $('header').css('height', headerHeight);
 }
 
 $(document).ready(()=>{
