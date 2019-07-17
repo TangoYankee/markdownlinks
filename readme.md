@@ -24,26 +24,22 @@ To report a bug or request a feature, open an issue in this repository. Alternat
 ### Security alerts
 Please do not post security vulnerabilities to GitHub. Please send security concerns directly to miller.tim108@gmail.com.
 
-## Supporting the community
-Markdown Links is made in the spirit of Open Source and in collaboration with Code for America. If you would like to help keep our servers running, please consider making a [donation](https://codeforamerica.com/donate).
-
 ## Contributing to the code base
 We welcome contributions from new developers. Pick an issue or create your own and then make a pull request.
 
 ### Technology
-- [node.js 11](node.com)
-- [express.js 4.16](express.com)
-- [pug 2.0](pug.com)
-- [jquery 3.4.1](jquery.com)
+- [node.js 11](https://nodejs.org/)
+- [express.js 4.16](https://expressjs.com/)
+- [pug 2.0](https://pugjs.org/)
+- [jquery 3.4.1](https://jquery.com)
 
 please review the `package.json` file for a full list of dependencies
-
 
 ### Local setup
 The code base may be run using Docker or a traditional setup.
 
 #### In Docker
-1. Install [Docker](docker.com/install) (This may require a Unix/Linux kernel or a professional edition license for Windows)
+1. Install [Docker](https://docs.docker.com/install/) (This may require a Unix/Linux kernel or a professional edition license for Windows)
 2. Build the docker image
    - `docker build -t <your username>/markdownlinks .`
 3. Run the Docker container
@@ -52,27 +48,27 @@ The code base may be run using Docker or a traditional setup.
    - `localhost:4390`
 
 #### On machine
-1. Install [Node 11](node.com/install)
+1. Install [Node 11](https://nodejs.org/)
 2. Install dependencies
    - `npm install`
 3. Run
-   - `npx nodemon` with auto-restart (recommended)
-   - `npm start` without auto-restart
+   - `npx nodemon` with [auto reload](https://nodemon.io/) (recommended)
+   - `npm start` without auto reload
 4. Visit in web browser
    - `localhost:4390`
 
 ### Local testing (linux)
-1. Create an application in a Slack workspace
-2. Edit [slack slash commands]
-   - https://api.slack.com/apps/**<your-app-id>**/slash-commands?saved=1
+1. [Create an application](https://api.slack.com/tutorials) in a Slack workspace
+2. Edit slack slash commands
+   - `https://api.slack.com/apps/**<your-app-id>**/slash-commands?saved=1`
 3. Create `config.sh` file from `config.ex.sh` sample
 4. Copy `SLACK_CLIENT_ID` and `SLACK_CLIENT_SECRET` into .gitignore'd `config.sh` file
 5. Load credentials onto machine with `source config.sh`
 6. [Tunnel into ngrok](https://api.slack.com/tutorials/tunneling-with-ngrok)
-  - `ngrok http 4390`
+   - `ngrok http 4390`
 7. [Linting](https://eslint.org/docs/user-guide/getting-started)
-`npx eslint *.js`
-8. Tesing with [jest](jest.com)
-  - `npm test`
+   - `npx eslint *.js`
+8. Tesing with [jest](https://jestjs.io/)
+   - `npm test`
 
 ## Thank you for visiting
