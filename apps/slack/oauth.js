@@ -2,6 +2,7 @@ var config = require('./config.js');
 var request = require('request');
 
 oauth = (req, res) => {
+    /*verify credentials with Slack*/
     if (!req.query.code) {
         res.status(500);
         res.send({ "Error": "Code not received." });
@@ -14,6 +15,7 @@ oauth = (req, res) => {
 
 
 getOauth = (res, url, query_string) => {
+    /*recieve authorization*/
     request.get({
         url: url,
         qs: query_string,

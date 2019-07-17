@@ -13,16 +13,19 @@ app.use(express.static('public'));
 
 
 app.get('/', (req, res) => {
+    /*home page viewable from web browser*/
     res.render('index');
 });
 
 
 app.get('/oauth', (req, res) => {
+    /*OAuth with Slack*/
     slack_oauth(req, res);
 });
 
 
 app.post('/publish', (req, res) => {
+    /*Send message in response to user*/
     markdownlinks.data.publish(req.body, res);
 });
 
