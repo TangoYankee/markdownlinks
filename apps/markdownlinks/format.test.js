@@ -32,10 +32,16 @@ test.each(format_text)(
     });
 
 
-var brackets_parentheses = [16, 52, 91];
-var parentheses = [28, 31, 75, 104];
-var brackets = [4, 12, 38, 78];
-test.each([[test_message_one, "](", brackets_parentheses], [test_message_one, ")", parentheses], [test_message_one, "[", brackets]])(
+// Base arrays for character position tests
+var brackets_parentheses = [16, 52, 91]
+var parentheses = [28, 31, 75, 104]
+var brackets = [4, 12, 38, 78]
+
+var char_positions = [
+    [test_message_one, "](", brackets_parentheses],
+    [test_message_one, ")", parentheses],
+    [test_message_one, "[", brackets]];
+test.each(char_positions)(
     'finds all the positions of a character in a string', (text, char, expected_array) => {
         expect(allIndexOf(text, char)).toEqual(expected_array);
     });
