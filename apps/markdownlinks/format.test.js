@@ -27,9 +27,8 @@ test_urls = ["dmv.ca.gov", "https://www.osha.com/", "example.com", "http://githu
 test_texts = ["My Car", "Safety First", "Registered Domain", "GitHub Repository", "Brain Drain videos", "Civic Hacking", "Tactical Urbanism", "Applications", "Glen Cove Marina"];
 
 
-// This will (probably) break link previews
 test.each(fromat_text)(
-    'converts markdown syntax to slack links', (input, output) => {
+    'receive markdown hyperlink syntax, return slack hyperlink syntax', (input, output) => {
         expect(format(input)).toEqual(output);
     },
 );
@@ -40,31 +39,36 @@ test.each([[test_message, "](", brackets_parentheses], [test_message, ")", paren
     });
 
 test.each([[brackets_parentheses, brackets, parentheses, all_link_positions]])(
-    'all of the positions of markdown syntax links', (brackets_parentheses, brackets, parentheses, expected_array) => {
+    'all of the positions of characters which compose markdown syntax links', (brackets_parentheses, brackets, parentheses, expected_array) => {
         expect(allLinkPositions(brackets_parentheses, brackets, parentheses)).toEqual(expected_array);
     });
 
 test.each(is_valid_link_positions)(
-    'link positions are valid', (link_positions, expected_boolean) => {
+    'set of positions for characters could represent a hyperlink', (link_positions, expected_boolean) => {
         expect(validLinkPositions(link_positions)).toBe(expected_boolean);
     });
 
+    // Possibly remove. Failure is evident when format is incorrect string
 test.each(link_strings)(
-    'find strings for links', (link_positions, text, expected_string) => {;
+    'identify text portion of hyperlink from message string', (link_positions, text, expected_string) => {;
         expect(findLinkString(link_positions, text)).toEqual(expected_string);
     });
-
+    // Possibly remove. Failure is evident when format is incorrect string
 test.each(link_address)(
-    'find addresses for links', (link_positions, text, expected_address) => {
+    'identify url portion of link from message string', (link_positions, text, expected_address) => {
         expect(findLinkAddress(link_positions, text)).toEqual(expected_address);
     });
 
 test.each(markdown_link)(
-    'find markdown syntax links', (link_positions, text, expected_markdown) => {
+    'identify entire portion of markdown syntax', (link_positions, text, expected_markdown) => {
         expect(findMarkdownLink(link_positions, text)).toEqual(expected_markdown);
     });
 
 test.each(http_links)(
-    'ensure http or https', (input_link, expected_link) => {
+    'ensure that each link has http or https in the url', (input_link, expected_link) => {
         expect(httpLinkAddress(input_link)).toEqual(expected_link);
     });
+
+    // Create message link: Failure is evident when format is incorrect string
+
+    // Create test for replace link

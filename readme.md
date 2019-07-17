@@ -56,7 +56,7 @@ The code base may be run using Docker or a traditional setup.
 2. Install dependencies
    - `npm install`
 3. Run
-   - `npx nodemon` with auto-restart (recommended)
+   - `nodemon` with auto-restart (recommended)
    - `npm start` without auto-restart
 4. Visit in web browser
    - `localhost:4390`
