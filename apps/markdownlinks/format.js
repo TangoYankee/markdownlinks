@@ -114,10 +114,11 @@ findLinkString = (link_positions, text) => {
     return text.slice(link_positions[0] + 1, link_positions[1]);
 }
 
-//TODO: Finish logic
+
 checkLinkString = (link_string) => {
     /*link string cannot be blank or only spaces*/
-    if (link_string) {
+    link_string_trim = link_string.trim();
+    if (link_string_trim) {
         return true;
     } else {
         return false;
@@ -130,10 +131,12 @@ findLinkAddress = (link_positions, text) => {
     return text.slice(link_positions[1] + 2, link_positions[2]);
 }
 
-// TODO: finish logic
+
 checkLinkAddress = (link_address) => {
-    /*unhttped_link_address  cannot blank or contains a space in the url itself*/
-    if (link_address) {
+    /*unhttped_link_address cannot blank or contains a space in the url itself*/
+    var link_address_trim = link_address.trim();
+    var link_address_space = link_address_trim.includes(" ");
+    if (link_address_trim && !link_address_space) {
         return true;
     } else {
         return false;
@@ -166,5 +169,4 @@ replaceLink = (markdown_link, message_link, message) => {
 
 module.exports = {
     format, allIndexOf, allLinkPositions, validLinkPositions,
-    findMarkdownLink, httpLinkAddress
-};
+    findMarkdownLink, httpLinkAddress, checkLinkString, checkLinkAddress};
