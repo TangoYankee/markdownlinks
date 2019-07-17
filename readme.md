@@ -4,11 +4,11 @@
 ## Overview
 This Slack application allows users to format their messages using Markdown syntax for hyperlinks. While Slack supports several ways to format messages, it does not support a way to cleanly format hyperlinks. Consequently, Slack messages may become cluttered by unkempt URLs. Fortunately, Slack does allow for URLs sent through their API to contain a custom format. The Markdown Links application takes advantage of this.
 
-Slack users activate Markdown Links through the /markdownlinks slash command. Each user can type a message that contains hyperlinks and their associated text, using Markdown hyperlink syntax. This application supports up to twenty hyperlinks in a single message. Additionally, other Slack formatting -such as emojis and strikethroughs- are preserved. Once the user sends the message, Markdown Links will delete the original message and replace it with a message with the hyperlinks cleanly formatted. 
+Slack users activate Markdown Links through the _/markdownlinks_ slash command. Each user can type a message that contains hyperlinks and their associated text, using Markdown hyperlink syntax. This application supports up to twenty hyperlinks in a single message. Additionally, other Slack formatting -such as emojis and strikethroughs- are preserved. Once the user sends the message, Markdown Links will delete the original message and replace it with a message with the hyperlinks cleanly formatted. 
 
 Because the returned message is shown as being from 'markdownlinks', the returned message is also signed with the name of the user who originally shared the message. Additionally, the returned message may be "pinned" to keep its contents easily accessible. However, the contents of the message are not shown in the "preview" of the pinned item.
 
-## Preview
+## Demonstration
 ![image](public/img/nasa_dmv_demo_optimize.gif)
 
 ## Installing the application
@@ -25,44 +25,54 @@ To report a bug or request a feature, open an issue in this repository. Alternat
 Please do not post security vulnerabilities to GitHub. Please send security concerns directly to miller.tim108@gmail.com.
 
 ## Supporting the community
+Markdown Links is made in the spirit of Open Source and in collaboration with Code for America. If you would like to help keep our servers running, please consider making a [donation](https://codeforamerica.com/donate).
 
 ## Contributing to the code base
+We welcome contributions from new developers. Pick an issue or create your own and then make a pull request.
 
 ### Technology
+- [node.js 11](node.com)
+- [express.js 4.16](express.com)
+- [pug 2.0](pug.com)
+- [jquery 3.4.1](jquery.com)
+
+please review the `package.json` file for a full list of dependencies
+
 
 ### Local setup
+The code base may be run using Docker or a traditional setup.
 
-### Production serving
+#### In Docker
+1. Install [Docker](docker.com/install) (This may require a Unix/Linux kernel or a professional edition license for Windows)
+2. Build the docker image
+   - `docker build -t <your username>/markdownlinks .`
+3. Run the Docker container
+   - `docker run -p 4390:4390 -d <your username>/markdownlinks`
+4. Visit in web browser
+   - `localhost:4390`
 
-### Workflow
+#### On machine
+1. Install [Node 11](node.com/install)
+2. Install dependencies
+   - `npm install`
+3. Run
+   - `npx nodemon` with auto-restart (recommended)
+   - `npm start` without auto-restart
+4. Visit in web browser
+   - `localhost:4390`
 
-
-
-
-[Tunnel into ngrok](https://api.slack.com/tutorials/tunneling-with-ngrok)
-
-`ngrok http 4390`
-
-Dockerize
-
-`docker build -t <your username>/markdownlinks .`
-
-`docker run -p 4390:4390 -d <your username>/markdownlinks`
-
-[Lint](https://eslint.org/docs/user-guide/getting-started)
-
-Linting
-
+### Local testing (linux)
+1. Create an application in a Slack workspace
+2. Edit [slack slash commands]
+   - https://api.slack.com/apps/**<your-app-id>**/slash-commands?saved=1
+3. Create `config.sh` file from `config.ex.sh` sample
+4. Copy `SLACK_CLIENT_ID` and `SLACK_CLIENT_SECRET` into .gitignore'd `config.sh` file
+5. Load credentials onto machine with `source config.sh`
+6. [Tunnel into ngrok](https://api.slack.com/tutorials/tunneling-with-ngrok)
+  - `ngrok http 4390`
+7. [Linting](https://eslint.org/docs/user-guide/getting-started)
 `npx eslint *.js`
+8. Tesing with [jest](jest.com)
+  - `npm test`
 
-Load Keys from configuration file
-
-`source config.sh`
-
-Auto-load changes with nodemon
-
-`npx nodemon`
-
-Slack Slash Commands
-
-`https://api.slack.com/apps/AHB2H4ABX/slash-commands?saved=1`
+## Thank you for visiting

@@ -1,6 +1,7 @@
 const { format, allIndexOf, allLinkPositions, validLinkPositions, 
     findMarkdownLink, findLinkString, findLinkAddress,
     httpLinkAddress, createMessageLink } = require('./format');
+// Issue: What if there is a space in the link address?
 // Format
 var test_message = "Here[ in my [car](dmv.ca.gov) I) feel [safest of all](https://www.osha.com/). [Example site](example.com)";
 var expected_message = "Here[ in my <https://dmv.ca.gov|car> I) feel <https://www.osha.com/|safest of all>. <https://example.com|Example site>";
