@@ -142,5 +142,4 @@ replaceLink = (markdown_link, message_link, message) => {
 
 
 module.exports = {format, allIndexOf, allLinkPositions, validLinkPositions,
-    findMarkdownLink, findLinkString, findLinkAddress, httpLinkAddress,
-    createMessageLink};
+    findMarkdownLink, httpLinkAddress};

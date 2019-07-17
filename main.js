@@ -25,7 +25,7 @@ app.get('/oauth', (req, res) => {
 
 
 app.post('/publish', (req, res) => {
-    /*Send message in response to user*/
+    /*Send message in response to user input from slash command*/
     markdownlinks.data.publish(req.body, res);
 });
 
