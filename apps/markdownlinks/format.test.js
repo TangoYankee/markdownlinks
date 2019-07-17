@@ -7,8 +7,8 @@ const { format, allIndexOf, allLinkPositions,
     // What if the display text or link address are blank/only spaces?
 
 
-var test_message = "Here[ in my [car](dmv.ca.gov) I) feel [safest of all](https://www.osha.com/). [Example site](example.com)";
-var expected_message = "Here[ in my <https://dmv.ca.gov|car> I) feel <https://www.osha.com/|safest of all>. <https://example.com|Example site>";
+var test_message_one = "Here[ in my [car](dmv.ca.gov) I) feel [safest of all](https://www.osha.com/). [Example site](example.com)";
+var expected_message_one = "Here[ in my <https://dmv.ca.gov|car> I) feel <https://www.osha.com/|safest of all>. <https://example.com|Example site>";
 var test_message_two = "[code](codeforamerica.com)"
 var expected_message_two = "<https://codeforamerica.com|code>"
 var test_urls = ["dmv.ca.gov", "https://www.osha.com/", "example.com", "http://github.com/tangoyankee/", "youtube.com", "https://openoakland.org", "tangled.city", "slack.com/apps",
@@ -16,7 +16,7 @@ var test_urls = ["dmv.ca.gov", "https://www.osha.com/", "example.com", "http://g
 var test_texts = ["My Car", "Safety First", "Registered Domain", "GitHub Repository", "Brain Drain videos", "Civic Hacking", "Tactical Urbanism", "Applications", "Glen Cove Marina"];
 
 
-var fromat_text = [[test_message, expected_message], [test_message_two, expected_message_two]]
+var fromat_text = [[test_message_one, expected_message_one], [test_message_two, expected_message_two]]
 test.each(fromat_text)(
     'receive markdown hyperlink syntax, return slack hyperlink syntax', (input, output) => {
         expect(format(input)).toEqual(output);
@@ -26,7 +26,7 @@ test.each(fromat_text)(
 var brackets_parentheses = [16, 52, 91];
 var parentheses = [28, 31, 75, 104];
 var brackets = [4, 12, 38, 78];
-test.each([[test_message, "](", brackets_parentheses], [test_message, ")", parentheses], [test_message, "[", brackets]])(
+test.each([[test_message_one, "](", brackets_parentheses], [test_message_one, ")", parentheses], [test_message_one, "[", brackets]])(
     'finds all the positions of a character in a string', (text, char, expected_array) => {
         expect(allIndexOf(text, char)).toEqual(expected_array);
     });
@@ -39,14 +39,14 @@ test.each([[brackets_parentheses, brackets, parentheses, all_link_positions]])(
     });
 
 
-var is_valid_link_positions = [[[12, 16, 28], true], [[undefined, 34, 23], false], [[56], false], [[12, 6, 20], false]];
+var is_valid_link_positions = [[[12, 16, 28], true], [[undefined, 34, 23], false], [[56], false], [[12, 6, 20], false], [["0",1,2], false]];
 test.each(is_valid_link_positions)(
     'check that the set of positions for characters could represent a hyperlink', (link_positions, expected_boolean) => {
         expect(validLinkPositions(link_positions)).toBe(expected_boolean);
     });
 
     
-var markdown_link = [[[12, 16, 28], test_message, "[car](dmv.ca.gov)"], [[38, 52, 75], test_message, "[safest of all](https://www.osha.com/)"], [[78, 91, 104], test_message, "[Example site](example.com)"]];
+var markdown_link = [[[12, 16, 28], test_message_one, "[car](dmv.ca.gov)"], [[38, 52, 75], test_message_one, "[safest of all](https://www.osha.com/)"], [[78, 91, 104], test_message_one, "[Example site](example.com)"]];
 test.each(markdown_link)(
     'identify entire portion of markdown syntax', (link_positions, text, expected_markdown) => {
         expect(findMarkdownLink(link_positions, text)).toEqual(expected_markdown);

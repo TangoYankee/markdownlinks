@@ -68,8 +68,8 @@ findPreviousPosition = (i, brackets_parentheses) => {
 
 findNextPosition = (i, brackets_parentheses, bracket_parentheses_len, parentheses) => {
     /*find the bracket/parenthesis pair that occurs after the current one*/
-    if (i == (bracket_parentheses_len-1)) {
-        return parentheses[parentheses.length-1];
+    if (i == (bracket_parentheses_len - 1)) {
+        return parentheses[parentheses.length - 1];
     } else {
         var k = i + 1;
         return brackets_parentheses[k];
@@ -93,28 +93,29 @@ findOpenBracket = (brackets, current_position, previous_position) => {
 
 validLinkPositions = (link_positions) => {
     /*check that the set of positions for characters could represent a hyperlink*/
-    let has_values = link_positions.every(value => value >=0);
+    let has_values = link_positions.every(value => value  >= 0);
+    let has_numbers = link_positions.every(value => typeof(value) === 'number');
     let correct_length = link_positions.length == 3;
     let correct_order = (link_positions[0] < link_positions[1] && link_positions[1] < link_positions[2])
-    return (correct_length && has_values && correct_order)
+    return (correct_length && has_values &&has_numbers && correct_order)
 }
 
 
 findMarkdownLink = (link_positions, text) => {
     /*identify entire portion of markdown syntax*/
-    return text.slice(link_positions[0], link_positions[2]+1);
+    return text.slice(link_positions[0], link_positions[2] + 1);
 }
 
 
 findLinkString = (link_positions, text) => {
     /*identify text portion of hyperlink from message string*/
-    return text.slice(link_positions[0]+1, link_positions[1]);
+    return text.slice(link_positions[0] + 1, link_positions[1]);
 }
 
 
 findLinkAddress = (link_positions, text) => {
     /*identify url portion of link from message string*/
-    return text.slice(link_positions[1]+2, link_positions[2]);
+    return text.slice(link_positions[1] + 2, link_positions[2]);
 }
 
 
@@ -141,5 +142,7 @@ replaceLink = (markdown_link, message_link, message) => {
 }
 
 
-module.exports = {format, allIndexOf, allLinkPositions, validLinkPositions,
-    findMarkdownLink, httpLinkAddress};
+module.exports = {
+    format, allIndexOf, allLinkPositions, validLinkPositions,
+    findMarkdownLink, httpLinkAddress
+};
