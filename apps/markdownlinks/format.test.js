@@ -6,20 +6,30 @@ const { format, allIndexOf, allLinkPositions,
     // Issue: What if there is a space in the link address?
     // What if the display text or link address are blank/only spaces?
 
-
+//Reference message for remainder of tests
 var test_message_one = "Here[ in my [car](dmv.ca.gov) I) feel [safest of all](https://www.osha.com/). [Example site](example.com)";
 var expected_message_one = "Here[ in my <https://dmv.ca.gov|car> I) feel <https://www.osha.com/|safest of all>. <https://example.com|Example site>";
-var test_message_two = "[code](codeforamerica.com)"
-var expected_message_two = "<https://codeforamerica.com|code>"
-var test_urls = ["dmv.ca.gov", "https://www.osha.com/", "example.com", "http://github.com/tangoyankee/", "youtube.com", "https://openoakland.org", "tangled.city", "slack.com/apps",
-    "google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746"];
-var test_texts = ["My Car", "Safety First", "Registered Domain", "GitHub Repository", "Brain Drain videos", "Civic Hacking", "Tactical Urbanism", "Applications", "Glen Cove Marina"];
+
+// Messages exclusive to format function
+var test_message_two = "[code](codeforamerica.com)";
+var expected_message_two = "<https://codeforamerica.com|code>";
+
+var test_message_three = "What if it's [blank]() []() [](www.osha.com)?";
+var expected_message_three = "What if it's [blank]() []() [](www.osha.com)?";
+
+var test_message_four = "What if there is a [space](nas a.gov) in the link?";
+var expected_message_four = "What if there is a [space](nas a.gov) in the link?";
+
+var test_message_five = ")( [] :warning: A mess of [(]Directions to Glen Cove ](google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746)Marina)"
+var expected_message_five = ")( [] :warning: A mess of <https://google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746|(]Directions to Glen Cove >Marina)"
 
 
-var fromat_text = [[test_message_one, expected_message_one], [test_message_two, expected_message_two]]
-test.each(fromat_text)(
-    'receive markdown hyperlink syntax, return slack hyperlink syntax', (input, output) => {
-        expect(format(input)).toEqual(output);
+var format_text = [[test_message_one, expected_message_one], [test_message_two, expected_message_two],
+[test_message_three, expected_message_three], [test_message_four, expected_message_four],
+[test_message_five, expected_message_five]];
+test.each(format_text)(
+    'receive markdown hyperlink syntax, return slack hyperlink syntax', (test_message, expected_message) => {
+        expect(format(test_message)).toEqual(expected_message);
     });
 
 
