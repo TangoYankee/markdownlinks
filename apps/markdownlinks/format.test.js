@@ -44,7 +44,7 @@ test.each([[brackets_parentheses, brackets, parentheses, all_link_positions]])(
     });
 
 test.each(is_valid_link_positions)(
-    'set of positions for characters could represent a hyperlink', (link_positions, expected_boolean) => {
+    'check that the set of positions for characters could represent a hyperlink', (link_positions, expected_boolean) => {
         expect(validLinkPositions(link_positions)).toBe(expected_boolean);
     });
 
