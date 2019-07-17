@@ -17,8 +17,8 @@ var expected_message_two = "<https://codeforamerica.com|code>";
 var test_message_three = "What if it's [blank]() []() [](www.osha.com)?";
 var expected_message_three = "What if it's [blank]() []() [](www.osha.com)?";
 
-var test_message_four = "What if there is a [space](nas a.gov) in the link?";
-var expected_message_four = "What if there is a [space](nas a.gov) in the link?";
+var test_message_four = "What it's a [space](nas a.gov) [ ](nasa.gov)?";
+var expected_message_four = "What it's a [space](nas a.gov) [ ](nasa.gov)?";
 
 var test_message_five = ")( [] :warning: A mess of [(]Directions to Glen Cove ](google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746)Marina)"
 var expected_message_five = ")( [] :warning: A mess of <https://google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746|(]Directions to Glen Cove >Marina)"

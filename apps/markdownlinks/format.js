@@ -13,7 +13,9 @@ format = (text) => {
                 let link_address = httpLinkAddress(unhttped_link_address);
                 let message_link = createMessageLink(link_address, link_string);
                 let markdown_link = findMarkdownLink(link_positions, text);
-                message = replaceLink(markdown_link, message_link, message);
+                if (checkLinkString(link_string) && checkLinkAddress(unhttped_link_address)) {
+                    message = replaceLink(markdown_link, message_link, message);
+                }
             }
         }
         return message;
@@ -93,11 +95,11 @@ findOpenBracket = (brackets, current_position, previous_position) => {
 
 validLinkPositions = (link_positions) => {
     /*check that the set of positions for characters could represent a hyperlink*/
-    let has_values = link_positions.every(value => value  >= 0);
-    let has_numbers = link_positions.every(value => typeof(value) === 'number');
+    let has_values = link_positions.every(value => value >= 0);
+    let has_numbers = link_positions.every(value => typeof (value) === 'number');
     let correct_length = link_positions.length == 3;
     let correct_order = (link_positions[0] < link_positions[1] && link_positions[1] < link_positions[2])
-    return (correct_length && has_values &&has_numbers && correct_order)
+    return (correct_length && has_values && has_numbers && correct_order)
 }
 
 
@@ -112,10 +114,30 @@ findLinkString = (link_positions, text) => {
     return text.slice(link_positions[0] + 1, link_positions[1]);
 }
 
+//TODO: Finish logic
+checkLinkString = (link_string) => {
+    /*link string cannot be blank or only spaces*/
+    if (link_string) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 findLinkAddress = (link_positions, text) => {
     /*identify url portion of link from message string*/
     return text.slice(link_positions[1] + 2, link_positions[2]);
+}
+
+// TODO: finish logic
+checkLinkAddress = (link_address) => {
+    /*unhttped_link_address  cannot blank or contains a space in the url itself*/
+    if (link_address) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
