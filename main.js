@@ -26,6 +26,9 @@ app.get('/oauth', (req, res) => {
 
 app.post('/publish', (req, res) => {
     /*Send message in response to user input from slash command*/
+    // Check whether the request came from Slack
+    // if(signature){markdownlinks.data.publish(req.body, res);}
+    // else{ignore}
     markdownlinks.data.publish(req.body, res);
 });
 
