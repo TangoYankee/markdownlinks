@@ -42,4 +42,5 @@
     // return formated 'string'
 
 
-// export main function
+// export main function for use and testing.
+// export isRecent function for testing.
