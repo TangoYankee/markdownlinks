@@ -29,6 +29,8 @@ app.post('/publish', (req, res) => {
     // Check whether the request came from Slack
     // if(signature){markdownlinks.data.publish(req.body, res);}
     // else{ignore}
+    console.log(req.body);
+    console.log(req.headers);
     markdownlinks.data.publish(req.body, res);
 });
 
