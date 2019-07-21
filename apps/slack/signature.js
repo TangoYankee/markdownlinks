@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const qs = require('qs');
 
 signature = (request) => {
     /*verify request is from slack*/
@@ -25,7 +26,7 @@ isRecent = (timestamp, current_time) => {
 isValidHash = (timestamp, request) => {
     /*Check that the calculated application signature  and slack signature match*/
     let version = 'v0';
-    let request_body = request.body;
+    let request_body = qs.stringify(request.body,{format:'RFC1738'});
     base_string = getBaseString(version, timestamp, request_body);
     console.log(`base string: ${base_string}`);
     let signing_secret = process.env.SLACK_SIGNING_SECRET;
