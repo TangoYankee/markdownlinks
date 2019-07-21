@@ -1,36 +1,8 @@
 const { signature, isRecent, isValidHash } = require('./signature.js');
+const slack_request = require('./test_request.js');
 
-var slack_req_body = {
-    token: 'HahF3EjsLLxyeO6eR5QL0oOW',
-    team_id: 'THAM6S6CU',
-    team_domain: 'usafbots',
-    channel_id: 'DHC5KUGBG',
-    channel_name: 'directmessage',
-    user_id: 'UH89V07L0',
-    user_name: 'miller.tim108',
-    command: '/markdownlinks',
-    text: '[example](example.com)',
-    response_url: 'https://hooks.slack.com/commands/THAM6S6CU/694561840641/mNIzhaf762i1V8Emm8y1LqYC',
-    trigger_id: '700917235301.588720890436.6ee3b2fc3ef9d9c3f702af0519663810'
-}
-var slack_req_header = {
-    'user-agent': 'Slackbot 1.0 (+https://api.slack.com/robots)',
-    'accept-encoding': 'gzip,deflate',
-    accept: 'application/json,*/*',
-    'x-slack-signature': 'v0=eb301488170e0a0670dfda7345a78c3218c56fa5165d545e607e0761bcb48ede',
-    'x-slack-request-timestamp': '1563652528',
-    'content-length': '398',
-    'content-type': 'application/x-www-form-urlencoded',
-    host: '87d8f208.ngrok.io',
-    'cache-control': 'max-age=259200',
-    'x-forwarded-for': '54.89.2.183'
-}
-var slack_request = {
-    'body': slack_req_body,
-    'headers': slack_req_header
-};
 
-let timestamp_str = slack_req_header['x-slack-request-timestamp'];
+let timestamp_str = slack_request.headers['x-slack-request-timestamp'];
 let timestamp = Number(timestamp_str);
 let current_time = (timestamp + 1e2);
 test.each([[slack_request, current_time, true]])(
