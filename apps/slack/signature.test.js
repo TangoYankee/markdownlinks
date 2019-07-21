@@ -39,8 +39,9 @@ test.each([[slack_request, true]])(
     });
 
 
-var timestamp = slack_req_header['x-slack-request-timestamp'];
-var test_timestamps = [[timestamp, timestamp, true], [timestamp, (timestamp + 250), true], [timestamp, timestamp + 500, false]];
+var timestamp_str = slack_req_header['x-slack-request-timestamp'];
+var timestamp = Number(timestamp_str);
+var test_timestamps = [[timestamp, timestamp, true], [timestamp, (timestamp + 250), true], [timestamp, (timestamp + 500), false]];
 
 
 test.each(test_timestamps)(
@@ -49,7 +50,7 @@ test.each(test_timestamps)(
     });
 
 
-test.each([[slack_request, timestamp, true]])(
-    'verify application and slack signatures match', (slack_request, timestamp, expected_boolean) => {
-        expect(isValidHash(slack_request, timestamp)).toBe(expected_boolean);
+test.each([[timestamp, slack_request, true]])(
+    'verify application and slack signatures match', (timestamp, slack_request, expected_boolean) => {
+        expect(isValidHash(timestamp, slack_request)).toBe(expected_boolean);
     });
