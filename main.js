@@ -27,9 +27,11 @@ app.get('/oauth', (req, res) => {
 
 app.post('/publish', (req, res) => {
     /*Send message in response to user input from slash command*/
-    let current_time = Date.now();
+    let current_time = Math.floor(new Date().getTime()/1000);
     if (signature(req, current_time)) {
         markdownlinks.data.publish(req.body, res);
+    } else {
+        res.status(400).send("Ignore this request");
     }
 });
 
