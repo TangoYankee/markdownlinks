@@ -1,7 +1,6 @@
 const config = require('./config.js');
 const { signature, isRecent, isValidHash } = require('./signature.js');
 
-var slack_signing_secret = config.slack.signing_secret;
 var slack_req_body = {
     token: 'HahF3EjsLLxyeO6eR5QL0oOW',
     team_id: 'THAM6S6CU',
@@ -32,18 +31,17 @@ var slack_request = {
     'headers': slack_req_header
 };
 
-
-test.each([[slack_request, true]])(
-    'verify request is from slack', (slack_request, expected_boolean) => {
-        expect(signature(slack_request)).toBe(expected_boolean);
+let timestamp_str = slack_req_header['x-slack-request-timestamp'];
+let timestamp = Number(timestamp_str);
+let current_time = (timestamp + 1e2);
+console.log(`current time: ${current_time}`);
+test.each([[slack_request, current_time, true]])(
+    'verify request is from slack', (slack_request, current_time, expected_boolean) => {
+        expect(signature(slack_request, current_time)).toBe(expected_boolean);
     });
 
 
-var timestamp_str = slack_req_header['x-slack-request-timestamp'];
-var timestamp = Number(timestamp_str);
-var test_timestamps = [[timestamp, timestamp, true], [timestamp, (timestamp + 250), true], [timestamp, (timestamp + 500), false]];
-
-
+var test_timestamps = [[timestamp, timestamp, true], [timestamp, (timestamp + 2e2), true], [timestamp, (timestamp + 5e2), false]];
 test.each(test_timestamps)(
     'verify request was made recently', (timestamp, current_time, expected_boolean) => {
         expect(isRecent(timestamp, current_time)).toBe(expected_boolean);

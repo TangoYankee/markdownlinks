@@ -1,13 +1,12 @@
 const crypto = require('crypto');
 const qs = require('qs');
 
-signature = (request) => {
+signature = (request, current_time) => {
     /*verify request is from slack*/
-    let timestamp_str = request.headers['X-Slack-Request-Timestamp'];
+    let timestamp_str = request.headers['x-slack-request-timestamp'];
     let timestamp = Number(timestamp_str);
-    let current_time = Date.now();
     if (isRecent(timestamp, current_time)) {
-        return isValidHash(request, timestamp);
+        return isValidHash(timestamp, request);
     } else {
         return false;
     }
@@ -17,8 +16,8 @@ signature = (request) => {
 
 isRecent = (timestamp, current_time) => {
     /*Guard against replay attacks by checking the request was made recently*/
-    var time_tolerance = 3e2;
-    var time_delta = current_time - timestamp;
+    let time_tolerance = 3e2;
+    let time_delta = current_time - timestamp;
     return (time_delta <= time_tolerance);
 }
 
