@@ -10,7 +10,6 @@ signature = (request, current_time) => {
     } else {
         return false;
     }
-
 }
 
 
@@ -25,13 +24,16 @@ isRecent = (timestamp, current_time) => {
 isValidHash = (timestamp, request) => {
     /*Check that the calculated application signature  and slack signature match*/
     let version = 'v0';
-    let request_body = qs.stringify(request.body,{format:'RFC1738'});
+    let request_body = qs.stringify(request.body, { format: 'RFC1738' });
     base_string = getBaseString(version, timestamp, request_body);
     let signing_secret = process.env.SLACK_SIGNING_SECRET;
     hex_digest = getHexDigest(signing_secret, base_string);
     app_signature = getSignature(version, hex_digest);
     slack_signature = request.headers['x-slack-signature'];
-    return (app_signature === slack_signature);
+    return (crypto.timingSafeEqual(
+        Buffer.from(app_signature, 'utf-8'),
+        Buffer.from(slack_signature, 'utf-8'))
+    );
 }
 
 
