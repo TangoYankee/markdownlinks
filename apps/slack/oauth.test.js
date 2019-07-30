@@ -1,9 +1,24 @@
 // import encrypt and decrypt functions
 const crypto = require("crypto");
 const cryptoRandomString = require('crypto-random-string');
-const key = cryptoRandomString({length: 20, type: 'base64'});
-console.log(key);
+
+createTokenFake = () => {
+    let prefix = "xoxp"
+    let number_array = [];
+    for (i=0; i <3; i++){
+        let number = cryptoRandomString({length: 12, characters: '1234567890'});
+        number_array.push(number);
+    }
+    let hex_string = cryptoRandomString({length: 32, type: 'hex'});
+    return (`${prefix}-${number_array[0]}-${number_array[1]}-${number_array[2]}-${hex_string}`);
+}
+
+const key_fake = cryptoRandomString({length: 20, type: 'base64'});
+const token_fake = createTokenFake();
+console.log(`key: ${key_fake}\ntoken: ${token_fake}`);
+
 // Fake oAuth token generator (No Assertion)
+
 
 // Input nothing
 // Generate a fake oAuth token
