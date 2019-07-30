@@ -37,11 +37,13 @@ getOauth = (res, url, query_string) => {
 const algorithm = "aes-256-cbc";
 
 // Encrypt token to store at rest
-encrytToken = (token_plain, token_key) => {
-
+encryptToken = (token_plain, token_secret) => {
+    return "token_cipher";
 }
 // Decrypt token to send for authorization
-decryptToken = (token_)
+decryptToken = (token_cipher, token_secret) => {
+    return "token_plain";
+}
 
 // export encrypt, decrypt
-module.exports = oauth;
+module.exports = {oauth, encryptToken, decryptToken};

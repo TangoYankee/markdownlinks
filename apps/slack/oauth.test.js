@@ -1,6 +1,8 @@
 // import encrypt and decrypt functions
 const crypto = require("crypto");
+// dev only dependency?
 const cryptoRandomString = require('crypto-random-string');
+const {oauth, encryptToken, decryptToken} = require('./oauth.js');
 
 createTokenFake = () => {
     let prefix = "xoxp"
@@ -13,40 +15,31 @@ createTokenFake = () => {
     return (`${prefix}-${number_array[0]}-${number_array[1]}-${number_array[2]}-${hex_string}`);
 }
 
-const key_fake = cryptoRandomString({length: 20, type: 'base64'});
-const token_fake = createTokenFake();
-console.log(`key: ${key_fake}\ntoken: ${token_fake}`);
-
-// Fake oAuth token generator (No Assertion)
+var token_fake_secret = cryptoRandomString({length: 32, type: 'hex'});
+var token_fake_plain = createTokenFake();
+var token_fake_cipher = encryptToken(token_fake_plain, token_fake_secret);
 
 
-// Input nothing
-// Generate a fake oAuth token
-// return fake oAuth token 
-
-// Fake secret key generator (No Assertion)
-
-// Encrypt (No assertion)
-// Receive dummy oAuth Token and secret key
-// Encrypt the token with the oauth function
-// Return the cypher
-
-
-// Check Cypher (No Assertion)
-// Recieve the cypher from the encryption function
-// Test that the encrypted key meets the standards of the cypher
-// Return true if meets the criteria
+checkCipher = (token_fake_cipher) => {
+    // criteria of a valid token_fake_cipher
+    // Test that the encrypted key meets the standards of the cypher
+    // Return true if meets the criteria
+    return false
+}
 
 
 // Test Cypher (Assertion)
-// Recieve the cypher and the expected value (true)
-// Pass it to 'CheckCypher' function
-// Make assertion
+test.each([token_fake_cipher])(
+    // Recieve the cypher and the expected value (true)
+    // Pass it to 'CheckCypher' function
+    // Make assertion
+    'verify that the generated cipher could be valid', (token_fake_cipher) => {
+    expect(checkCipher(token_fake_cipher)).toBe(true);
+});
+
 
 // Decryption (Assertion)
-// Recieve the original value, cypher and fake secret key
-// Pass parameters to oauth decryption function
-// Assert that the returned value should match the original token
-
-
-// 
+test.each([[token_fake_cipher, token_fake_secret, token_fake_plain]])(
+    'decryption should match originally generated token', (token_cipher, token_secret, token_plain) => {
+    expect(decryptToken(token_cipher, token_secret)).toEqual(token_plain);
+}); 
