@@ -1,8 +1,12 @@
 var config = require('./config.js');
 var request = require('request');
 
+
+// Request for Authorization, completed by 'add to slack button'
+
+
 oauth = (req, res) => {
-    /*compose Slack credentials*/
+    /*compose Slack oauth token request*/
     if (!req.query.code) {
         res.status(500);
         res.send({ "Error": "Code not received." });
@@ -24,10 +28,20 @@ getOauth = (res, url, query_string) => {
             res.send(error.toString());
         } else {
             res.json(body);
-
+            // Send the authorization token to be encrypted
+            // Add the encrypted token to the database
         }
     })
 }
 
+const algorithm = "aes-256-cbc";
 
+// Encrypt token to store at rest
+encrytToken = (token_plain, token_key) => {
+
+}
+// Decrypt token to send for authorization
+decryptToken = (token_)
+
+// export encrypt, decrypt
 module.exports = oauth;
