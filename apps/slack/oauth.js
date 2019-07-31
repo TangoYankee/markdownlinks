@@ -8,14 +8,17 @@ const iv_len = 16;
 oauth = (req, res) => {
     /*compose Slack oauth token request*/
     if (!req.query.code) {
-        // TODO: Error State (message in header?)
-        console.log("code not recieved")
+        // TODO: res go to home page with error
         res.status(500);
         res.send({ "Error": "Code not received." });
     } else {
         console.log(`code: ${req.query.code}`);
         var url = "https://slack.com/api/oauth.access";
-        var query_string = { code: req.query.code, client_id: process.env.SLACK_CLIENT_ID, client_secret: process.env.SLACK_CLIENT_SECRET };
+        var query_string = {
+            client_id: process.env.SLACK_CLIENT_ID,
+            client_secret: process.env.SLACK_CLIENT_SECRET,
+            code: req.query.code
+        };
         postOAuth(res, url, query_string);
     }
 }
@@ -23,21 +26,22 @@ oauth = (req, res) => {
 
 postOAuth = (res, url, query_string) => {
     /*recieve authorization*/
-    // Should be a post method (https://api.slack.com/methods/oauth.access)
     request.post({
         url: url,
         qs: query_string,
     }, (error, response, body) => {
         if (error) {
+            // TODO res go to home page with error
             console.log(`Error: ${error}`);
         } else {
-            // TODO? Success state
             body_json = JSON.parse(body);
             team_id = body_json.team_id;
             access_token_plain = body_json.access_token;
-            // access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
-            // Add the encrypted token to the database
-            console.log(`Body: ${body_json}, team id: ${team_id}, token: ${access_token_plain}`);
+            console.log(`Body: ${body}, team id: ${team_id}, token: ${access_token_plain}`);
+            access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
+            console.log(`cipher: ${access_token_cipher}`)
+            // TODO res go to home page with success state message
+            // TODO add the encrypted token to the database
         }
     })
 }
@@ -56,7 +60,7 @@ encryptToken = (token_plain, token_key) => {
 
 
 decryptToken = (token_cipher, token_key) => {
-    /* Decrypt token to send for authorization */
+    /*Decrypt token to send for authorization*/
     let algorithm = "aes-256-cbc";
     let encrypted = token_cipher.slice(0, 160);
     let iv = token_cipher.slice(160);
