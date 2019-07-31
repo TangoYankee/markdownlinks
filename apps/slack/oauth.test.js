@@ -36,3 +36,23 @@ test.each([[token_fake_cipher, token_fake_key, token_fake_plain]])(
     'decryption should match originally generated token', (token_fake_cipher, token_fake_key, token_fake_plain) => {
     expect(decryptToken(token_fake_cipher, token_fake_key)).toEqual(token_fake_plain);
 }); 
+
+// Go through the process once, pull the data from Slack
+// Reuse on multiple tests with dummy requests
+// https://hackernoon.com/api-testing-with-jest-d1ab74005c0a
+
+
+// oAuth process testing
+// 1) Make a request to the Slack (Summarized in Button)
+    // Pretend to be the user 
+    //  - https://slack.com/oauth/authorize 
+    // - client_id
+    // - scope
+// 2) Recieve response from Slack
+    // Slack will call markdownlinks.io/oauth
+    // Contains code
+// 3) Markdownlinks makes a post request to Slack
+    // - Application calls to https://slack.com/api/oauth.access
+    // - Sends: code, client id, client secret
+// 4) Slack sends a respose to the post request
+    // Contains team id and access token

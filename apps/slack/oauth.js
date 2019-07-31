@@ -1,4 +1,4 @@
-const config = require('./config.js');
+const process = require('process');
 const request = require('request');
 const crypto = require('crypto');
 const cryptoRandomString = require('crypto-random-string');
@@ -8,32 +8,42 @@ const iv_len = 16;
 oauth = (req, res) => {
     /*compose Slack oauth token request*/
     if (!req.query.code) {
+        // TODO: Error State (message in header?)
+        console.log("code not recieved")
         res.status(500);
         res.send({ "Error": "Code not received." });
     } else {
-        var url = "https=/slack.com/api/oauth.access";
-        var query_string = { code: req.query.code, client_id: config.slack.client_id, client_secret: config.slack.client_secret };
-        getOauth(res, url, query_string);
+        // 
+        var url = "https://slack.com/api/oauth.access";
+        var query_string = { code: req.query.code, client_id: process.env.SLACK_CLIENT_ID, client_secret: process.env.SLACK_CLIENT_SECRET };
+        postOAuth(res, url, query_string);
     }
 }
 
 
-getOauth = (res, url, query_string) => {
+postOAuth = (res, url, query_string) => {
     /*recieve authorization*/
-    request.get({
+    // Should be a post method (https://api.slack.com/methods/oauth.access)
+    request.post({
         url: url,
         qs: query_string,
-    }, (error, body) => {
+    }, (error, response, body) => {
         if (error) {
-            res.send(error.toString());
+            console.log(`Error: ${error}`);
         } else {
-            res.json(body);
-            // Send the authorization token to be encrypted
+            // TODO? Success state
+            body_json = JSON.parse(body);
+            team_id = body.team_id;
+            access_token_plain = body.access_token;
+            access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
             // Add the encrypted token to the database
+            console.log(`Body: ${body}, Response ${JSON.stringify(res)}`);
         }
     })
 }
 
+
+// TODO? Place crpyto functions in separate application
 
 encryptToken = (token_plain, token_key) => {
     /*Encrypt token to store at rest*/

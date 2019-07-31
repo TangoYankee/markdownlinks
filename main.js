@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/oauth', (req, res) => {
-    /*OAuth with Slack*/
+    /*oAuth with Slack*/
     slack_oauth(req, res);
 });
 
