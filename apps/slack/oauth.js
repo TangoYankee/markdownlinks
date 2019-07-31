@@ -1,8 +1,8 @@
-var config = require('./config.js');
-var request = require('request');
-
-
-// Request for Authorization, completed by 'add to slack button'
+const config = require('./config.js');
+const request = require('request');
+const crypto = require('crypto');
+const cryptoRandomString = require('crypto-random-string');
+const iv_len = 16;
 
 
 oauth = (req, res) => {
@@ -34,16 +34,29 @@ getOauth = (res, url, query_string) => {
     })
 }
 
-const algorithm = "aes-256-cbc";
 
-// Encrypt token to store at rest
-encryptToken = (token_plain, token_secret) => {
-    return "token_cipher";
+encryptToken = (token_plain, token_key) => {
+    /*Encrypt token to store at rest*/
+    let algorithm = "aes-256-cbc";
+    let iv = cryptoRandomString({length: iv_len, type: 'hex'});
+    let cipher = crypto.createCipheriv(algorithm, token_key, iv);
+    let encrypted = cipher.update(token_plain, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return `${encrypted}${iv}`;
 }
-// Decrypt token to send for authorization
-decryptToken = (token_cipher, token_secret) => {
-    return "token_plain";
+
+
+decryptToken = (token_cipher, token_key) => {
+    /* Decrypt token to send for authorization */
+    let algorithm = "aes-256-cbc";
+    let encrypted = token_cipher.slice(0, 160);
+    let iv = token_cipher.slice(160);
+    let decipher = crypto.createDecipheriv(algorithm, token_key, iv);
+    let decrypted = decipher.update(encrypted, "hex", "utf8");
+    decrypted += decipher.final("utf8");
+    return decrypted;
 }
+
 
 // export encrypt, decrypt
 module.exports = {oauth, encryptToken, decryptToken};

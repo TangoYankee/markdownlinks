@@ -1,9 +1,8 @@
-// import encrypt and decrypt functions
-const crypto = require("crypto");
-// dev only dependency?
 const cryptoRandomString = require('crypto-random-string');
 const {oauth, encryptToken, decryptToken} = require('./oauth.js');
 
+
+/*Emulate OAuth token layouts*/
 createTokenFake = () => {
     let prefix = "xoxp"
     let number_array = [];
@@ -15,31 +14,25 @@ createTokenFake = () => {
     return (`${prefix}-${number_array[0]}-${number_array[1]}-${number_array[2]}-${hex_string}`);
 }
 
-var token_fake_secret = cryptoRandomString({length: 32, type: 'hex'});
+
+/*Encrypted tokens should not look like plain text tokens*/
+var token_fake_key = cryptoRandomString({length: 32, type: 'hex'});
 var token_fake_plain = createTokenFake();
-var token_fake_cipher = encryptToken(token_fake_plain, token_fake_secret);
-
-
+var token_fake_cipher = encryptToken(token_fake_plain, token_fake_key);
 checkCipher = (token_fake_cipher) => {
-    // criteria of a valid token_fake_cipher
-    // Test that the encrypted key meets the standards of the cypher
-    // Return true if meets the criteria
-    return false
+    valid_len = (token_fake_cipher.length == 176);
+    includes_dash = token_fake_cipher.includes("-");
+    return (valid_len && !includes_dash);
 }
 
 
-// Test Cypher (Assertion)
 test.each([token_fake_cipher])(
-    // Recieve the cypher and the expected value (true)
-    // Pass it to 'CheckCypher' function
-    // Make assertion
     'verify that the generated cipher could be valid', (token_fake_cipher) => {
     expect(checkCipher(token_fake_cipher)).toBe(true);
 });
 
 
-// Decryption (Assertion)
-test.each([[token_fake_cipher, token_fake_secret, token_fake_plain]])(
-    'decryption should match originally generated token', (token_cipher, token_secret, token_plain) => {
-    expect(decryptToken(token_cipher, token_secret)).toEqual(token_plain);
+test.each([[token_fake_cipher, token_fake_key, token_fake_plain]])(
+    'decryption should match originally generated token', (token_fake_cipher, token_fake_key, token_fake_plain) => {
+    expect(decryptToken(token_fake_cipher, token_fake_key)).toEqual(token_fake_plain);
 }); 
