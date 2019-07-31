@@ -13,7 +13,7 @@ oauth = (req, res) => {
         res.status(500);
         res.send({ "Error": "Code not received." });
     } else {
-        console.log(req.query.code);
+        console.log(`code: ${req.query.code}`);
         var url = "https://slack.com/api/oauth.access";
         var query_string = { code: req.query.code, client_id: process.env.SLACK_CLIENT_ID, client_secret: process.env.SLACK_CLIENT_SECRET };
         postOAuth(res, url, query_string);
@@ -33,11 +33,11 @@ postOAuth = (res, url, query_string) => {
         } else {
             // TODO? Success state
             body_json = JSON.parse(body);
-            team_id = body.team_id;
-            access_token_plain = body.access_token;
-            access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
+            team_id = body_json.team_id;
+            access_token_plain = body_json.access_token;
+            // access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
             // Add the encrypted token to the database
-            console.log(`Body: ${body_json}, team id: ${team_id}, token: ${access_token_plain}, Response ${JSON.stringify(res)}`);
+            console.log(`Body: ${body_json}, team id: ${team_id}, token: ${access_token_plain}`);
         }
     })
 }
