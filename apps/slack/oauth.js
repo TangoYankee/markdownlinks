@@ -6,7 +6,7 @@ const iv_len = 16;
 
 
 oauth = (req, res) => {
-    /*compose Slack oauth token request*/
+    /*compose Slack credentials*/
     if (!req.query.code) {
         // TODO: res go to home page with error
         res.status(500);
