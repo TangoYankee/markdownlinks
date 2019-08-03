@@ -15,13 +15,8 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     /*home page viewable from web browser*/
-    res.render('index');
+    res.render('index', {message:"success"});
 });
-
-app.get('/message', (req, res) => {
-    /*send success, error, or information messages*/
-    res.render('message');
-})
 
 
 app.get('/oauth', (req, res) => {

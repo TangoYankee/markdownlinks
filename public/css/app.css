@@ -23,6 +23,31 @@ header h1 {
   margin: auto 1rem;
 }
 
+div.message {
+  font-size: 1.25rem;
+  color:white;
+  text-align: center;
+}
+
+.alert {
+  padding: 1rem;
+  opacity: 0.7;
+  transition: opacity 0.6s;
+}
+
+.alert.success {background-color: #4CAF50;}
+.alert.error {background-color: #b71c1c;}
+
+.closebtn {
+  margin-left: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
 div.content {
   display: flex;
   flex-direction: column;
