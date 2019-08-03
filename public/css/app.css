@@ -27,6 +27,8 @@ div.message {
   font-size: 1.25rem;
   color:white;
   text-align: center;
+  margin: auto;
+  max-width: max-content;
 }
 
 .alert {
@@ -52,10 +54,15 @@ div.content {
   display: flex;
   flex-direction: column;
   text-align: center;
+  margin: auto;
+  max-width: max-content;
 }
 
 img#demo {
   object-fit: contain;
+  border-style: solid;
+  border-radius: 0.25rem;
+  border-width: 0.15rem;
 }
   
 footer {
