@@ -16,4 +16,5 @@ div(class="message")
             - display_text = "input not recognized"
             - alert_class = "warning"
         div(class=`alert ${alert_class}`) #{display_text}
-            span(class="closebtn") &times;
+            span(class="closebtn") 
+                a(title="close message" href="/") &times;
