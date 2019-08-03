@@ -18,6 +18,11 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.get('/message', (req, res) => {
+    /*send success, error, or information messages*/
+    res.render('message');
+})
+
 
 app.get('/oauth', (req, res) => {
     /*oAuth with Slack*/
