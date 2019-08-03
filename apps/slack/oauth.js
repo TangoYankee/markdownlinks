@@ -1,6 +1,7 @@
 const process = require('process');
 const request = require('request');
 const crypto = require('crypto');
+const queryString = require('querystring');
 const cryptoRandomString = require('crypto-random-string');
 const iv_len = 16;
 
@@ -10,11 +11,13 @@ oauth = (req, res) => {
     if (!req.query.code) {
         // TODO: res go to home page with error
         res.status(500);
-        res.send({ "Error": "Code not received." });
+        let query_message = queryString.stringify({"message":"error"});
+        res.redirect("/?" + query_message);
+        // res.send({ "Error": "Code not received." });
     } else {
         console.log(`code: ${req.query.code}`);
-        var url = "https://slack.com/api/oauth.access";
-        var query_string = {
+        let url = "https://slack.com/api/oauth.access";
+        let query_string = {
             client_id: process.env.SLACK_CLIENT_ID,
             client_secret: process.env.SLACK_CLIENT_SECRET,
             code: req.query.code
@@ -32,15 +35,19 @@ postOAuth = (res, url, query_string) => {
     }, (error, response, body) => {
         if (error) {
             // TODO res go to home page with error
+            let query_message = queryString.stringify({"message":"error"});
+            res.redirect("/?" + query_message);
             console.log(`Error: ${error}`);
         } else {
             body_json = JSON.parse(body);
             team_id = body_json.team_id;
             access_token_plain = body_json.access_token;
+            // TODO res go to home page with success state message
+            let query_message = queryString.stringify({"message":"success"});
+            res.redirect("/?" + query_message);
             console.log(`Body: ${body}, team id: ${team_id}, token: ${access_token_plain}`);
             access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
             console.log(`cipher: ${access_token_cipher}`)
-            // TODO res go to home page with success state message
             // TODO add the encrypted token to the database
         }
     })

@@ -35,7 +35,7 @@ postMessage = (response_url, response_message) => {
         url: response_url,
         body: response_message,
         json: true,
-    },function (error, response, body) {
+    },function (error, response, body) { //TODO? refactor to send to proper logging
         if (error) {
             console.log(`Error: ${error}`);
         } else {

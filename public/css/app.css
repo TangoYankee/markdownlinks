@@ -39,6 +39,7 @@ div.message {
 
 .alert.success {background-color: #4CAF50;}
 .alert.error {background-color: #b71c1c;}
+.alert.warning {background-color: orange;}
 
 .closebtn {
   margin-left: 1rem;

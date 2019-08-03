@@ -15,7 +15,10 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     /*home page viewable from web browser*/
-    res.render('index', {message: "success"});
+    // TODO: Replace with session based messages
+    let message;
+    message = req.query.message;
+    res.render('index', {message: message});
 });
 
 

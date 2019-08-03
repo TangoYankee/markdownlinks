@@ -1,9 +1,19 @@
+//- Possible issues
+//-     message persists through refresh
+//-     attacker sends erroneous messages through query
+//- Consider refactoring to sessions-based messaging
 div(class="message")
     if message
-        - var display;
+        - var display_text;
+        - var alert_class;
         if message=="success"
-            - display = "installation succeeded";
+            - display_text = "installation succeeded";
+            - alert_class = "success";
         else if message=="error"
-            - display = "an error occurred"
-        div(class=`alert ${message}`) #{display}
+            - display_text = "an error occurred"
+            - alert_class = "error"
+        else
+            - display_text = "input not recognized"
+            - alert_class = "warning"
+        div(class=`alert ${alert_class}`) #{display_text}
             span(class="closebtn") &times;
