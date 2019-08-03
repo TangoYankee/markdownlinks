@@ -3,17 +3,16 @@ const request = require('request');
 const crypto = require('crypto');
 const queryString = require('querystring');
 const cryptoRandomString = require('crypto-random-string');
+const saveTeam = require('apps/db.js');
 const iv_len = 16;
 
 
 oauth = (req, res) => {
     /*compose Slack credentials*/
     if (!req.query.code) {
-        // TODO: res go to home page with error
         res.status(500);
-        let query_message = queryString.stringify({"message":"error"});
+        let query_message = queryString.stringify({ "message": "error" });
         res.redirect("/?" + query_message);
-        // res.send({ "Error": "Code not received." });
     } else {
         console.log(`code: ${req.query.code}`);
         let url = "https://slack.com/api/oauth.access";
@@ -33,22 +32,24 @@ postOAuth = (res, url, query_string) => {
         url: url,
         qs: query_string,
     }, (error, response, body) => {
+        let query_message;
         if (error) {
-            // TODO res go to home page with error
-            let query_message = queryString.stringify({"message":"error"});
+            query_message = queryString.stringify({ "message": "error" });
             res.redirect("/?" + query_message);
             console.log(`Error: ${error}`);
         } else {
             body_json = JSON.parse(body);
             team_id = body_json.team_id;
             access_token_plain = body_json.access_token;
-            // TODO res go to home page with success state message
-            let query_message = queryString.stringify({"message":"success"});
-            res.redirect("/?" + query_message);
-            console.log(`Body: ${body}, team id: ${team_id}, token: ${access_token_plain}`);
-            access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
-            console.log(`cipher: ${access_token_cipher}`)
-            // TODO add the encrypted token to the database
+            if (team_id && access_token_plain) {
+                access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
+                saveTeam(team_id, access_token_cipher);
+                query_message = queryString.stringify({ "message": "success" });
+                res.redirect("/?" + query_message);
+            } else {
+                query_message = queryString.stringify({ "message": "error" });
+                res.redirect("/?" + query_message);
+            }
         }
     })
 }
@@ -58,7 +59,7 @@ postOAuth = (res, url, query_string) => {
 encryptToken = (token_plain, token_key) => {
     /*Encrypt token to store at rest*/
     let algorithm = "aes-256-cbc";
-    let iv = cryptoRandomString({length: iv_len, type: 'hex'});
+    let iv = cryptoRandomString({ length: iv_len, type: 'hex' });
     let cipher = crypto.createCipheriv(algorithm, token_key, iv);
     let encrypted = cipher.update(token_plain, 'utf8', 'hex');
     encrypted += cipher.final('hex');
@@ -78,4 +79,4 @@ decryptToken = (token_cipher, token_key) => {
 }
 
 
-module.exports = {oauth, encryptToken, decryptToken};
+module.exports = { oauth, encryptToken, decryptToken };
