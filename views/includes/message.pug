@@ -1,7 +1,9 @@
 div(class="message")
-    if message=="success"
-        div(class="alert success") installation succeeded
-            span(class="closebtn") &times;
-    else if message=="error"
-        div(class="alert error") an error occurred
+    if message
+        - var display;
+        if message=="success"
+            - display = "installation succeeded";
+        else if message=="error"
+            - display = "an error occurred"
+        div(class=`alert ${message}`) #{display}
             span(class="closebtn") &times;

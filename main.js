@@ -15,7 +15,7 @@ app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     /*home page viewable from web browser*/
-    res.render('index', {message: "error"});
+    res.render('index', {message: "success"});
 });
 
 
