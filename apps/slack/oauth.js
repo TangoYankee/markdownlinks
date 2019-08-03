@@ -78,5 +78,4 @@ decryptToken = (token_cipher, token_key) => {
 }
 
 
-// export encrypt, decrypt
 module.exports = {oauth, encryptToken, decryptToken};
