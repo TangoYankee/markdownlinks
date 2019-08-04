@@ -37,7 +37,7 @@ allIndexOf = (text, search_char) => {
 
 allLinkPositions = (brackets_parentheses, brackets, parentheses) => {
   /* all of the positions of characters which compose markdown syntax links.
-  a closed bracket/open parenthesis pair is used as the link indicator*/
+  a closed bracket/open parenthesis pair is used as the link indicator */
   let all_positions = [];
   let brackets_parentheses_len = brackets_parentheses.length;
   for (var i = 0; i < brackets_parentheses_len; i++) {
@@ -55,7 +55,7 @@ allLinkPositions = (brackets_parentheses, brackets, parentheses) => {
 }
 
 findPreviousPosition = (i, brackets_parentheses) => {
-  /* find the bracket/parenthesis pair that occurs before the current one*/
+  /* find the bracket/parenthesis pair that occurs before the current one */
   if (i == 0) {
     return 0;
   } else {
@@ -65,7 +65,7 @@ findPreviousPosition = (i, brackets_parentheses) => {
 }
 
 findNextPosition = (i, brackets_parentheses, bracket_parentheses_len, parentheses) => {
-  /* find the bracket/parenthesis pair that occurs after the current one*/
+  /* find the bracket/parenthesis pair that occurs after the current one */
   if (i == (bracket_parentheses_len - 1)) {
     return parentheses[parentheses.length - 1];
   } else {
@@ -75,7 +75,7 @@ findNextPosition = (i, brackets_parentheses, bracket_parentheses_len, parenthese
 }
 
 findClosedParenthensis = (parentheses, current_position, next_position) => {
-  /* Find the position of the closed parenthesis, associated with the hyperlink*/
+  /* Find the position of the closed parenthesis, associated with the hyperlink */
   let filtered_parentheses = parentheses.filter(parenthesis => parenthesis > current_position && parenthesis <= next_position);
   return filtered_parentheses[0];
 }
@@ -89,7 +89,7 @@ findOpenBracket = (brackets, current_position, previous_position) => {
 validLinkPositions = (link_positions) => {
   /* check that the set of positions for characters could represent a hyperlink */
   let has_values = link_positions.every(value => value >= 0);
-  let has_numbers = link_positions.every(value => typeof (value) === 'number');
+  let has_numbers = link_positions.every(value => typeof (value) === "number");
   let correct_length = link_positions.length == 3;
   let correct_order = (link_positions[0] < link_positions[1] && link_positions[1] < link_positions[2])
   return (correct_length && has_values && has_numbers && correct_order)

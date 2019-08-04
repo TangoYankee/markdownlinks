@@ -1,8 +1,8 @@
-const process = require('process');
-const request = require('request');
 const crypto = require('crypto');
-const queryString = require('querystring');
 const cryptoRandomString = require('crypto-random-string');
+const process = require('process');
+const queryString = require('querystring');
+const request = require('request');
 const { saveTeam } = require('../database/db.js');
 
 oauth = (req, res) => {

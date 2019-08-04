@@ -1,5 +1,5 @@
-const MongoClient = require('mongodb').MongoClient;
-const process = require('process');
+const MongoClient = require("mongodb").MongoClient;
+const process = require("process");
 
 var cluster_uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@ty-db-xadwv.mongodb.net/markdownlinksdb?retryWrites=true&w=majority`;
 var client = new MongoClient(cluster_uri, { useNewUrlParser: true });

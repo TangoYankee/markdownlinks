@@ -1,6 +1,6 @@
-const request = require('request');
-const { format } = require('./format.js');
-const messages = require('./messages.js');
+const request = require("request");
+const { format } = require("./format.js");
+const messages = require("./messages.js");
 const methods = {};
 
 methods.publish = (request_body, res) => {
