@@ -22,7 +22,7 @@ methods.publish = (request_body, res) => {
 }
 
 
-checkHelp = (text) =>{
+checkHelp = (text) => {
     /*if the user inputted only 'help', they will recieve a help message*/
     text = text.trim();
     text = text.toLowerCase();
@@ -35,7 +35,7 @@ postMessage = (response_url, response_message) => {
         url: response_url,
         body: response_message,
         json: true,
-    },function (error, response, body) { //TODO? refactor to send to proper logging
+    }, function (error, response, body) { //TODO? refactor to send to proper logging
         if (error) {
             console.log(`Error: ${error}`);
         } else {
