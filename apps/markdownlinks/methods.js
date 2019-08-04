@@ -5,9 +5,9 @@ const methods = {};
 
 methods.publish = (request_body, res) => {
   /* control the workflow of a response to a slash command */
-  var text = request_body.text;
-  var response_url = request_body.response_url;
-  var user_id = request_body.user_id;
+  let text = request_body.text;
+  let response_url = request_body.response_url;
+  let user_id = request_body.user_id;
   if (checkHelp(text)) {
     res.json(messages.data.helpMessage(user_id));
   } else if (text) {

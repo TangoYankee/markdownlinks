@@ -2,8 +2,8 @@ const MongoClient = require('mongodb').MongoClient;
 const { saveTeam, checkTeam } = require('./db.js');
 
 describe('insert', () => {
-  let connection;
-  let db;
+  var connection;
+  var db;
 
   beforeAll(async () => {
     connection = await MongoClient.connect(global.__MONGO_URI__, {
