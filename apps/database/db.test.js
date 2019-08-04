@@ -18,15 +18,23 @@ describe('insert', () => {
         await db.close();
     });
 
-    it('should insert a doc into collection', async () => {
-        var teams = db.collection("teams");
-        let team_one_id = '1234567890';
-        let team_one_token = 'qwertyasdfg';
-        await checkTeam(team_one_id, team_one_token, teams);
-
-        const inserted_team = await teams.findOne({ team_id: team_one_id });
-        console.log(`test result team: ${inserted_team}`);
-        expect(team_one_token).toEqual(inserted_team.access_token_cipher);
+    
+    let team_id = '1234567890';
+    let team_token_one = 'qwertyasdfg';
+    let team_token_two = 'plmoknijb';
+    it('should insert a team into the collection', async () => {
+        let teams = db.collection("teams");
+        await checkTeam(team_id, team_token_one, teams);
+        let inserted_team = await teams.findOne({ team_id: team_id });
+        expect(team_token_one).toEqual(inserted_team.access_token_cipher);
     });
 
+    it('should update a team with a new token', async () => {
+        let teams = db.collection("teams");
+        let inserted_team = await teams.findOne({ team_id: team_id });
+        expect(team_token_one).toEqual(inserted_team.access_token_cipher);
+        await checkTeam(team_id, team_token_two, teams);
+        let updated_team = await teams.findOne({team_id: team_id});
+        expect(team_token_two).toEqual(updated_team.access_token_cipher);
+    })
 });

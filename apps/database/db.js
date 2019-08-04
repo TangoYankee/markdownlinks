@@ -13,18 +13,16 @@ saveTeam = (team_id, access_token_cipher) => {
     client.connect(err => {
         if (err) return console.log(err);
         console.log("connected successfully")
-        checkTeam(team_id, access_token_cipher, db);
+        checkTeam(team_id, access_token_cipher, teams);
         client.close();
     });
 }
 
 checkTeam = async (team_id, access_token_cipher, teams) => {
     var team_record;
-    console.log(`Record before looking: ${team_record}`)
     team_record = await teams.findOne({
         team_id: team_id
     });
-    console.log(`Record after looking: ${team_record}`)
     if (team_record) {
         console.log("found record")
         await teams.findOneAndUpdate({
