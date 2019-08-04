@@ -3,7 +3,7 @@ const request = require('request');
 const crypto = require('crypto');
 const queryString = require('querystring');
 const cryptoRandomString = require('crypto-random-string');
-const saveTeam = require('apps/db.js');
+const saveTeam = require('../database/db.js');
 const iv_len = 16;
 
 
