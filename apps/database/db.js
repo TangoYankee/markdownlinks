@@ -10,11 +10,11 @@ const client = new MongoClient(cluster_uri, {
 saveTeam = (team_id, access_token_cipher) => {
     var db = client.db("markdownlinksdb");
     var teams = db.collection("teams");
-    client.connect(err => {
+    client.connect(err, async () => {
         if (err) return console.log(err);
         console.log("connected successfully")
-        checkTeam(team_id, access_token_cipher, teams);
-        client.close();
+        await checkTeam(team_id, access_token_cipher, teams);
+        await client.close();
     });
 }
 
