@@ -2,21 +2,20 @@ const MongoClient = require('mongodb').MongoClient;
 const process = require('process');
 
 const cluster_uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@ty-db-xadwv.mongodb.net/markdownlinksdb?retryWrites=true&w=majority`;
-const client = new MongoClient(cluster_uri, {
-    useNewUrlParser: true
-});
+const client = new MongoClient(cluster_uri, { useNewUrlParser: true });
 
 
 saveTeam = (team_id, access_token_cipher) => {
-    var db = client.db("markdownlinksdb");
-    var teams = db.collection("teams");
-    client.connect(err, async () => {
+    client.connect(async (err) => {
+        const teams = client.db("markdownlinksdb").collection("teams");
+        // perform actions on the collection object
         if (err) return console.log(err);
         console.log("connected successfully")
         await checkTeam(team_id, access_token_cipher, teams);
-        await client.close();
+        client.close();
     });
 }
+
 
 checkTeam = async (team_id, access_token_cipher, teams) => {
     var team_record;
