@@ -6,7 +6,7 @@ This Slack application allows users to format their messages using Markdown synt
 
 Slack users activate Markdown Links through the _/markdownlinks_ slash command. Each user can type a message that contains hyperlinks and their associated text, using Markdown hyperlink syntax. This application supports up to twenty hyperlinks in a single message. Additionally, other Slack formatting -such as emojis and strikethroughs- are preserved. Once the user sends the message, Markdown Links will delete the original message and replace it with a message with the hyperlinks cleanly formatted. 
 
-Because the returned message is shown as being from 'markdownlinks', the returned message is also signed with the name of the user who originally shared the message. Additionally, the returned message may be "pinned" to keep its contents easily accessible. However, the contents of the message are not shown in the "preview" of the pinned item.
+Because the returned message is shown as being from 'markdownlinks', the returned message is also signed with the name of the user who originally shared the message. Additionally, the returned message may be "pinned" to keep its contents easily accessible.
 
 ## Demonstration
 ![image](public/img/nasa_dmv_demo_optimize.gif)
