@@ -16,7 +16,7 @@ To install and use Markdown Links on Slack:
 1) Sign into the workspace where the application will be used
 2) Authorize the application by clicking the attached button
 
-<a title="add to slack" href="https://slack.com/oauth/authorize?client_id=588720890436.589085146405&scope=commands"><img src="https://platform.slack-edge.com/img/add_to_slack.png" alt="add to slack"/></a>
+<!-- <a title="add to slack" href="https://slack.com/oauth/authorize?client_id=588720890436.589085146405&scope=commands"><img src="https://platform.slack-edge.com/img/add_to_slack.png" alt="add to slack"/></a> -->
 
 ## Providing feedback
 To report a bug or request a feature, open an issue in this repository. Alternatively, you may send a message to miller.tim108@gmail.com.

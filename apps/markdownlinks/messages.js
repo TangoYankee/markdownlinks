@@ -34,10 +34,6 @@ messages.helpMessage = (user_id) => {
           {
             "type": "mrkdwn",
             "text": "visit https://markdownlinks.io"
-          },
-          {
-            "type": "mrkdwn",
-            "text": "support <https://www.codeforamerica.org/donate|code for america>"
           }
         ]
       }
