@@ -12,3 +12,6 @@
 
 // Must cache searches to prevent searching for the results multiple times within the specified cache time
   // - https://www.npmjs.com/package/node-cache 
+
+// Testing urls: http://testsafebrowsing.appspot.com/
+
