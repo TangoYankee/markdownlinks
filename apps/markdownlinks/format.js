@@ -24,6 +24,8 @@ format = (text) => {
   }
 }
 
+// Functions to check for threats
+
 allIndexOf = (text, search_char) => {
   /* find all the positions of a character in a string*/
   let start_index = 0, index, indices = [], count = 0;

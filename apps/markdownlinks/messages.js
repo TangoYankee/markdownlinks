@@ -63,6 +63,8 @@ messages.errorMessage = () => {
   }
 }
 // TODO: add section for warning_message
+// threatContext = (threats)
+// called by "mardownMessage"
 // Possible combination of messages:
 // - no threats documented -<Google Advisories|https://developers.google.com/safe-browsing/v4/advisory>
 // - :face_with_monocle: shared without https
