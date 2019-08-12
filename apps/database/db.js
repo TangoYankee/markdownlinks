@@ -5,8 +5,7 @@ var cluster_uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.M
 // var client = new MongoClient(cluster_uri, { useNewUrlParser: true });
 
 saveTeam = (team_id, access_token_cipher) => {
-  let client = new MongoClient(cluster_uri, { useNewUrlParser: true });
-  console.log("save team")
+  let client = MongoClient(cluster_uri, { useNewUrlParser: true });
   client.connect(async(err) => {
     if (err) return console.log(err);
     let teams = client.db("markdownlinksdb").collection("teams");
