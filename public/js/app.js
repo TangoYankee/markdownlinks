@@ -1,4 +1,4 @@
-function footerAlign(){
+footerAlign = () => {
   /* create bottom padding on the body to accommodate footer */
   $('footer').css('height', 'auto');
   var footerHeight = $('footer').outerHeight();
@@ -6,7 +6,7 @@ function footerAlign(){
   $('footer').css('height', footerHeight);
 }
 
-function headerAlign(){
+headerAlign = () => {
   /* create top padding on the body to accommodate header */
   $('header').css('height', 'auto');
   var headerHeight = $('header').outerHeight();
@@ -14,18 +14,18 @@ function headerAlign(){
   $('header').css('height', headerHeight);
 }
 
-$().ready(()=>{
+$().ready( () => {
   footerAlign();
 })
 
-$().ready(()=>{
+$().ready( () => {
   headerAlign();
 })
 
-$(window).resize(()=>{
+$(window).resize( () => {
   footerAlign();
 })
 
-$(window).resize(()=>{
+$(window).resize( () => {
   headerAlign();
 })
