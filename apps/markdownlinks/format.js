@@ -58,7 +58,7 @@ allLinkPositions = (brackets_parentheses, brackets, parentheses) => {
 
 findPreviousPosition = (i, brackets_parentheses) => {
   /* find the bracket/parenthesis pair that occurs before the current one */
-  if (i == 0) {
+  if (i === 0) {
     return 0;
   } else {
     var j = i - 1;
@@ -68,7 +68,7 @@ findPreviousPosition = (i, brackets_parentheses) => {
 
 findNextPosition = (i, brackets_parentheses, bracket_parentheses_len, parentheses) => {
   /* find the bracket/parenthesis pair that occurs after the current one */
-  if (i == (bracket_parentheses_len - 1)) {
+  if (i === (bracket_parentheses_len - 1)) {
     return parentheses[parentheses.length - 1];
   } else {
     var k = i + 1;
@@ -92,7 +92,7 @@ validLinkPositions = (link_positions) => {
   /* check that the set of positions for characters could represent a hyperlink */
   let has_values = link_positions.every(value => value >= 0);
   let has_numbers = link_positions.every(value => typeof (value) === "number");
-  let correct_length = link_positions.length == 3;
+  let correct_length = link_positions.length === 3;
   let correct_order = (link_positions[0] < link_positions[1] && link_positions[1] < link_positions[2])
   return (correct_length && has_values && has_numbers && correct_order)
 }

@@ -24,7 +24,7 @@ checkHelp = (text) => {
   /* if the user inputted only 'help', they will recieve a help message */
   text = text.trim();
   text = text.toLowerCase();
-  return text == "help";
+  return text === "help";
 }
 
 postMessage = (response_url, response_message) => {
