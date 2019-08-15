@@ -18,7 +18,7 @@ var token_fake_key = cryptoRandomString({ length: 32, type: "hex" });
 var token_fake_plain = createTokenFake();
 var token_fake_cipher = encryptToken(token_fake_plain, token_fake_key);
 checkCipher = (token_fake_cipher) => {
-  valid_len = (token_fake_cipher.length == 176);
+  valid_len = (token_fake_cipher.length === 176);
   includes_dash = token_fake_cipher.includes("-");
   return (valid_len && !includes_dash);
 }
