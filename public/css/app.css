@@ -56,7 +56,7 @@ div.content {
   flex-direction: column;
   text-align: center;
   margin: auto;
-  max-width: max-content;
+  max-width: 50rem;
 }
 
 img#demo {
