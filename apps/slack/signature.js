@@ -12,7 +12,7 @@ var signature = (request, current_time) => {
   }
 }
 
-isRecent = (timestamp, current_time) => {
+var isRecent = (timestamp, current_time) => {
   /* Guard against replay attacks by checking the request was made recently */
   let time_tolerance = 3e2;
   let time_delta = Math.abs(current_time - timestamp);
