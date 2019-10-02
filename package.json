@@ -17,6 +17,7 @@
     "dependencies": {
         "body-parser": "1.18.3",
         "crypto-random-string": "3.0.1",
+        "dev": "^0.1.3",
         "express": "4.16.4",
         "mongodb": "3.3.0-beta2",
         "pug": "2.0.4",
