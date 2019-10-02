@@ -1,5 +1,5 @@
 const MongoClient = require("mongodb").MongoClient;
-const { saveTeam, checkTeam } = require("./db.js");
+const { checkTeam } = require("./db.js");
 
 describe("insert", () => {
   var connection;

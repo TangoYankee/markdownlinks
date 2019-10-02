@@ -10,7 +10,7 @@ jobs:
           command: 'sudo npm install -g'
       - run:
           name: test
-          command: npm test db format oauth
+          command: npm test db format oauth signature
       - run:
           name: lint
-          command: npm lint
+          command: npm run lint

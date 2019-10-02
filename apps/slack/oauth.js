@@ -5,7 +5,7 @@ const queryString = require('querystring');
 const request = require('request');
 const { saveTeam } = require('../database/db.js');
 
-oauth = (req, res) => {
+var oauth = (req, res) => {
   /* compose Slack credentials */
   if (!req.query.code) {
     res.status(500);
@@ -22,7 +22,7 @@ oauth = (req, res) => {
   }
 }
 
-postOAuth = (res, url, query_string) => {
+var postOAuth = (res, url, query_string) => {
   /* recieve authorization */
   request.post({
     url: url,
@@ -33,11 +33,11 @@ postOAuth = (res, url, query_string) => {
       query_message = queryString.stringify({ "message": "error" });
       res.redirect("/?" + query_message);
     } else {
-      body_json = JSON.parse(body);
-      team_id = body_json.team_id;
-      access_token_plain = body_json.access_token;
+      let body_json = JSON.parse(body);
+      let team_id = body_json.team_id;
+      let access_token_plain = body_json.access_token;
       if (team_id && access_token_plain) {
-        access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
+        let access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
         saveTeam(team_id, access_token_cipher);
         query_message = queryString.stringify({ "message": "success" });
         res.redirect("/?" + query_message);
@@ -50,7 +50,7 @@ postOAuth = (res, url, query_string) => {
 }
 
 var algorithm = "aes-256-cbc";
-encryptToken = (token_plain, token_key) => {
+var encryptToken = (token_plain, token_key) => {
   /* encrypt token to store at rest */
   let iv_len = 16;
   let iv = cryptoRandomString({ length: iv_len, type: 'hex' });
@@ -60,7 +60,7 @@ encryptToken = (token_plain, token_key) => {
   return `${encrypted}${iv}`;
 }
 
-decryptToken = (token_cipher, token_key) => {
+var decryptToken = (token_cipher, token_key) => {
   /* decrypt token to send for authorization */
   let encrypted = token_cipher.slice(0, 160);
   let iv = token_cipher.slice(160);

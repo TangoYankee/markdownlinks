@@ -1,4 +1,4 @@
-messages = {};
+var messages = {};
 
 messages.helpMessage = (user_id) => {
   return {
