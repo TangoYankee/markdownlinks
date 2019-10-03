@@ -1,5 +1,5 @@
-# Welcome to Markdown Links!
-[Markdown Links homepage](https://markdownlinks.io)
+# [Welcome to Markdown Links!](https://markdownlinks.io)  
+[![CircleCI](https://circleci.com/gh/TangoYankee/markdownlinks.svg?style=svg)](https://circleci.com/gh/TangoYankee/markdownlinks)
 
 ## Overview
 This Slack application allows users to format their messages using Markdown syntax for hyperlinks. While Slack supports several ways to format messages, it does not support a way to cleanly format hyperlinks. Consequently, Slack messages may become cluttered by unkempt URLs. Fortunately, Slack does allow for URLs sent through their API to contain a custom format. The Markdown Links application takes advantage of this.
