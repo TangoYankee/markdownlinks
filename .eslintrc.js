@@ -1,14 +1,16 @@
 module.exports = {
     "env":{
-        "jest": true
+        "jest": true,
+        /* jquery file still ignored because it is 'min' */
+        "jquery": true
     },
     "extends": "standard",
     "parserOptions": {
         "ecmaVersion": 2019
     },
     "overrides": [
-        {   /* datalayer and jquery's '$' are not recongized by eslint */
-            "files": [ "public/js/*.js" ],
+        {   /* datalayer is not recongized by eslint */
+            "files": [ "public/js/analytics.js" ],
             "rules": {
                 "no-undef": "warn"
             }
