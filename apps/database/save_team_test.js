@@ -1,9 +1,9 @@
-const { saveTeam } = require("./db.js");
+const { saveTeam } = require('./db.js')
 
-var test_team_a = "12345678990";
-var test_team_b = "0987654321";
-var test_token_a = "atoken";
-var test_token_b = "btoken";
+var testTeamA = '12345678990'
+var testTeamB = '0987654321'
+var testTokenA = 'atoken'
+var testTokenB = 'btoken'
 
-saveTeam(test_team_a, test_token_b);
-saveTeam(test_team_b, test_token_a);
+saveTeam(testTeamA, testTokenB)
+saveTeam(testTeamB, testTokenA)
