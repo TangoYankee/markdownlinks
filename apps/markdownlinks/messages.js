@@ -1,6 +1,6 @@
-var messages = {};
+var messages = {}
 
-messages.helpMessage = (user_id) => {
+messages.helpMessage = (userId) => {
   return {
     "response_type": "ephemeral",
     "blocks": [
@@ -8,7 +8,7 @@ messages.helpMessage = (user_id) => {
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": `:confetti_ball: *welcome,* <@${user_id}>!\n_format your hyperlinks like this..._`
+          "text": `:confetti_ball: *welcome,* <@${userId}>!\n_format your hyperlinks like this..._`
         }
       },
       {
@@ -76,10 +76,9 @@ messages.errorMessage = () => {
 // - :negative_squared_cross_mark: error in checking for threats
 // Either no threats, threats, https, or https and threats. Never https and no threats. Error states may always be added to link, regardless of errors which alread exist on the specific link or general message
 // What if the threat is http? Only show the suspect threat as it takes priority. Don't clutter it with multiple errors
-// What if the error link is also http? Show both the error and the http monocle. Don't let user assume no document threats were found/not found. 
+// What if the error link is also http? Show both the error and the http monocle. Don't let user assume no document threats were found/not found.
 
-
-messages.markdownMessage = (markdown_format, user_id) => {
+messages.markdownMessage = (markdownFormat, userId) => {
   return {
     "response_type": "in_channel",
     "blocks": [
@@ -87,7 +86,7 @@ messages.markdownMessage = (markdown_format, user_id) => {
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": `${markdown_format}`
+          "text": `${markdownFormat}`
         }
       },
       {
@@ -95,7 +94,7 @@ messages.markdownMessage = (markdown_format, user_id) => {
         "elements": [
           {
             "type": "mrkdwn",
-            "text": `-shared by <@${user_id}>`
+            "text": `-shared by <@${userId}>`
           }
         ]
       }
@@ -103,4 +102,4 @@ messages.markdownMessage = (markdown_format, user_id) => {
   }
 }
 
-exports.data = messages;
+exports.data = messages
