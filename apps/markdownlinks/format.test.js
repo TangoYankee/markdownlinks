@@ -45,8 +45,8 @@ test.each(charPositions)(
     expect(allIndexOf(text, char)).toEqual(expectedArray)
   })
 
-var FoundAllLinkPositions = [[12, 16, 28], [38, 52, 75], [78, 91, 104]]
-test.each([[bracketsParentheses, brackets, parentheses, FoundAllLinkPositions]])(
+var foundAllLinkPositions = [[12, 16, 28], [38, 52, 75], [78, 91, 104]]
+test.each([[bracketsParentheses, brackets, parentheses, foundAllLinkPositions]])(
   'all of the positions of characters which compose markdown syntax links', (bracketsParentheses, brackets, parentheses, expectedArray) => {
     expect(allLinkPositions(bracketsParentheses, brackets, parentheses)).toEqual(expectedArray)
   })

@@ -5,8 +5,8 @@ var format = (text) => {
   var parentheses = allIndexOf(text, ')')
   if (bracketsParentheses) {
     let message = text
-    const FoundAllLinkPositions = allLinkPositions(bracketsParentheses, brackets, parentheses)
-    for (var linkPositions of FoundAllLinkPositions) {
+    const foundAllLinkPositions = allLinkPositions(bracketsParentheses, brackets, parentheses)
+    for (var linkPositions of foundAllLinkPositions) {
       if (validLinkPositions(linkPositions)) {
         const linkString = findLinkString(linkPositions, text)
         const unhttpedLinkAddress = findLinkAddress(linkPositions, text)
@@ -77,13 +77,13 @@ var findNextPosition = (i, bracketsParentheses, bracketParenthesesLen, parenthes
 }
 
 var findClosedParenthensis = (parentheses, currentPosition, nextPosition) => {
-  /* Find the position of the closed parenthesis, associated with the hyperlink */
+  /* find the position of the closed parenthesis, associated with the hyperlink */
   const filteredParentheses = parentheses.filter(parenthesis => parenthesis > currentPosition && parenthesis <= nextPosition)
   return filteredParentheses[0]
 }
 
 var findOpenBracket = (brackets, currentPosition, previousPosition) => {
-  /* Find the position of the open bracket associated with the hyperlink */
+  /* find the position of the open bracket associated with the hyperlink */
   const filteredBrackets = brackets.filter(bracket => bracket < currentPosition && bracket >= previousPosition)
   return filteredBrackets.pop()
 }
