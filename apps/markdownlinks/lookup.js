@@ -9,10 +9,10 @@
 // Master function
 // - accept a list of "threat_urls"
 // - read the cache (readCacheUrls(threat_urls))
-// - set cached_threat_url array equal to variable
-// - set uncached_threat_urls list equal to variable
+//   - set cached_threat_url array equal to variable
+//   - set uncached_threat_urls list equal to variable
 // - call the Google safe browsing lookup API (lookupRequest(uncached_threat_urls))
-// - set uncached_threat_url array equal to a variable
+//   - set uncached_threat_url array equal to a variable
 // - write the checked_uncached_threat_url array to the cache (createCacheUrls(checked_uncached_threat_url))
 // - combine the cached and uncached threat url arrays into one array ("checked_threat_urls")
 // - return an array of "threat_url" and its "threat_type" (checked_threat_urls)
@@ -26,8 +26,8 @@
 // - accept full list of "threat_urls"
 // - check against cached urls
 // - return
-// - list of "uncached_threat_urls" that were not avaible in the cache
-// - array of "cached_threat_url" and "threat_type" [maybe "cache_error"]
+//   - list of "uncached_threat_urls" that were not avaible in the cache
+//   - array of "cached_threat_url" and "threat_type" [maybe "cache_error"]
 
 // createCacheUrls
 // - accept array of "uncached_threat_url" and "threat_type"
@@ -41,4 +41,3 @@
 // - return the body or error of the lookup response
 
 // lookupParse
-//
