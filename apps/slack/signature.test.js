@@ -1,5 +1,5 @@
 const { signature, isRecent, isValidHash } = require('./signature.js')
-const slackRequest = require('./test_request.js')
+const slackRequest = require('./test-request.js')
 
 const timestampStr = slackRequest.headers['x-slack-request-timestamp']
 const timestamp = Number(timestampStr)
