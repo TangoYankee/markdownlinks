@@ -28,9 +28,8 @@ var postOAuth = (res, url, thisQueryString) => {
     url: url,
     qs: thisQueryString
   }, (error, response, body) => {
-    let thisQueryMessage
     if (error) {
-      thisQueryMessage = queryString.stringify({ message: 'error' })
+      const thisQueryMessage = queryString.stringify({ message: 'error' })
       res.redirect('/?' + thisQueryMessage)
     } else {
       const bodyJson = JSON.parse(body)
@@ -39,10 +38,10 @@ var postOAuth = (res, url, thisQueryString) => {
       if (teamId && accessTokenPlain) {
         const accessTokenCipher = encryptToken(accessTokenPlain, process.env.SLACK_OAUTH_TOKEN_SECRET)
         saveTeam(teamId, accessTokenCipher)
-        thisQueryMessage = queryString.stringify({ message: 'success' })
+        const thisQueryMessage = queryString.stringify({ message: 'success' })
         res.redirect('/?' + thisQueryMessage)
       } else {
-        thisQueryMessage = queryString.stringify({ message: 'error' })
+        const thisQueryMessage = queryString.stringify({ message: 'error' })
         res.redirect('/?' + thisQueryMessage)
       }
     }
