@@ -1,34 +1,34 @@
-const cryptoRandomString = require("crypto-random-string");
-const { encryptToken, decryptToken } = require("./oauth.js");
+const cryptoRandomString = require('crypto-random-string')
+const { encryptToken, decryptToken } = require('./oauth.js')
 
 var createTokenFake = () => {
   /* emulate oauth token layouts */
-  let prefix = "xoxp"
-  let number_array = [];
+  const prefix = 'xoxp'
+  const numberArray = []
   for (let i = 0; i < 3; i++) {
-    let number = cryptoRandomString({ length: 12, characters: "1234567890" });
-    number_array.push(number);
+    const number = cryptoRandomString({ length: 12, characters: '1234567890' })
+    numberArray.push(number)
   }
-  let hex_string = cryptoRandomString({ length: 32, type: "hex" });
-  return (`${prefix}-${number_array[0]}-${number_array[1]}-${number_array[2]}-${hex_string}`);
+  const hexString = cryptoRandomString({ length: 32, type: 'hex' })
+  return (`${prefix}-${numberArray[0]}-${numberArray[1]}-${numberArray[2]}-${hexString}`)
 }
 
 /* encrypted tokens should not look like plain text tokens */
-var token_fake_key = cryptoRandomString({ length: 32, type: "hex" });
-var token_fake_plain = createTokenFake();
-var token_fake_cipher = encryptToken(token_fake_plain, token_fake_key);
-var checkCipher = (token_fake_cipher) => {
-  let valid_len = (token_fake_cipher.length === 176);
-  let includes_dash = token_fake_cipher.includes("-");
-  return (valid_len && !includes_dash);
+var tokenFakeKey = cryptoRandomString({ length: 32, type: 'hex' })
+var tokenFakePlain = createTokenFake()
+var tokenFakeCipher = encryptToken(tokenFakePlain, tokenFakeKey)
+var checkCipher = (tokenFakeCipher) => {
+  const validLen = (tokenFakeCipher.length === 176)
+  const includesDash = tokenFakeCipher.includes('-')
+  return (validLen && !includesDash)
 }
 
-test.each([token_fake_cipher])(
-  "verify that the generated cipher could be valid", (token_fake_cipher) => {
-    expect(checkCipher(token_fake_cipher)).toBe(true);
-  });
+test.each([tokenFakeCipher])(
+  'verify that the generated cipher could be valid', (tokenFakeCipher) => {
+    expect(checkCipher(tokenFakeCipher)).toBe(true)
+  })
 
-test.each([[token_fake_cipher, token_fake_key, token_fake_plain]])(
-  "decryption matches originally generated token", (token_fake_cipher, token_fake_key, token_fake_plain) => {
-    expect(decryptToken(token_fake_cipher, token_fake_key)).toEqual(token_fake_plain);
-  });
+test.each([[tokenFakeCipher, tokenFakeKey, tokenFakePlain]])(
+  'decryption matches originally generated token', (tokenFakeCipher, tokenFakeKey, tokenFakePlain) => {
+    expect(decryptToken(tokenFakeCipher, tokenFakeKey)).toEqual(tokenFakePlain)
+  })
