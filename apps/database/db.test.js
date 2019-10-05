@@ -20,14 +20,14 @@ describe('insert', () => {
   const teamId = '1234567890'
   const teamTokenOne = 'qwertyasdfg'
   const teamTokentwo = 'plmoknijb'
-  it('should insert a team into the collection', async () => {
+  it('insert a team into the collection', async () => {
     const teams = db.collection('teams')
     await checkTeam(teamId, teamTokenOne, teams)
     const insertedTeam = await teams.findOne({ teamId: teamId })
     expect(teamTokenOne).toEqual(insertedTeam.accessTokenCipher)
   })
 
-  it('should update a team with a new token', async () => {
+  it('update a team with a new token', async () => {
     const teams = db.collection('teams')
     const insertedTeam = await teams.findOne({ teamId: teamId })
     expect(teamTokenOne).toEqual(insertedTeam.accessTokenCipher)

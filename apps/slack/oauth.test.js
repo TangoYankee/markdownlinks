@@ -29,6 +29,6 @@ test.each([token_fake_cipher])(
   });
 
 test.each([[token_fake_cipher, token_fake_key, token_fake_plain]])(
-  "decryption should match originally generated token", (token_fake_cipher, token_fake_key, token_fake_plain) => {
+  "decryption matches originally generated token", (token_fake_cipher, token_fake_key, token_fake_plain) => {
     expect(decryptToken(token_fake_cipher, token_fake_key)).toEqual(token_fake_plain);
   });

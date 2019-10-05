@@ -1,73 +1,73 @@
-const crypto = require('crypto');
-const cryptoRandomString = require('crypto-random-string');
-const process = require('process');
-const queryString = require('querystring');
-const request = require('request');
-const { saveTeam } = require('../database/db.js');
+const crypto = require('crypto')
+const cryptoRandomString = require('crypto-random-string')
+const process = require('process')
+const queryString = require('querystring')
+const request = require('request')
+const { saveTeam } = require('../database/db.js')
 
 var oauth = (req, res) => {
   /* compose Slack credentials */
   if (!req.query.code) {
-    res.status(500);
-    let query_message = queryString.stringify({ "message": "error" });
-    res.redirect("/?" + query_message);
+    res.status(500)
+    const thisQueryMessage = queryString.stringify({ message: 'error' })
+    res.redirect('/?' + thisQueryMessage)
   } else {
-    let url = "https://slack.com/api/oauth.access";
-    let query_string = {
+    const url = 'https://slack.com/api/oauth.access'
+    const thisQueryString = {
       client_id: process.env.SLACK_CLIENT_ID,
       client_secret: process.env.SLACK_CLIENT_SECRET,
       code: req.query.code
-    };
-    postOAuth(res, url, query_string);
+    }
+    postOAuth(res, url, thisQueryString)
   }
 }
 
-var postOAuth = (res, url, query_string) => {
+var postOAuth = (res, url, thisQueryString) => {
   /* recieve authorization */
   request.post({
     url: url,
-    qs: query_string,
+    qs: thisQueryString
   }, (error, response, body) => {
-    let query_message;
+    let thisQueryMessage
     if (error) {
-      query_message = queryString.stringify({ "message": "error" });
-      res.redirect("/?" + query_message);
+      thisQueryMessage = queryString.stringify({ message: 'error' })
+      res.redirect('/?' + thisQueryMessage)
     } else {
-      let body_json = JSON.parse(body);
-      let team_id = body_json.team_id;
-      let access_token_plain = body_json.access_token;
-      if (team_id && access_token_plain) {
-        let access_token_cipher = encryptToken(access_token_plain, process.env.SLACK_OAUTH_TOKEN_SECRET);
-        saveTeam(team_id, access_token_cipher);
-        query_message = queryString.stringify({ "message": "success" });
-        res.redirect("/?" + query_message);
+      const bodyJson = JSON.parse(body)
+      const teamId = bodyJson.team_id
+      const accessTokenPlain = bodyJson.access_token
+      if (teamId && accessTokenPlain) {
+        const accessTokenCipher = encryptToken(accessTokenPlain, process.env.SLACK_OAUTH_TOKEN_SECRET)
+        saveTeam(teamId, accessTokenCipher)
+        thisQueryMessage = queryString.stringify({ message: 'success' })
+        res.redirect('/?' + thisQueryMessage)
       } else {
-        query_message = queryString.stringify({ "message": "error" });
-        res.redirect("/?" + query_message);
+        thisQueryMessage = queryString.stringify({ message: 'error' })
+        res.redirect('/?' + thisQueryMessage)
       }
     }
-  });
+  })
 }
 
-var algorithm = "aes-256-cbc";
-var encryptToken = (token_plain, token_key) => {
+var algorithm = 'aes-256-cbc'
+var encryptToken = (tokenPlain, tokenKey) => {
   /* encrypt token to store at rest */
-  let iv_len = 16;
-  let iv = cryptoRandomString({ length: iv_len, type: 'hex' });
-  let cipher = crypto.createCipheriv(algorithm, token_key, iv);
-  let encrypted = cipher.update(token_plain, 'utf8', 'hex');
-  encrypted += cipher.final('hex');
-  return `${encrypted}${iv}`;
+  const ivLen = 16
+  const iv = cryptoRandomString({ length: ivLen, type: 'hex' })
+  const cipher = crypto.createCipheriv(algorithm, tokenKey, iv)
+  let encrypted = cipher.update(tokenPlain, 'utf8', 'hex')
+  encrypted += cipher.final('hex')
+  return `${encrypted}${iv}`
 }
 
-var decryptToken = (token_cipher, token_key) => {
+var decryptToken = (tokenCipher, tokenKey) => {
   /* decrypt token to send for authorization */
-  let encrypted = token_cipher.slice(0, 160);
-  let iv = token_cipher.slice(160);
-  let decipher = crypto.createDecipheriv(algorithm, token_key, iv);
-  let decrypted = decipher.update(encrypted, "hex", "utf8");
-  decrypted += decipher.final("utf8");
-  return decrypted;
+  const encrypted = tokenCipher.slice(0, 160)
+  const iv = tokenCipher.slice(160)
+  const decipher = crypto.createDecipheriv(algorithm, tokenKey, iv)
+  let decrypted = decipher.update(encrypted, 'hex', 'utf8')
+  decrypted += decipher.final('utf8')
+  return decrypted
 }
 
-module.exports = { oauth, encryptToken, decryptToken };
+module.exports = { oauth, encryptToken, decryptToken }
