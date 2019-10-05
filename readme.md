@@ -67,8 +67,10 @@ The code base may be run using Docker or a traditional setup.
 6. [Tunnel into ngrok](https://api.slack.com/tutorials/tunneling-with-ngrok)
    - `ngrok http 4390`
 7. [Linting](https://eslint.org/docs/user-guide/getting-started)
-   - `npx eslint *.js`
+   - `npm run lint` or
+   - `npx .eslint [filename]`
 8. Tesing with [jest](https://jestjs.io/)
-   - `npm test`
+   - `npm test` or
+   - `npm test [file name]`
 
 ## Thank you for visiting
