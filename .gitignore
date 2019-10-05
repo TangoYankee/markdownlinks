@@ -2,7 +2,7 @@
 .vscode
 
 #test
-test_request.js
+test-request.js
 
 #configuration
 config.sh
