@@ -23,16 +23,16 @@ describe('insert', () => {
   it('insert a team into the collection', async () => {
     const teams = db.collection('teams')
     await checkTeam(teamId, teamTokenOne, teams)
-    const insertedTeam = await teams.findOne({ teamId: teamId })
-    expect(teamTokenOne).toEqual(insertedTeam.accessTokenCipher)
+    const insertedTeam = await teams.findOne({ team_id: teamId })
+    expect(teamTokenOne).toEqual(insertedTeam.access_token_cipher)
   })
 
   it('update a team with a new token', async () => {
     const teams = db.collection('teams')
-    const insertedTeam = await teams.findOne({ teamId: teamId })
-    expect(teamTokenOne).toEqual(insertedTeam.accessTokenCipher)
+    const insertedTeam = await teams.findOne({ team_id: teamId })
+    expect(teamTokenOne).toEqual(insertedTeam.access_token_cipher)
     await checkTeam(teamId, teamTokentwo, teams)
-    const updatedTeam = await teams.findOne({ teamId: teamId })
-    expect(teamTokentwo).toEqual(updatedTeam.accessTokenCipher)
+    const updatedTeam = await teams.findOne({ team_id: teamId })
+    expect(teamTokentwo).toEqual(updatedTeam.access_token_cipher)
   })
 })
