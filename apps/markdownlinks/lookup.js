@@ -1,3 +1,10 @@
+var mockFunction = () => {
+  /* create a placeholder function to initiate and pass tests */
+  return true
+}
+
+module.exports = { mockFunction }
+
 // Use the lookup API to determine whether the shared link is on a list of potentially harmful websites
 
 // https://developers.google.com/safe-browsing/v4/lookup-api

@@ -1,3 +1,9 @@
+const { mockFunction } = require('./lookup.js')
+
+test('placeholder to run and pass a test', () => {
+  expect(mockFunction()).toBe(true)
+})
+
 // https://developers.google.com/safe-browsing/v4/lookup-api
 // Warning guidelines
 // - must leave room for discretion
