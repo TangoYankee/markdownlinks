@@ -1,8 +1,9 @@
 const { signature, isRecent, isValidHash } = require('./signature.js')
-const slackRequest = require('./test-request.js')
+const slackRequest = require('./signature-test-request.js')
 
 const timestampStr = slackRequest.headers['x-slack-request-timestamp']
 const timestamp = Number(timestampStr)
+/* TODO: create a variable to explain 1e2 is a fake offset for the fake current time */
 const currentTime = (timestamp + 1e2)
 test.each([[slackRequest, currentTime, true]])(
   'verify request is from slack', (slackRequest, currentTime, expectedBoolean) => {

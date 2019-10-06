@@ -1,9 +1,6 @@
 #vscode
 .vscode
 
-#test
-test-request.js
-
 #configuration
 config.sh
 
