@@ -17,16 +17,15 @@
     "dependencies": {
         "body-parser": "1.18.3",
         "crypto-random-string": "3.0.1",
-        "dev": "^0.1.3",
         "express": "4.16.4",
         "mongodb": "3.3.0-beta2",
-        "production": "0.0.2",
         "pug": "2.0.4",
         "qs": "6.7.0",
         "request": "2.88.0"
     },
     "devDependencies": {
         "@shelf/jest-mongodb": "1.1.0",
+        "dev": "^0.1.3",
         "eslint": "^5.16.0",
         "eslint-config-standard": "^14.1.0",
         "eslint-plugin-import": "^2.18.2",
