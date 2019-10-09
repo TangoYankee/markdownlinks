@@ -65,7 +65,8 @@ The code base may be run using Docker or a traditional setup.
 4. Copy `SLACK_CLIENT_ID` and `SLACK_CLIENT_SECRET` into .gitignore'd `config.sh` file
 5. Load credentials onto machine with `source config.sh`
 6. [Tunnel into ngrok](https://api.slack.com/tutorials/tunneling-with-ngrok)
-   - `ngrok http 4390`
+   - `ngrok http 4390` or
+   - `./ngrok http 4390`
 7. [Linting](https://eslint.org/docs/user-guide/getting-started)
    - `npm run lint` or
    - `npx .eslint [filename]`
