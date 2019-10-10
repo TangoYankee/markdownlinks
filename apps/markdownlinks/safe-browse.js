@@ -18,7 +18,7 @@ var mockFunction = () => {
 //   - set uncached_threat_urls list equal to variable
 // - call the Google safe browsing lookup API (lookupRequest(uncached_threat_urls))
 //   - set uncached_threat_url array equal to a variable
-// - write the checked_uncached_threat_url array to the cache (createCacheUrls(checked_uncached_threat_url))
+// - write the checked_uncached_threat_url array to the cache (postCache(checked_uncached_threat_url))
 // - combine the cached and uncached threat url arrays into one array ("checked_threat_urls")
 // - return an array of "threat_url" and its "threat_type" (checked_threat_urls)
 var safeBrowseMain = (threatUrls) => {
@@ -26,13 +26,13 @@ var safeBrowseMain = (threatUrls) => {
   return scannedUrlsAndThreatTypes
 }
 
-// readCache
+// getCache
 // - accept full list of "threat_urls"
 // - check against cached urls
 // - return
 //   - list of "uncached_threat_urls" that were not avaible in the cache
 //   - array of "cached_threat_url" and "threat_type" [maybe "cache_error"]
-var readCache = (threatUrls) => {
+var getCache = (threatUrls) => {
   /* check cache for suspected threats or urls that have not been cached */
   return (uncachedUrls, cachedUrlsAndThreatType)
 }
@@ -52,11 +52,11 @@ var JsonTemplate = (uncachedThreatUrls) => {
 // - make the post?get? request to the Safe Browsing database
 // - return the body or error of the lookup response
 
-// createCacheUrls
+// postCache
 // - accept array of "uncached_threat_url" and "threat_type"
 // - write the urls to the cache [threat_url, threat_type, cached_timeout]
 // - return success or error state
 
 // lookupParse
 
-module.exports = { mockFunction, safeBrowseMain, readCache, JsonTemplate }
+module.exports = { mockFunction, safeBrowseMain, getCache, JsonTemplate }
