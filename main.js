@@ -32,5 +32,9 @@ app.post('/publish', (req, res) => {
   }
 })
 
+app.use((req, res, next) => {
+  res.status(404).render('index', { message: 'page-not-found' })
+})
+
 const port = 4390
 app.listen(port)

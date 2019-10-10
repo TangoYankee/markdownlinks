@@ -8,6 +8,9 @@ div(class="message")
         else if message == "error"
             - display_text = "an error occurred"
             - alert_class = "error"
+        else if message == "page-not-found"
+            - display_text = "error 404: page not found"
+            - alert_class = "error"
         else
             - display_text = "input not recognized"
             - alert_class = "warning"
