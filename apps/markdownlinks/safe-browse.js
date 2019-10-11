@@ -23,6 +23,7 @@ var mockFunction = () => {
 // - return an array of "threat_url" and its "threat_type" (checked_threat_urls)
 var safeBrowseMain = (threatUrls) => {
   /* control the workflow of scanning urls for threats using Google safe browsing */
+  var scannedUrlsAndThreatTypes = ''
   return scannedUrlsAndThreatTypes
 }
 
@@ -34,16 +35,19 @@ var safeBrowseMain = (threatUrls) => {
 //   - array of "cached_threat_url" and "threat_type" [maybe "cache_error"]
 var getCache = (threatUrls) => {
   /* check cache for suspected threats or urls that have not been cached */
-  return (uncachedUrls, cachedUrlsAndThreatType)
+  var uncachedUrls = ''
+  var cachedUrlsAndThreatTypes = ''
+  return (uncachedUrls, cachedUrlsAndThreatTypes)
 }
 
-// JsonTemplate
+// jsonTemplate
 // The template JSON Object of the Safe Browse API body
 // accept the uncached_threat_urls
 // return the JSON object with the urls inserted
-var JsonTemplate = (uncachedThreatUrls) => {
+var jsonTemplate = (uncachedThreatUrls) => {
   /* place urls with uncached threats into a JSON template for the Safe Browse API */
-  return JsonUrls
+  var jsonUrls = ''
+  return jsonUrls
 }
 
 // safeBrowseRequest
@@ -51,12 +55,27 @@ var JsonTemplate = (uncachedThreatUrls) => {
 // - compose the body of the lookup request
 // - make the post?get? request to the Safe Browsing database
 // - return the body or error of the lookup response
+var safeBrowseRequest = (uncachedUrls) => {
+  /* call the Google Safe Browse API to check for suspected threats */
+  var safeBrowseResponse = ''
+  return safeBrowseResponse
+}
 
 // postCache
 // - accept array of "uncached_threat_url" and "threat_type"
 // - write the urls to the cache [threat_url, threat_type, cached_timeout]
 // - return success or error state
+var postCache = (uncachedUrlsAndThreatTypes) => {
+  /* save newly checked urls to the cache */
+  var cacheResponse = ''
+  return cacheResponse
+}
 
-// lookupParse
-
-module.exports = { mockFunction, safeBrowseMain, getCache, JsonTemplate }
+module.exports = {
+  mockFunction,
+  safeBrowseMain,
+  getCache,
+  jsonTemplate,
+  safeBrowseRequest,
+  postCache
+}

@@ -1,7 +1,29 @@
-const { mockFunction } = require('./lookup.js')
+const {
+  safeBrowseMain,
+  getCache,
+  jsonTemplate,
+  safeBrowseRequest,
+  postCache
+} = require('./safe-browse.js')
 
-test('placeholder to run and pass a test', () => {
-  expect(mockFunction()).toBe(true)
+test('the main function demonstrate the integration of all functions', () => {
+  expect(safeBrowseMain('')).toBe('')
+})
+
+test('check the cache for saved threats', () => {
+  expect(getCache('')).toBe('', '')
+})
+
+test('place urls in json object to send to safe browse api', () => {
+  expect(jsonTemplate('')).toBe('')
+})
+
+test('call the google safe browse api', () => {
+  expect(safeBrowseRequest('')).toBe('')
+})
+
+test('save checked urls to the cache', () => {
+  expect(postCache('')).toBe('')
 })
 
 // https://developers.google.com/safe-browsing/v4/lookup-api
@@ -20,5 +42,3 @@ test('placeholder to run and pass a test', () => {
 //   - https://www.npmjs.com/package/node-cache
 
 // Testing urls: http://testsafebrowsing.appspot.com/
-
-
