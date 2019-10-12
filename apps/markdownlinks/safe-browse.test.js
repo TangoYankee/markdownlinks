@@ -1,26 +1,32 @@
-const {
-  safeBrowseMain,
+const process = require('process')
+const {  
+  formatUrlsLookupApi,
   getCache,
-  jsonTemplate,
-  safeBrowseRequest,
-  postCache
+  postCache,
+  postLookupApi,
+  safeBrowse,
+  setBodyLookupApi
 } = require('./safe-browse.js')
 
 test('the main function demonstrate the integration of all functions', () => {
-  expect(safeBrowseMain('')).toBe('')
+  expect(safeBrowse(["test_one", "test_two"])).toEqual({"client": {"clientId": process.env.GOOGLE_SAFE_BROWSING_KEY, "clientVersion": "1.5.2"}, "threatInfo": {"platformTypes": ["ANY_PLATFORM"], "threatEntries": [{"url": "test_one"}, {"url": "test_two"}], "threatEntryTypes": ["URL"], "threatTypes": ["PHISHING", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"]}})
 })
 
 test('check the cache for saved threats', () => {
   expect(getCache('')).toBe('', '')
 })
 
-test('place urls in json object to send to safe browse api', () => {
-  expect(jsonTemplate('')).toBe('')
+test('place urls in an array', () => {
+  expect(formatUrlsLookupApi( ["test_one", "test_two"] )).toEqual([{"url": "test_one"}, {"url":"test_two"}])
 })
 
-test('call the google safe browse api', () => {
-  expect(safeBrowseRequest('')).toBe('')
+test('place urls in json object to send to safe browse api', () => {
+  expect(setBodyLookupApi([{"url" : "test_one"}, {"url" : "test_two"}])).toEqual({"client": {"clientId": process.env.GOOGLE_SAFE_BROWSING_KEY, "clientVersion": "1.5.2"}, "threatInfo": {"platformTypes": ["ANY_PLATFORM"], "threatEntries": [{"url": "test_one"}, {"url": "test_two"}], "threatEntryTypes": ["URL"], "threatTypes": ["PHISHING", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"]}})
 })
+
+// test('call the google safe browse api', () => {
+//   expect(postLookupApi('')).toBe('')
+// })
 
 test('save checked urls to the cache', () => {
   expect(postCache('')).toBe('')

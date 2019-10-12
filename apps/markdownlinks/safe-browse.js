@@ -1,8 +1,5 @@
-var mockFunction = () => {
-  /* create a placeholder function to initiate and pass tests */
-  return true
-}
-
+const process = require('process')
+const request = require('request')
 // Use the lookup API to determine whether the shared link is on a list of potentially harmful websites
 
 // https://developers.google.com/safe-browsing/v4/lookup-api
@@ -21,9 +18,15 @@ var mockFunction = () => {
 // - write the checked_uncached_threat_url array to the cache (postCache(checked_uncached_threat_url))
 // - combine the cached and uncached threat url arrays into one array ("checked_threat_urls")
 // - return an array of "threat_url" and its "threat_type" (checked_threat_urls)
-var safeBrowseMain = (threatUrls) => {
+var safeBrowse = (threatUrls) => {
   /* control the workflow of scanning urls for threats using Google safe browsing */
-  var scannedUrlsAndThreatTypes = ''
+  // var cacheResponse = getCache(threatUrls)
+  // var uncachedUrls = cacheResponse[0]
+  var uncachedUrls = threatUrls
+  var urlsLookupApi = formatUrlsLookupApi(uncachedUrls)
+  var bodyLookupApi = setBodyLookupApi(urlsLookupApi)
+  // postLookupApi(bodyLookupApi)
+  var scannedUrlsAndThreatTypes = bodyLookupApi
   return scannedUrlsAndThreatTypes
 }
 
@@ -40,23 +43,71 @@ var getCache = (threatUrls) => {
   return (uncachedUrls, cachedUrlsAndThreatTypes)
 }
 
+var formatUrlsLookupApi = (uncachedThreatUrls) => {
+  var urlsLookupApi = []
+  for (var threatUrl of uncachedThreatUrls) {
+    urlsLookupApi.push({ "url": threatUrl })
+  }
+  return urlsLookupApi
+}
+
 // jsonTemplate
 // The template JSON Object of the Safe Browse API body
 // accept the uncached_threat_urls
 // return the JSON object with the urls inserted
-var jsonTemplate = (uncachedThreatUrls) => {
+//  - "phishing", "social_engineering", "malware" [for any OS], or "unwanted_software" [for any OS]
+// {
+//   "client": {
+//     "clientId":      "process.env.GOOGLE_SAFE_BROWSING_CLKEY
+//     "clientVersion": "1.5.2"
+//   },
+//   "threatInfo": {
+//     "threatTypes":      ["PHISHING", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"],
+//     "platformTypes":    ["ANY_PLATFORM"],
+//     "threatEntryTypes": ["URL"],
+//     "threatEntries": [
+//       {"url": "http://www.urltocheck1.org/"},
+//       {"url": "http://www.urltocheck2.org/"},
+//       {"url": "http://www.urltocheck3.com/"}
+//     ]
+//   }
+// }
+var setBodyLookupApi = (urlsLookupApi) => {
   /* place urls with uncached threats into a JSON template for the Safe Browse API */
-  var jsonUrls = ''
-  return jsonUrls
+  return {
+    "client": {
+      "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID,
+      "clientVersion": "1.5.2"
+    },
+    "threatInfo": {
+      "threatTypes": ["PHISHING", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"],
+      "platformTypes": ["ANY_PLATFORM"],
+      "threatEntryTypes": ["URL"],
+      "threatEntries": urlsLookupApi
+    }
+  }
 }
 
-// safeBrowseRequest
+// postLookupApi (postLookupAPI?)
 // - accept the "uncached_threat_urls"
+// - https://safebrowsing.googleapis.com/v4/threatMatches:find?key=API_KEY HTTP/1.1
 // - compose the body of the lookup request
-// - make the post?get? request to the Safe Browsing database
+// - make the post request to the Safe Browsing database
 // - return the body or error of the lookup response
-var safeBrowseRequest = (uncachedUrls) => {
+var postLookupApi = (bodyLookupApi) => {
   /* call the Google Safe Browse API to check for suspected threats */
+  var requestUrl = `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${process.env.GOOGLE_SAFE_BROWSING_KEY}`
+  request.post({
+    url: requestUrl,
+    body: bodyLookupApi,
+    json: true
+  }, function (error, response, body) {
+    if (error) {
+      console.log(`Error: ${error}`)
+    } else {
+      console.log(`Body: ${body}, Response ${response}`)
+    }
+  })
   var safeBrowseResponse = ''
   return safeBrowseResponse
 }
@@ -72,10 +123,10 @@ var postCache = (uncachedUrlsAndThreatTypes) => {
 }
 
 module.exports = {
-  mockFunction,
-  safeBrowseMain,
+  formatUrlsLookupApi,
   getCache,
-  jsonTemplate,
-  safeBrowseRequest,
-  postCache
+  postCache,
+  postLookupApi,
+  safeBrowse,
+  setBodyLookupApi
 }
