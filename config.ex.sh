@@ -1,5 +1,5 @@
 #!/usr/bin/env_bash
-export GOOGLE_SAFE_BROWSING_KEY=""
+export GOOGLE_SAFE_BROWSING_KEY="devsafebrowsingkey"
 export GOOGLE_SAFE_BROWSING_CLIENT_ID=""
 export MONGODB_USERNAME=""
 export MONGODB_PASSWORD=""

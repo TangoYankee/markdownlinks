@@ -25,8 +25,8 @@ var safeBrowse = (threatUrls) => {
   var uncachedUrls = threatUrls
   var urlsLookupApi = formatUrlsLookupApi(uncachedUrls)
   var bodyLookupApi = setBodyLookupApi(urlsLookupApi)
+  var scannedUrlsAndThreatTypes = ''
   // postLookupApi(bodyLookupApi)
-  var scannedUrlsAndThreatTypes = bodyLookupApi
   return scannedUrlsAndThreatTypes
 }
 
@@ -55,7 +55,7 @@ var formatUrlsLookupApi = (uncachedThreatUrls) => {
 // The template JSON Object of the Safe Browse API body
 // accept the uncached_threat_urls
 // return the JSON object with the urls inserted
-//  - "phishing", "social_engineering", "malware" [for any OS], or "unwanted_software" [for any OS]
+//  - "social_engineering", "malware" [for any OS], or "unwanted_software" [for any OS]
 // {
 //   "client": {
 //     "clientId":      "process.env.GOOGLE_SAFE_BROWSING_CLKEY
@@ -80,7 +80,7 @@ var setBodyLookupApi = (urlsLookupApi) => {
       "clientVersion": "1.5.2"
     },
     "threatInfo": {
-      "threatTypes": ["PHISHING", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"],
+      "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"],
       "platformTypes": ["ANY_PLATFORM"],
       "threatEntryTypes": ["URL"],
       "threatEntries": urlsLookupApi
@@ -101,15 +101,16 @@ var postLookupApi = (bodyLookupApi) => {
     url: requestUrl,
     body: bodyLookupApi,
     json: true
-  }, function (error, response, body) {
+  }, (error, response, body) => {
     if (error) {
       console.log(`Error: ${error}`)
+      // return error
     } else {
-      console.log(`Body: ${body}, Response ${response}`)
+      console.log(body.matches)
+      // console.log(`Body: ${bodyJson.matches}, Response ${response}`)
+      // return (body, response)
     }
   })
-  var safeBrowseResponse = ''
-  return safeBrowseResponse
 }
 
 // postCache
@@ -130,3 +131,5 @@ module.exports = {
   safeBrowse,
   setBodyLookupApi
 }
+
+postLookupApi({ "client": { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID, "clientVersion": "1.5.2" }, "threatInfo": { "platformTypes": ["ANY_PLATFORM"], "threatEntries": [{ "url": "http://testsafebrowsing.appspot.com/s/malware.html" }, { "url": "http://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/" }], "threatEntryTypes": ["URL"], "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"] } })

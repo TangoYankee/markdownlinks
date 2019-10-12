@@ -1,5 +1,5 @@
 const process = require('process')
-const {  
+const {
   formatUrlsLookupApi,
   getCache,
   postCache,
@@ -9,7 +9,7 @@ const {
 } = require('./safe-browse.js')
 
 test('the main function demonstrate the integration of all functions', () => {
-  expect(safeBrowse(["test_one", "test_two"])).toEqual({"client": {"clientId": process.env.GOOGLE_SAFE_BROWSING_KEY, "clientVersion": "1.5.2"}, "threatInfo": {"platformTypes": ["ANY_PLATFORM"], "threatEntries": [{"url": "test_one"}, {"url": "test_two"}], "threatEntryTypes": ["URL"], "threatTypes": ["PHISHING", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"]}})
+  expect(safeBrowse(["http://testsafebrowsing.appspot.com/s/phishing.html", "http://testsafebrowsing.appspot.com/s/malware.html"])).toEqual({ "client": { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID, "clientVersion": "1.5.2" }, "threatInfo": { "platformTypes": ["ANY_PLATFORM"], "threatEntries": [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }], "threatEntryTypes": ["URL"], "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"] } })
 })
 
 test('check the cache for saved threats', () => {
@@ -17,15 +17,17 @@ test('check the cache for saved threats', () => {
 })
 
 test('place urls in an array', () => {
-  expect(formatUrlsLookupApi( ["test_one", "test_two"] )).toEqual([{"url": "test_one"}, {"url":"test_two"}])
+  expect(formatUrlsLookupApi(["http://testsafebrowsing.appspot.com/s/phishing.html", "http://testsafebrowsing.appspot.com/s/malware.html"])).toEqual([{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }])
 })
 
 test('place urls in json object to send to safe browse api', () => {
-  expect(setBodyLookupApi([{"url" : "test_one"}, {"url" : "test_two"}])).toEqual({"client": {"clientId": process.env.GOOGLE_SAFE_BROWSING_KEY, "clientVersion": "1.5.2"}, "threatInfo": {"platformTypes": ["ANY_PLATFORM"], "threatEntries": [{"url": "test_one"}, {"url": "test_two"}], "threatEntryTypes": ["URL"], "threatTypes": ["PHISHING", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"]}})
+  expect(setBodyLookupApi([{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }])).toEqual({ "client": { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID, "clientVersion": "1.5.2" }, "threatInfo": { "platformTypes": ["ANY_PLATFORM"], "threatEntries": [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }], "threatEntryTypes": ["URL"], "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"] } })
 })
 
-// test('call the google safe browse api', () => {
-//   expect(postLookupApi('')).toBe('')
+// it('calls the google safe browse lookup api', async () => {
+//   expect.assertions(1)
+//   const data = await postLookupApi({ "client": { "clientId": "", "clientVersion": "1.5.2" }, "threatInfo": { "platformTypes": ["ANY_PLATFORM"], "threatEntries": [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware_in_iframe.html" }, { "url": "http://testsafebrowsing.appspot.com/s/unwanted.html" }, { "url": "http://testsafebrowsing.appspot.com/apiv4/IOS/SOCIAL_ENGINEERING/URL/" }, { "url": "http://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/" }], "threatEntryTypes": ["URL"], "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"] } })
+//   expect(data).toEqual('')
 // })
 
 test('save checked urls to the cache', () => {
@@ -48,3 +50,9 @@ test('save checked urls to the cache', () => {
 //   - https://www.npmjs.com/package/node-cache
 
 // Testing urls: http://testsafebrowsing.appspot.com/
+
+// Curl
+// curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/data
+// https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${process.env.GOOGLE_SAFE_BROWSING_KEY}
+
+// curl -d '{"client": {"clientId": process.env.GOOGLE_SAFE_BROWSE_CLIENT_ID, "clientVersion": "1.5.2"}, "threatInfo": {"platformTypes": ["ANY_PLATFORM"], "threatEntries": [{"url": "http://testsafebrowsing.appspot.com/s/malware.html"}], "threatEntryTypes": ["URL"], "threatTypes": ["MALWARE",]}}' -H "Content-Type: application/json" -X POST https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${process.env.GOOGLE_SAFE_BROWSING_KEY}
