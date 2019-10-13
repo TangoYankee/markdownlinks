@@ -1,3 +1,31 @@
+// Template https://developers.google.com/safe-browsing/v4/lookup-api
+/*
+  {
+    "client": {
+      "clientId": "process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID
+      "clientVersion": "1.5.2"
+    },
+    "threatInfo": {
+      "threatTypes": ["THREAT_TYPE_UNSPECIFIED", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
+      "platformTypes": ["ANY_PLATFORM"],
+      "threatEntryTypes": ["URL"],
+      "threatEntries": [
+        {"url": "http://www.urltocheck1.org/"},
+        {"url": "http://www.urltocheck2.org/"},
+        {"url": "http://www.urltocheck3.com/"}
+      ]
+    }
+  }
+*/
+
+// Testing urls: http://testsafebrowsing.appspot.com/
+/*
+{"url": "http://testsafebrowsing.appspot.com/s/malware.html"},
+{"url": "http://testsafebrowsing.appspot.com/s/malware_in_iframe.html"},
+{"url": "http://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/"},
+{"url": "http://testsafebrowsing.appspot.com/s/phishing.html"}
+*/
+
 // 1
 // Request
 /*
@@ -94,3 +122,9 @@ curl -d '{
 /*
 {}
 */
+
+// Curl
+// curl -d '{"key1":"value1", "key2":"value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/data
+// https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${process.env.GOOGLE_SAFE_BROWSING_KEY}
+
+// curl -d '{"client": {"clientId": process.env.GOOGLE_SAFE_BROWSE_CLIENT_ID, "clientVersion": "1.5.2"}, "threatInfo": {"platformTypes": ["ANY_PLATFORM"], "threatEntries": [{"url": "http://testsafebrowsing.appspot.com/s/malware.html"}], "threatEntryTypes": ["URL"], "threatTypes": ["MALWARE",]}}' -H "Content-Type: application/json" -X POST https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${process.env.GOOGLE_SAFE_BROWSING_KEY}

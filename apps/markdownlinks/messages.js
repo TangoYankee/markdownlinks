@@ -63,6 +63,19 @@ messages.errorMessage = () => {
   }
 }
 // TODO: add section for warning_message
+// Warning guidelines
+// - must leave room for discretion
+// - must inform advisory comes from google
+//   - https://developers.google.com/safe-browsing/v4/advisory
+//   - Advisory page provides information on phishing/unwanted software/software engineering/malware
+
+// If no threats are found, add context message indicating as such
+// If a threat is found, add context message with link to google advisory
+
+// Construct the request to look for "phishing", "social_engineering", "malware" [for any OS], or "unwanted_software" [for any OS]
+// If the link is associated with a risk, tag it as potentially harmful
+// tag it as one of the listed categories. If there are multiple threats categories, use the tag 'multiple'. If there are no threats, use the tag "none"
+
 // threatContext = (threats)
 // called by "mardownMessage"
 // Possible combination of messages:
