@@ -6,6 +6,7 @@ var format = (text) => {
   if (bracketsParentheses) {
     let message = text
     const foundAllLinkPositions = allLinkPositions(bracketsParentheses, brackets, parentheses)
+    // TODO: Create an array to hold objects for links.
     for (var linkPositions of foundAllLinkPositions) {
       if (validLinkPositions(linkPositions)) {
         const linkString = findLinkString(linkPositions, text)
@@ -13,7 +14,19 @@ var format = (text) => {
         const linkAddress = httpLinkAddress(unhttpedLinkAddress)
         const messageLink = createMessageLink(linkAddress, linkString)
         const markdownLink = findMarkdownLink(linkPositions, text)
+        // TODO: move link address, messageLink, and markdownLink checks into follow 'if' statement
         if (checkLinkString(linkString) && checkLinkAddress(unhttpedLinkAddress)) {
+        // TODO: Create object to hold values
+        /*
+          {
+            unhttpedLinkAddress: "" (to check original link in safe browse)
+            markdownLink: "" (to replace value in message)
+            messageLink: "" (to replace value in message)
+            threatMatch: "" (to have value added later)
+            sharedAsHttps: "" (boolean. make a function to specifically check for https in original link)
+          }
+        */
+        // TODO: add object to array of values
           message = replaceLink(markdownLink, messageLink, message)
         }
       }
