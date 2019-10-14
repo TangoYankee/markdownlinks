@@ -1,40 +1,67 @@
 const process = require('process')
 const {
-  formatUrlsLookupApi,
-  findUncachedUrls,
-  getCache,
-  postCache,
-  postLookupApi,
-  safeBrowse,
-  setBodyLookupApi
+  setLookupBody,
+  setLookupThreatEntries,
+  setThreatDomains,
+  setUncachedThreatUrlPositions
 } = require('./safe-browse.js')
 
-test('the main function demonstrate the integration of all functions', () => {
-  expect(safeBrowse(["http://testsafebrowsing.appspot.com/s/phishing.html", "http://testsafebrowsing.appspot.com/s/malware.html"])).toEqual({ "client": { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID, "clientVersion": "1.5.2" }, "threatInfo": { "platformTypes": ["ANY_PLATFORM"], "threatEntries": [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }], "threatEntryTypes": ["URL"], "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"] } })
-})
-
-test('check the cache for saved threats', () => {
-  expect(getCache('')).toBe('')
+test('strip address prefixes', () => {
+  var threatUrls = [
+    { "url": "dmv.ca.gov" },
+    { "url": "https://nasa.gov" },
+    { "url": "http://www.example.com" }
+  ]
+  var threatDomains = [
+    "dmv.ca.gov",
+    "nasa.gov",
+    "example.com"
+  ]
+  expect(setThreatDomains(threatUrls)).toEqual(threatDomains)
 })
 
 test('determine which threat urls do not exist in the cache', () => {
-  expect(findUncachedUrls('')).toEqual('')
+  var threatUrls = [
+    { "url": "https://dmv.ca.gov" },
+    { "url": "github.com" }
+  ]
+  var cachedThreatMatches = [
+    { "url": "dmv.ca.gov" },
+    { "url": "https://nasa.gov" },
+    { "url": "http://www.example.com" }
+  ]
+  var uncachedThreatUrlsLoc = [1]
+  expect(setUncachedThreatUrlPositions(threatUrls, cachedThreatMatches)).toEqual(uncachedThreatUrlsLoc)
 })
 
 test('place urls in an array', () => {
-  expect(formatUrlsLookupApi(["http://testsafebrowsing.appspot.com/s/phishing.html", "http://testsafebrowsing.appspot.com/s/malware.html"])).toEqual([{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }])
+  var uncachedThreatUrls = ["http://testsafebrowsing.appspot.com/s/phishing.html", "http://testsafebrowsing.appspot.com/s/malware.html"]
+  var lookupThreatEntries = [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }]
+  expect(setLookupThreatEntries(uncachedThreatUrls)).toEqual(lookupThreatEntries)
 })
 
 test('place urls in json object to send to safe browse api', () => {
-  expect(setBodyLookupApi([{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }])).toEqual({ "client": { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID, "clientVersion": "1.5.2" }, "threatInfo": { "platformTypes": ["ANY_PLATFORM"], "threatEntries": [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }], "threatEntryTypes": ["URL"], "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"] } })
-})
-
-it('calls the google safe browse lookup api', async () => {
-  expect.assertions(1)
-  const data = await postLookupApi({ "client": { "clientId": "", "clientVersion": "1.5.2" }, "threatInfo": { "platformTypes": ["ANY_PLATFORM"], "threatEntries": [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware_in_iframe.html" }, { "url": "http://testsafebrowsing.appspot.com/s/unwanted.html" }, { "url": "http://testsafebrowsing.appspot.com/apiv4/IOS/SOCIAL_ENGINEERING/URL/" }, { "url": "http://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/" }], "threatEntryTypes": ["URL"], "threatTypes": ["MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE"] } })
-  expect(data).toEqual('')
-})
-
-test('save checked urls to the cache', () => {
-  expect(postCache('')).toBe('')
+  var lookupThreatEntries = [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }]
+  var lookupBody = {
+    "client": {
+      "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID,
+      "clientVersion": "1.5.2"
+    },
+    "threatInfo": {
+      "platformTypes": ["ANY_PLATFORM"],
+      "threatEntries": [
+        { "url": "http://testsafebrowsing.appspot.com/s/phishing.html" },
+        { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }
+      ],
+      "threatEntryTypes": ["URL"],
+      "threatTypes": [
+        "THREAT_TYPE_UNSPECIFIED",
+        "MALWARE",
+        "SOCIAL_ENGINEERING",
+        "UNWANTED_SOFTWARE",
+        "POTENTIALLY_HARMFUL_APPLICATION"
+      ]
+    }
+  }
+  expect(setLookupBody(lookupThreatEntries)).toEqual(lookupBody)
 })

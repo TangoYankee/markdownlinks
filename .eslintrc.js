@@ -22,8 +22,8 @@ module.exports = {
                 "apps/markdownlinks/safe-browse.test.js"
         ],
             "rules": {
-                "quote-props": "warn",
-                "quotes": "warn"
+                "quote-props": "off",
+                "quotes": "off"
             }
 
         }

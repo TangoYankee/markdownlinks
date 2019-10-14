@@ -1,3 +1,6 @@
+// Good for checking whether it is a valid address? Handles instances like ht:// or ww.
+// domainRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+
 var format = (text) => {
   /* receive markdown hyperlink syntax, return slack hyperlink syntax */
   var bracketsParentheses = allIndexOf(text, '](')
@@ -26,7 +29,7 @@ var format = (text) => {
             sharedAsHttps: "" (boolean. make a function to specifically check for https in original link)
           }
         */
-        // TODO: add object to array of values
+          // TODO: add object to array of values
           message = replaceLink(markdownLink, messageLink, message)
         }
       }

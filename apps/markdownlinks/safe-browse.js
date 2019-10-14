@@ -4,40 +4,54 @@ const request = require('request')
 // On the homepage, advise that the protection is not perfect.
 
 var safeBrowse = async (threatUrls) => {
-  /* control the workflow of scanning urls for threats using Google safe browsing */
-  var cachedThreatMatches = await getCache(threatUrls)
-  var uncachedThreatUrls = findUncachedUrls(threatUrls, cachedThreatMatches)
-  var urlsLookupApi = formatUrlsLookupApi(uncachedThreatUrls)
-  var bodyLookupApi = setBodyLookupApi(urlsLookupApi)
-  var bodyThreatMatches = await postLookupApi(bodyLookupApi)
-  var lookedupThreatMatches = bodyThreatMatches.matches
-  postCache(lookedupThreatMatches)
-  var allThreatMatches = lookedupThreatMatches + cachedThreatMatches
+  /* control the workflow of scanning urls for threats using Google safe browsing Lookup API */
+  var cachedThreatMatches = getCacheThreatMatches(threatUrls)
+  var uncachedThreatUrls = setUncachedThreatUrlPositions(threatUrls, cachedThreatMatches)
+  var lookupThreatEntries = setLookupThreatEntries(uncachedThreatUrls)
+  var lookupBody = setLookupBody(lookupThreatEntries)
+  var lookupThreatMatches = postLookupThreatMatches(lookupBody)
+  postCacheThreatMatches(lookupThreatMatches)
+  var allThreatMatches = lookupThreatMatches + cachedThreatMatches
   return allThreatMatches
 }
 
-var getCache = async (threatUrls) => {
+var getCacheThreatMatches = (threatUrls) => {
   /* check cache for previously saved suspected threats */
   // https://www.npmjs.com/package/node-cache
   // possible cache check error
-  var cachedThreatMatches = '' // url and threat found in cache
-  return (cachedThreatMatches)
+  var cachedThreatMatches = threatUrls // url and threat found in cache
+  return cachedThreatMatches
 }
 
-var findUncachedUrls = (threatUrls, cachedThreatMatches) => {
+var setUncachedThreatUrlPositions = (threatUrls, cachedThreatMatches) => {
   /* determine which threat urls do not exist in the cache */
-  return threatUrls
+  var threatDomains = setThreatDomains(threatUrls)
+  var cachedThreatDomains = setThreatDomains(cachedThreatMatches)
+  var uncachedThreatDomains = threatDomains.filter(threatDomain => !cachedThreatDomains.includes(threatDomain))
+  var uncachedThreatDomainsLoc = uncachedThreatDomains.map(threatDomain => threatDomains.indexOf(threatDomain))
+  return uncachedThreatDomainsLoc
 }
 
-var formatUrlsLookupApi = (uncachedThreatUrls) => {
-  var urlsLookupApi = []
-  for (var threatUrl of uncachedThreatUrls) {
-    urlsLookupApi.push({ "url": threatUrl })
+const setThreatDomains = (threatUrls) => {
+  /* strip the address prefixes, as they may not have been used in previous requests */
+  const removeDomainPrefixes = (threatUrls) => {
+    /* nest regex function to remove http(s) and www */
+    var domainPrefixRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)/gm
+    return threatUrls.url.replace(domainPrefixRegex, '')
   }
-  return urlsLookupApi
+  return threatUrls.map(removeDomainPrefixes)
 }
 
-var setBodyLookupApi = (urlsLookupApi) => {
+var setLookupThreatEntries = (uncachedThreatUrls) => {
+  /* urls have a specific format when placed into Lookup API body */
+  var lookupThreatEntries = []
+  for (var threatUrl of uncachedThreatUrls) {
+    lookupThreatEntries.push({ "url": threatUrl })
+  }
+  return lookupThreatEntries
+}
+
+var setLookupBody = (lookupThreatEntries) => {
   /* place urls with uncached threats into a json template for the Safe Browse API */
   return {
     "client": {
@@ -48,17 +62,17 @@ var setBodyLookupApi = (urlsLookupApi) => {
       "threatTypes": ["THREAT_TYPE_UNSPECIFIED", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
       "platformTypes": ["ANY_PLATFORM"],
       "threatEntryTypes": ["URL"],
-      "threatEntries": urlsLookupApi
+      "threatEntries": lookupThreatEntries
     }
   }
 }
 
-var postLookupApi = async (bodyLookupApi) => {
+var postLookupThreatMatches = (lookupBody) => {
   /* call the Google Safe Browse API to check for suspected threats */
   var requestUrl = `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${process.env.GOOGLE_SAFE_BROWSING_KEY}`
   request.post({
     url: requestUrl,
-    body: bodyLookupApi,
+    body: lookupBody,
     json: true
   }, (error, response, body) => {
     if (error) {
@@ -66,7 +80,7 @@ var postLookupApi = async (bodyLookupApi) => {
       return error
     } else {
       console.log(`Response: ${response}`)
-      return body
+      return body.matches
     }
   })
 }
@@ -75,10 +89,10 @@ var postLookupApi = async (bodyLookupApi) => {
 // - accept array of "uncached_threat_url" and "threat_type"
 // - write the urls to the cache [threat_url, threat_type, cached_timeout]
 // - return success or error state
-var postCache = (threatMatches) => {
+var postCacheThreatMatches = (lookupThreatMatches) => {
   /* save newly checked urls to the cache */
   // If there are matches
-  if (threatMatches) {
+  if (lookupThreatMatches) {
 
   }
   var cacheResponse = ''
@@ -86,11 +100,12 @@ var postCache = (threatMatches) => {
 }
 
 module.exports = {
-  formatUrlsLookupApi,
-  findUncachedUrls,
-  getCache,
-  postCache,
-  postLookupApi,
+  getCacheThreatMatches,
+  postCacheThreatMatches,
+  postLookupThreatMatches,
   safeBrowse,
-  setBodyLookupApi
+  setLookupBody,
+  setLookupThreatEntries,
+  setThreatDomains,
+  setUncachedThreatUrlPositions
 }
