@@ -19,6 +19,7 @@
         "crypto-random-string": "3.0.1",
         "express": "4.16.4",
         "mongodb": "3.3.0-beta2",
+        "node-cache": "4.2.1",
         "pug": "2.0.4",
         "qs": "6.7.0",
         "request": "2.88.0"

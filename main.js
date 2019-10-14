@@ -4,6 +4,7 @@ const express = require('express')
 const markdownlinks = require('./apps/markdownlinks/methods.js')
 const { oauth } = require('./apps/slack/oauth.js')
 const { signature } = require('./apps/slack/signature.js')
+const { cacheStart } = require('./apps/cache/cache-threats.js')
 
 var app = express()
 app.set('view engine', 'pug')
@@ -35,6 +36,13 @@ app.post('/publish', (req, res) => {
 app.use((req, res, next) => {
   /* handle 404 errors by rendering message box on home page */
   res.status(404).render('index', { message: 'page-not-found' })
+})
+
+cacheStart((err) => {
+  /* initialize the threat cache */
+  if (err){
+    console.log(err)
+  }
 })
 
 const port = 4390
