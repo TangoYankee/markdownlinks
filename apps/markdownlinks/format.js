@@ -22,6 +22,7 @@ var format = (text) => {
         // TODO: Create object to hold values
         /*
           {
+            cacheKeyFromUrl: "" (remove the prefixes to standardize the cacheKey and threatUrl syntax)
             unhttpedLinkAddress: "" (to check original link in safe browse)
             markdownLink: "" (to replace value in message)
             messageLink: "" (to replace value in message)

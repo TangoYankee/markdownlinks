@@ -18,8 +18,8 @@ module.exports = {
         {   /* slack's block kit builder and google's lookup api are specific on quotes syntax */
             "files": [
                 "apps/markdownlinks/messages.js",
-                "apps/markdownlinks/safe-browse.js",
-                "apps/markdownlinks/safe-browse.test.js"
+                "apps/safebrowse/safe-browse.js",
+                "apps/safebrowse/safe-browse.test.js"
         ],
             "rules": {
                 "quote-props": "off",

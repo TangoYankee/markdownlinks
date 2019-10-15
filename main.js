@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 
 cacheStart((err) => {
   /* initialize the threat cache */
-  if (err){
+  if (err) {
     console.log(err)
   }
 })
