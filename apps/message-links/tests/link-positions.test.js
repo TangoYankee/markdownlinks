@@ -1,4 +1,4 @@
-const { allIndexOf, allLinkPositions, validLinkPositions } = require('./link-positions')
+const { allIndexOf, allLinkPositions, validLinkPositions } = require('../link-positions')
 
 /* reference message for remainder of tests */
 var testMessageOne = 'Here[ in my [car](dmv.ca.gov) I) feel [safest of all](https://www.osha.com/). [Example site](example.com)'
