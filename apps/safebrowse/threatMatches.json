@@ -1,4 +1,4 @@
-{
+[{
     "matches": [
         {
         "threatType": "MALWARE",
@@ -19,4 +19,125 @@
         "threatEntryType": "URL"
         }
     ]
+},
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Here in my <https://dmv.ca.gov|car>:exclamation::eyes: I feel <https://www.osha.com/|safest of all>:no_entry_sign:. <https://example.com|Example site>:biohazard_sign::eyes:"
+			}
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": "Shared by -@TangoYankee"
+				},
+				{
+					"type": "mrkdwn",
+					"text": ":eyes: shared without <https://www.snopes.com/fact-check/http-vs-https/|https>"
+				}
+			]
+		},
+		{
+			"type": "divider"
+		},
+ 		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": ":warning: Suspected threats found by <https://developers.google.com/safe-browsing/v4/advisory|Google Safe Browse>:"
+				}
+			]
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": ":beetle: <https://www.stopbadware.org/|malware> "
+				},
+				{
+					"type": "mrkdwn",
+					"text": ":biohazard_sign: <https://googleonlinesecurity.blogspot.com/2015/11/safe-browsing-protection-from-even-more.html|social engineering>"
+				},
+				{
+					"type": "mrkdwn",
+					"text": ":no_entry_sign: <https://www.google.com/about/unwanted-software-policy.html|unwanted software>"
+				},				{
+					"type": "mrkdwn",
+					"text": ":exclamation: general harm"
+				}
+			]
+		}
+	]
+},
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Here in my <https://dmv.ca.gov|car> I feel <https://www.osha.com/|safest of all>. <https://example.com|Example site>"
+			}
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": "Shared by -@TangoYankee"
+				}
+			]
+		},
+		{
+			"type": "divider"
+		},
+ 		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": ":small_blue_diamond: No suspected threats found by <https://developers.google.com/safe-browsing/v4/advisory|Google Safe Browse>:"
+				}
+			]
+		}
+	]
+},
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Here in my <https://dmv.ca.gov|car> I feel <https://www.osha.com/|safest of all>. <https://example.com|Example site>"
+			}
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": "Shared by -@TangoYankee"
+				}
+			]
+		},
+		{
+			"type": "divider"
+		},
+ 		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": ":heavy_multiplication_x: Error checking for threats in <https://developers.google.com/safe-browsing/v4/advisory|Google Safe Browse>:"
+				}
+			]
+		}
+	]
 }
+]
