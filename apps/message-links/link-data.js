@@ -16,7 +16,7 @@ const {
 // domainRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
 
 const urlData = (text) => {
-  /* receive markdown hyperlink syntax, return slack hyperlink syntax */
+/* receive markdown hyperlink syntax, return slack hyperlink syntax */
 var allLinkPositions = setAllLinkPositions(text)
 if (allLinkPositions) {
     var thisUrlData = urlDataTemplate(text)
@@ -33,7 +33,8 @@ if (allLinkPositions) {
             var markdownLink = findMarkdownLink(linkPositions, text)
             var linkData = setLinkData(markdownLink, messageLink, cacheKeyFromUrl, sharedAsHttpSecure)
             thisUrlData.links.push(linkData)
-            message = replaceLink(markdownLink, messageLink, message)
+            
+            message = replaceLink(markdownLink, messageLink, message)  // Ignore
         }
       }
     }

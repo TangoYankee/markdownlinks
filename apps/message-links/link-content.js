@@ -20,23 +20,32 @@ const checkLinkString = (linkString) => {
 
 const checkLinkAddress = (linkAddress) => {
     /* unhttpedLinkAddress cannot blank or contains a space in the url itself */
-    var linkAddressTrim = linkAddress.trim()
+    /* var linkAddressTrim = linkAddress.trim()
     var linkAddressSpace = linkAddressTrim.includes(' ')
     if (linkAddressTrim && !linkAddressSpace) {
       return true
     } else {
       return false
     }
+    */
+    // Good for checking whether it is a valid address? Handles instances like ht:// or ww.
+    var linkAddressTrim = linkAddress.trim()
+    domainRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+    if (linkAddressTrim.match(domainRegex)) {
+      return true
+    } else{
+      return false
+    }
   }
 
 const setSharedAsHttpSecure = (unhttpedLinkAddress) => {
-    return unhttpedLinkAddress.includes('https://')
+    return unhttpedLinkAddress.startsWith('https://')
 }
 
 const httpLinkAddress = (linkAddress) => {
-    /* ensure that each link has http or https in the url */
+    /* ensure that each link starts with http or https */
     var lowerCaseAddress = linkAddress.toLowerCase()
-    if (lowerCaseAddress.includes('http://') || lowerCaseAddress.includes('https://')) {
+    if (lowerCaseAddress.startsWith('http://') || lowerCaseAddress.startsWith('https://')) {
       return linkAddress
     } else {
       return `https://${linkAddress}`

@@ -4,7 +4,7 @@ const express = require('express')
 const markdownlinks = require('./apps/markdownlinks/methods.js')
 const { oauth } = require('./apps/slack/oauth.js')
 const { signature } = require('./apps/slack/signature.js')
-const { cacheStart } = require('./apps/cache/cache-threats.js')
+const { cacheStart } = require('./apps/cache/cache-threats.js') // Rename 'threat-cache'?
 
 var app = express()
 app.set('view engine', 'pug')
