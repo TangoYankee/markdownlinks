@@ -23,6 +23,7 @@ if (allLinkPositions) {
     let message = text
     for (var linkPositions of allLinkPositions) {
       if (validLinkPositions(linkPositions)) {
+        // TODO: lowercase concerns?
         var linkString = findLinkString(linkPositions, text)
         var unhttpedLinkAddress = findLinkAddress(linkPositions, text)
         if (checkLinkString(linkString) && checkLinkAddress(unhttpedLinkAddress)) {
@@ -34,7 +35,7 @@ if (allLinkPositions) {
             var linkData = setLinkData(markdownLink, messageLink, cacheKeyFromUrl, sharedAsHttpSecure)
             thisUrlData.links.push(linkData)
             
-            message = replaceLink(markdownLink, messageLink, message)  // Ignore
+            message = replaceLink(markdownLink, messageLink, message)
         }
       }
     }
@@ -47,6 +48,7 @@ if (allLinkPositions) {
 const urlDataTemplate = (text) => {
     return {
     "message": text,
+    "lookupError":"",
     "threatTypes": "",
     "links": []
     }
