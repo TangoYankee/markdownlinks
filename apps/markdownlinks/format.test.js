@@ -19,8 +19,8 @@ var expectedMessageThree = "What if it's [blank]() []() [](www.osha.com)?"
 var testMessageFour = "What it's a [space](nas a.gov) [ ](nasa.gov)?"
 var expectedMessageFour = "What it's a [space](nas a.gov) [ ](nasa.gov)?"
 /* fifth set */
-var testMessageFive = ')( [] :warning: A mess of [(]Directions to Glen Cove ](google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746)Marina)'
-var expectedMessageFive = ')( [] :warning: A mess of <https://google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746|(]Directions to Glen Cove >Marina)'
+var testMessageFive = ')( [] :warning: A mess of [(]Directions to Glen Cove ](Google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746)Marina)'
+var expectedMessageFive = ')( [] :warning: A mess of <https://google.com/maps/place/glen+cove+marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746|(]Directions to Glen Cove >Marina)'
 
 var formatText = [
   [testMessageOne, expectedMessageOne], [testMessageTwo, expectedMessageTwo],
@@ -63,7 +63,7 @@ test.each(markdownLink)(
     expect(findMarkdownLink(linkPositions, text)).toEqual(expectedMarkdown)
   })
 
-var httpLinks = [['dmv.ca.gov', 'https://dmv.ca.gov'], ['hTtp://example.com', 'hTtp://example.com'], ['Https://www.osha.com/', 'Https://www.osha.com/']]
+var httpLinks = [['dmv.ca.gov', 'https://dmv.ca.gov'], ['http://example.com', 'http://example.com'], ['https://www.osha.com/', 'https://www.osha.com/']]
 test.each(httpLinks)(
   'ensure that each link has http or https in the url', (inputLink, expectedLink) => {
     expect(httpLinkAddress(inputLink)).toEqual(expectedLink)
@@ -75,7 +75,11 @@ test.each(linkStrings)(
     expect(checkLinkString(linkString)).toBe(expectedBoolean)
   })
 
-var linkAddresses = [[' nasa.gov ', true], ['', false], [' ', false], ['nasa. gov ', false]]
+var linkAddresses = [
+  [' nasa.gov ', true], ['', false], [' ', false],
+  ['nasa. gov ', false], ['h://nasa.gov', false], [ "https://www.nasa.gov", true],
+  ['http://na sa.gov', false], ['https://google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746', true]
+]
 test.each(linkAddresses)(
   'unhttpedLinkAddress cannot blank or contains a space in the url itself', (linkAddress, expectedBoolean) => {
     expect(checkLinkAddress(linkAddress)).toBe(expectedBoolean)

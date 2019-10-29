@@ -10,10 +10,11 @@ const format = (text) => {
       if (validLinkPositions(linkPositions)) {
         var linkString = findLinkString(linkPositions, text)
         var unhttpedLinkAddress = findLinkAddress(linkPositions, text)
-        var linkAddress = httpLinkAddress(unhttpedLinkAddress)
+        var lowerUnhttpedLinkAddress = unhttpedLinkAddress.toLowerCase()
+        var linkAddress = httpLinkAddress(lowerUnhttpedLinkAddress)
         var messageLink = createMessageLink(linkAddress, linkString)
         var markdownLink = findMarkdownLink(linkPositions, text)
-        if (checkLinkString(linkString) && checkLinkAddress(unhttpedLinkAddress)) {
+        if (checkLinkString(linkString) && checkLinkAddress(lowerUnhttpedLinkAddress)) {
           message = replaceLink(markdownLink, messageLink, message)
         }
       }
@@ -123,10 +124,10 @@ const findLinkAddress = (linkPositions, text) => {
 }
 
 const checkLinkAddress = (linkAddress) => {
-  /* unhttpedLinkAddress cannot blank or contains a space in the url itself */
+  /* must fit the correct format of a url */
   var linkAddressTrim = linkAddress.trim()
-  var linkAddressSpace = linkAddressTrim.includes(' ')
-  if (linkAddressTrim && !linkAddressSpace) {
+  var domainRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
+  if (linkAddressTrim.match(domainRegex)) {
     return true
   } else {
     return false
@@ -135,8 +136,7 @@ const checkLinkAddress = (linkAddress) => {
 
 const httpLinkAddress = (linkAddress) => {
   /* ensure that each link has http or https in the url */
-  var lowerCaseAddress = linkAddress.toLowerCase()
-  if (lowerCaseAddress.includes('http://') || lowerCaseAddress.includes('https://')) {
+  if (linkAddress.includes('http://') || linkAddress.includes('https://')) {
     return linkAddress
   } else {
     return `https://${linkAddress}`
