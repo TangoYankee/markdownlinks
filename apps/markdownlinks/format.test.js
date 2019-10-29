@@ -77,7 +77,7 @@ test.each(linkStrings)(
 
 var linkAddresses = [
   [' nasa.gov ', true], ['', false], [' ', false],
-  ['nasa. gov ', false], ['h://nasa.gov', false], [ "https://www.nasa.gov", true],
+  ['nasa. gov ', false], ['h://nasa.gov', false], ['https://www.nasa.gov', true],
   ['http://na sa.gov', false], ['https://google.com/maps/place/Glen+Cove+Marina/@38.0677063,-122.2313533,15z/data=!4m5!3m4!1s0x80857235b7b561fb:0xa31992d9db3a4004!8m2!3d38.0677786!4d-122.213746', true]
 ]
 test.each(linkAddresses)(
