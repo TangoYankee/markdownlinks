@@ -1,4 +1,4 @@
-var mockFunction = () => {
+const mockFunction = () => {
   /* create a placeholder function to initiate and pass tests */
   return true
 }

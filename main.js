@@ -13,7 +13,7 @@ app.use(express.static('public'))
 
 app.get('/', (req, res) => {
   /* home page viewable from web browser */
-  const message = req.query.message
+  var message = req.query.message
   res.render('index', { message: message })
 })
 
@@ -24,7 +24,7 @@ app.get('/oauth', (req, res) => {
 
 app.post('/publish', (req, res) => {
   /* send message in response to user input from slash command */
-  const currentTime = Math.floor(new Date().getTime() / 1000)
+  var currentTime = Math.floor(new Date().getTime() / 1000)
   if (signature(req, currentTime)) {
     markdownlinks.data.publish(req.body, res)
   } else {

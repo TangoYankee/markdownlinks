@@ -5,7 +5,7 @@ const queryString = require('querystring')
 const request = require('request')
 const { saveTeam } = require('../database/db.js')
 
-var oauth = (req, res) => {
+const oauth = (req, res) => {
   /* compose Slack credentials */
   if (!req.query.code) {
     res.status(500)
@@ -22,7 +22,7 @@ var oauth = (req, res) => {
   }
 }
 
-var postOAuth = (res, url, thisQueryString) => {
+const postOAuth = (res, url, thisQueryString) => {
   /* recieve authorization */
   request.post({
     url: url,
@@ -48,22 +48,22 @@ var postOAuth = (res, url, thisQueryString) => {
   })
 }
 
-var algorithm = 'aes-256-cbc'
-var encryptToken = (tokenPlain, tokenKey) => {
+const algorithm = 'aes-256-cbc'
+const encryptToken = (tokenPlain, tokenKey) => {
   /* encrypt token to store at rest */
-  const ivLen = 16
-  const iv = cryptoRandomString({ length: ivLen, type: 'hex' })
-  const cipher = crypto.createCipheriv(algorithm, tokenKey, iv)
+  var ivLen = 16
+  var iv = cryptoRandomString({ length: ivLen, type: 'hex' })
+  var cipher = crypto.createCipheriv(algorithm, tokenKey, iv)
   let encrypted = cipher.update(tokenPlain, 'utf8', 'hex')
   encrypted += cipher.final('hex')
   return `${encrypted}${iv}`
 }
 
-var decryptToken = (tokenCipher, tokenKey) => {
+const decryptToken = (tokenCipher, tokenKey) => {
   /* decrypt token to send for authorization */
-  const encrypted = tokenCipher.slice(0, 160)
-  const iv = tokenCipher.slice(160)
-  const decipher = crypto.createDecipheriv(algorithm, tokenKey, iv)
+  var encrypted = tokenCipher.slice(0, 160)
+  var iv = tokenCipher.slice(160)
+  var decipher = crypto.createDecipheriv(algorithm, tokenKey, iv)
   let decrypted = decipher.update(encrypted, 'hex', 'utf8')
   decrypted += decipher.final('utf8')
   return decrypted

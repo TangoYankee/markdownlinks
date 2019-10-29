@@ -1,15 +1,15 @@
 const cryptoRandomString = require('crypto-random-string')
 const { encryptToken, decryptToken } = require('./oauth.js')
 
-var createTokenFake = () => {
+const createTokenFake = () => {
   /* emulate oauth token layouts */
   const prefix = 'xoxp'
-  const numberArray = []
+  var numberArray = []
   for (let i = 0; i < 3; i++) {
-    const number = cryptoRandomString({ length: 12, characters: '1234567890' })
+    var number = cryptoRandomString({ length: 12, characters: '1234567890' })
     numberArray.push(number)
   }
-  const hexString = cryptoRandomString({ length: 32, type: 'hex' })
+  var hexString = cryptoRandomString({ length: 32, type: 'hex' })
   return (`${prefix}-${numberArray[0]}-${numberArray[1]}-${numberArray[2]}-${hexString}`)
 }
 
@@ -17,9 +17,9 @@ var createTokenFake = () => {
 var tokenFakeKey = cryptoRandomString({ length: 32, type: 'hex' })
 var tokenFakePlain = createTokenFake()
 var tokenFakeCipher = encryptToken(tokenFakePlain, tokenFakeKey)
-var checkCipher = (tokenFakeCipher) => {
-  const validLen = (tokenFakeCipher.length === 176)
-  const includesDash = tokenFakeCipher.includes('-')
+const checkCipher = (tokenFakeCipher) => {
+  var validLen = (tokenFakeCipher.length === 176)
+  var includesDash = tokenFakeCipher.includes('-')
   return (validLen && !includesDash)
 }
 

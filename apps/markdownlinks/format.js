@@ -1,18 +1,18 @@
-var format = (text) => {
+const format = (text) => {
   /* receive markdown hyperlink syntax, return slack hyperlink syntax */
   var bracketsParentheses = allIndexOf(text, '](')
   var brackets = allIndexOf(text, '[')
   var parentheses = allIndexOf(text, ')')
   if (bracketsParentheses) {
     let message = text
-    const foundAllLinkPositions = allLinkPositions(bracketsParentheses, brackets, parentheses)
+    var foundAllLinkPositions = allLinkPositions(bracketsParentheses, brackets, parentheses)
     for (var linkPositions of foundAllLinkPositions) {
       if (validLinkPositions(linkPositions)) {
-        const linkString = findLinkString(linkPositions, text)
-        const unhttpedLinkAddress = findLinkAddress(linkPositions, text)
-        const linkAddress = httpLinkAddress(unhttpedLinkAddress)
-        const messageLink = createMessageLink(linkAddress, linkString)
-        const markdownLink = findMarkdownLink(linkPositions, text)
+        var linkString = findLinkString(linkPositions, text)
+        var unhttpedLinkAddress = findLinkAddress(linkPositions, text)
+        var linkAddress = httpLinkAddress(unhttpedLinkAddress)
+        var messageLink = createMessageLink(linkAddress, linkString)
+        var markdownLink = findMarkdownLink(linkPositions, text)
         if (checkLinkString(linkString) && checkLinkAddress(unhttpedLinkAddress)) {
           message = replaceLink(markdownLink, messageLink, message)
         }
@@ -26,7 +26,7 @@ var format = (text) => {
 
 // Functions to check for threats
 
-var allIndexOf = (text, searchChar) => {
+const allIndexOf = (text, searchChar) => {
   /* find all the positions of a character in a string */
   let startIndex = 0; let index; const indices = []; let count = 0
   while ((index = text.indexOf(searchChar, startIndex)) > -1 && count < 20) {
@@ -37,17 +37,17 @@ var allIndexOf = (text, searchChar) => {
   return indices
 }
 
-var allLinkPositions = (bracketsParentheses, brackets, parentheses) => {
+const allLinkPositions = (bracketsParentheses, brackets, parentheses) => {
   /* all of the positions of characters which compose markdown syntax links.
   a closed bracket/open parenthesis pair is used as the link indicator */
-  const allPositions = []
-  const bracketsParenthesesLen = bracketsParentheses.length
+  var allPositions = []
+  var bracketsParenthesesLen = bracketsParentheses.length
   for (var i = 0; i < bracketsParenthesesLen; i++) {
-    const previousPosition = findPreviousPosition(i, bracketsParentheses)
-    const currentPosition = bracketsParentheses[i]
-    const nextPosition = findNextPosition(i, bracketsParentheses, bracketsParenthesesLen, parentheses)
+    var previousPosition = findPreviousPosition(i, bracketsParentheses)
+    var currentPosition = bracketsParentheses[i]
+    var nextPosition = findNextPosition(i, bracketsParentheses, bracketsParenthesesLen, parentheses)
 
-    const positions = [undefined, currentPosition, undefined]
+    var positions = [undefined, currentPosition, undefined]
     positions[0] = findOpenBracket(brackets, currentPosition, previousPosition)
     positions[2] = findClosedParenthensis(parentheses, currentPosition, nextPosition)
 
@@ -56,7 +56,7 @@ var allLinkPositions = (bracketsParentheses, brackets, parentheses) => {
   return allPositions
 }
 
-var findPreviousPosition = (i, bracketsParentheses) => {
+const findPreviousPosition = (i, bracketsParentheses) => {
   /* find the bracket/parenthesis pair that occurs before the current one */
   if (i === 0) {
     return 0
@@ -66,7 +66,7 @@ var findPreviousPosition = (i, bracketsParentheses) => {
   }
 }
 
-var findNextPosition = (i, bracketsParentheses, bracketParenthesesLen, parentheses) => {
+const findNextPosition = (i, bracketsParentheses, bracketParenthesesLen, parentheses) => {
   /* find the bracket/parenthesis pair that occurs after the current one */
   if (i === (bracketParenthesesLen - 1)) {
     return parentheses[parentheses.length - 1]
@@ -76,38 +76,38 @@ var findNextPosition = (i, bracketsParentheses, bracketParenthesesLen, parenthes
   }
 }
 
-var findClosedParenthensis = (parentheses, currentPosition, nextPosition) => {
+const findClosedParenthensis = (parentheses, currentPosition, nextPosition) => {
   /* find the position of the closed parenthesis, associated with the hyperlink */
-  const filteredParentheses = parentheses.filter(parenthesis => parenthesis > currentPosition && parenthesis <= nextPosition)
+  var filteredParentheses = parentheses.filter(parenthesis => parenthesis > currentPosition && parenthesis <= nextPosition)
   return filteredParentheses[0]
 }
 
-var findOpenBracket = (brackets, currentPosition, previousPosition) => {
+const findOpenBracket = (brackets, currentPosition, previousPosition) => {
   /* find the position of the open bracket associated with the hyperlink */
-  const filteredBrackets = brackets.filter(bracket => bracket < currentPosition && bracket >= previousPosition)
+  var filteredBrackets = brackets.filter(bracket => bracket < currentPosition && bracket >= previousPosition)
   return filteredBrackets.pop()
 }
 
-var validLinkPositions = (linkPositions) => {
+const validLinkPositions = (linkPositions) => {
   /* check that the set of positions for characters could represent a hyperlink */
-  const hasValues = linkPositions.every(value => value >= 0)
-  const hasNumbers = linkPositions.every(value => typeof (value) === 'number')
-  const correctLength = linkPositions.length === 3
-  const correctOrder = (linkPositions[0] < linkPositions[1] && linkPositions[1] < linkPositions[2])
+  var hasValues = linkPositions.every(value => value >= 0)
+  var hasNumbers = linkPositions.every(value => typeof (value) === 'number')
+  var correctLength = linkPositions.length === 3
+  var correctOrder = (linkPositions[0] < linkPositions[1] && linkPositions[1] < linkPositions[2])
   return (correctLength && hasValues && hasNumbers && correctOrder)
 }
 
-var findMarkdownLink = (linkPositions, text) => {
+const findMarkdownLink = (linkPositions, text) => {
   /* identify entire portion of markdown syntax */
   return text.slice(linkPositions[0], linkPositions[2] + 1)
 }
 
-var findLinkString = (linkPositions, text) => {
+const findLinkString = (linkPositions, text) => {
   /* identify text portion of hyperlink from message string */
   return text.slice(linkPositions[0] + 1, linkPositions[1])
 }
 
-var checkLinkString = (linkString) => {
+const checkLinkString = (linkString) => {
   /* link string cannot be blank or only spaces */
   var linkStringTrim = linkString.trim()
   if (linkStringTrim) {
@@ -117,12 +117,12 @@ var checkLinkString = (linkString) => {
   }
 }
 
-var findLinkAddress = (linkPositions, text) => {
+const findLinkAddress = (linkPositions, text) => {
   /* identify url portion of link from message string */
   return text.slice(linkPositions[1] + 2, linkPositions[2])
 }
 
-var checkLinkAddress = (linkAddress) => {
+const checkLinkAddress = (linkAddress) => {
   /* unhttpedLinkAddress cannot blank or contains a space in the url itself */
   var linkAddressTrim = linkAddress.trim()
   var linkAddressSpace = linkAddressTrim.includes(' ')
@@ -133,9 +133,9 @@ var checkLinkAddress = (linkAddress) => {
   }
 }
 
-var httpLinkAddress = (linkAddress) => {
+const httpLinkAddress = (linkAddress) => {
   /* ensure that each link has http or https in the url */
-  const lowerCaseAddress = linkAddress.toLowerCase()
+  var lowerCaseAddress = linkAddress.toLowerCase()
   if (lowerCaseAddress.includes('http://') || lowerCaseAddress.includes('https://')) {
     return linkAddress
   } else {
@@ -143,12 +143,12 @@ var httpLinkAddress = (linkAddress) => {
   }
 }
 
-var createMessageLink = (linkAddress, displayText) => {
+const createMessageLink = (linkAddress, displayText) => {
   /* create slack syntax for text and url */
   return `<${linkAddress}|${displayText}>`
 }
 
-var replaceLink = (markdownLink, messageLink, message) => {
+const replaceLink = (markdownLink, messageLink, message) => {
   /* identify and replace the hyperlink based on its exact structure */
   return message.replace(markdownLink, messageLink, message)
 }

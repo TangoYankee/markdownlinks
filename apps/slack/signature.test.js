@@ -10,7 +10,7 @@ test.each([[slackRequest, currentTime, true]])(
     expect(signature(slackRequest, currentTime)).toBe(expectedBoolean)
   })
 
-const testTimestamps = [[timestamp, timestamp, true], [timestamp, (timestamp + 2e2), true], [timestamp, (timestamp + 5e2), false]]
+var testTimestamps = [[timestamp, timestamp, true], [timestamp, (timestamp + 2e2), true], [timestamp, (timestamp + 5e2), false]]
 test.each(testTimestamps)(
   'verify request was made recently', (timestamp, currentTime, expectedBoolean) => {
     expect(isRecent(timestamp, currentTime)).toBe(expectedBoolean)
