@@ -136,10 +136,11 @@ const checkLinkAddress = (linkAddress) => {
 
 const httpLinkAddress = (linkAddress) => {
   /* ensure that each link has http or https in the url */
-  if (linkAddress.includes('http://') || linkAddress.includes('https://')) {
-    return linkAddress
+  var linkAddressTrim = linkAddress.trim()
+  if (linkAddressTrim.startsWith('http://') || linkAddressTrim.startsWith('https://')) {
+    return linkAddressTrim
   } else {
-    return `https://${linkAddress}`
+    return `https://${linkAddressTrim}`
   }
 }
 

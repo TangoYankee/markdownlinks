@@ -63,7 +63,7 @@ test.each(markdownLink)(
     expect(findMarkdownLink(linkPositions, text)).toEqual(expectedMarkdown)
   })
 
-var httpLinks = [['dmv.ca.gov', 'https://dmv.ca.gov'], ['http://example.com', 'http://example.com'], ['https://www.osha.com/', 'https://www.osha.com/']]
+var httpLinks = [['dmv.ca.gov', 'https://dmv.ca.gov'], [' http://example.com', 'http://example.com'], ['https://www.osha.com/', 'https://www.osha.com/']]
 test.each(httpLinks)(
   'ensure that each link has http or https in the url', (inputLink, expectedLink) => {
     expect(httpLinkAddress(inputLink)).toEqual(expectedLink)
