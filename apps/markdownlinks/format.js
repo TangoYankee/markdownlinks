@@ -9,12 +9,13 @@ const format = (text) => {
     for (var linkPositions of foundAllLinkPositions) {
       if (validLinkPositions(linkPositions)) {
         var linkString = findLinkString(linkPositions, text)
-        var unhttpedLinkAddress = findLinkAddress(linkPositions, text)
-        var lowerUnhttpedLinkAddress = unhttpedLinkAddress.toLowerCase()
-        var linkAddress = httpLinkAddress(lowerUnhttpedLinkAddress)
-        var messageLink = createMessageLink(linkAddress, linkString)
-        var markdownLink = findMarkdownLink(linkPositions, text)
-        if (checkLinkString(linkString) && checkLinkAddress(lowerUnhttpedLinkAddress)) {
+        var linkAddress = findLinkAddress(linkPositions, text)
+        var linkAddressTrimmed = linkAddress.trim()
+        var linkAddressTrimmedLowered = linkAddressTrimmed.toLowerCase()
+        if (checkLinkString(linkString) && checkLinkAddress(linkAddressTrimmedLowered)) {
+          var linkAddressHttped = httpLinkAddress(linkAddressTrimmedLowered)
+          var messageLink = createMessageLink(linkAddressHttped, linkString)
+          var markdownLink = findMarkdownLink(linkPositions, text)
           message = replaceLink(markdownLink, messageLink, message)
         }
       }
@@ -125,9 +126,8 @@ const findLinkAddress = (linkPositions, text) => {
 
 const checkLinkAddress = (linkAddress) => {
   /* must fit the correct format of a url */
-  var linkAddressTrim = linkAddress.trim()
   var domainRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/
-  if (linkAddressTrim.match(domainRegex)) {
+  if (linkAddress.match(domainRegex)) {
     return true
   } else {
     return false
@@ -136,11 +136,10 @@ const checkLinkAddress = (linkAddress) => {
 
 const httpLinkAddress = (linkAddress) => {
   /* ensure that each link has http or https in the url */
-  var linkAddressTrim = linkAddress.trim()
-  if (linkAddressTrim.startsWith('http://') || linkAddressTrim.startsWith('https://')) {
-    return linkAddressTrim
+  if (linkAddress.startsWith('http://') || linkAddress.startsWith('https://')) {
+    return linkAddress
   } else {
-    return `https://${linkAddressTrim}`
+    return `https://${linkAddress}`
   }
 }
 
