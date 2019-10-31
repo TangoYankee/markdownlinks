@@ -16,7 +16,11 @@ module.exports = {
             }
         },
         {   /* slack's block kit builder is specific on quotes syntax */
-            "files": [ "apps/markdownlinks/messages.js" ],
+            "files": [
+                "apps/markdownlinks/messages.js",
+                "apps/safe-browse/safe-browse.js",
+                "apps/safe-browse/safe-browse.test.js"
+        ],
             "rules": {
                 "quote-props": "warn",
                 "quotes": "warn"
