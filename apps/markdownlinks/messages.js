@@ -82,18 +82,6 @@ messages.markdownMessage = (markdownFormat, userId) => {
             "text": `-shared by <@${userId}>`
           }
         ]
-      },
-      {
-        "type": "divider"
-      },
-      {
-        "type": "context",
-        "elements": [
-          {
-          "type": "mrkdwn",
-          "text": "${safeBrowseCheckStatus}"
-          }
-        ]
       }
     ]
   }
