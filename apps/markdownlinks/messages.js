@@ -89,5 +89,4 @@ messages.markdownMessage = (markdownFormat, userId) => {
 
 /* compose markdown message */
 
-
 exports.data = messages

@@ -18,13 +18,14 @@ module.exports = {
         {   /* json specific quote syntax */
             "files": [
                 "apps/markdownlinks/messages.js",
+                "apps/markdownlinks/messages.test.js",
                 "apps/safe-browse/safe-browse.js",
                 "apps/safe-browse/safe-browse.test.js",
                 "apps/safe-browse/warnings.js"
         ],
             "rules": {
-                "quote-props": "warn",
-                "quotes": "warn"
+                "quote-props": "off",
+                "quotes": "off"
             }
 
         }
