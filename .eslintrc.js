@@ -15,11 +15,12 @@ module.exports = {
                 "no-undef": "warn"
             }
         },
-        {   /* slack's block kit builder is specific on quotes syntax */
+        {   /* json specific quote syntax */
             "files": [
                 "apps/markdownlinks/messages.js",
                 "apps/safe-browse/safe-browse.js",
-                "apps/safe-browse/safe-browse.test.js"
+                "apps/safe-browse/safe-browse.test.js",
+                "apps/safe-browse/warnings.js"
         ],
             "rules": {
                 "quote-props": "warn",
