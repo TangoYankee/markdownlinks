@@ -1,4 +1,3 @@
-const { replaceLink } = require('./format/link-content')
 const { warnings } = require('../safe-browse/warnings')
 var messages = {}
 
@@ -89,27 +88,79 @@ messages.markdownMessage = (markdownFormat, userId) => {
   }
 }
 
-messages.devMarkdownMessage = (messageData) => {  
+messages.devMarkdownMessage = (messageData) => {
   /* compose markdown message */
   let message = messageData.message
-  var threatTypes = messageData.threatTypes
-  for (link of messageData.links){
-    let markdownLink = messageData.links[0].markdownLink
-    let messageLink = messageData.links[0].messageLink
-    message = replaceLink(markdownLink, messageLink, message)
+  // var threatTypes = messageData.threatTypes
+  for (var link of messageData.links) {
+    var markdownLink = link.markdownLink
+    let messageLink = link.messageLink
+    var threatMatch = link.threatMatch
+    if (threatMatch) {
+      var threatEmoji = warnings.safe_browse_threats[threatMatch].emoji
+      messageLink = `${messageLink}:${threatEmoji}:` // function to 'append emoji'
+    }
+    var sharedAsHttpSecure = link.sharedAsHttpSecure
+    if (!sharedAsHttpSecure) {
+      var httpSecureEmoji = warnings.shared_without_https.emoji
+      messageLink = `${messageLink}:${httpSecureEmoji}:`
+    }
+    message = message.replace(markdownLink, messageLink, message)
   }
 
   var allBlocks = []
+  var messageBlock = messageTemplate(message)
+  allBlocks.push(messageBlock)
+  var sharedContextBlock = sharedContextTemplate(messageData)
+  allBlocks.push(sharedContextBlock)
+  var dividerBlock = dividerTemplate()
+  allBlocks.push(dividerBlock)
+  var safeBrowseStatus = setSafeBrowseStatus(messageData)
+  var safeBrowseStatusBlock = safeBrowseStatusTemplate(safeBrowseStatus)
+  allBlocks.push(safeBrowseStatusBlock)
 
-  var messageBlock = {
+  var threatBlock = {
+    "type": "context",
+    "elements": []
+  }
+
+  if (messageData.safeBrowseSuccess) {
+    var threatTypes = messageData.threatTypes
+    if (threatTypes) {
+      for (var threat of threatTypes) {
+        var threatWarning = warningTemplate(warnings.safe_browse_threats[threat])
+        threatBlock.elements.push(threatWarning)
+      }
+    }
+  }
+  if (threatBlock.elements) {
+    allBlocks.push(threatBlock)
+  }
+
+  return {
+    "response_type": "in_channel",
+    "blocks": allBlocks
+  }
+}
+
+const messageTemplate = (message) => {
+  return {
     "type": "section",
     "text": {
       "type": "mrkdwn",
       "text": `${message}`
     }
   }
-  allBlocks.push(messageBlock)
+}
 
+const warningTemplate = (warning) => {
+  return {
+    "type": "mrkdwn",
+    "text": `:${warning.emoji}: ${warning.text}`
+  }
+}
+
+const sharedContextTemplate = (messageData) => {
   var sharedContextBlock = {
     "type": "context",
     "elements": [
@@ -120,45 +171,37 @@ messages.devMarkdownMessage = (messageData) => {
     ]
   }
   if (!messageData.allSharedAsHttpSecure) {
-    sharedContextBlock.elements.push(warnings.shared_without_https)
+    var httpsWarning = warningTemplate(warnings.shared_without_https)
+    sharedContextBlock.elements.push(httpsWarning)
   }
-  allBlocks.push(sharedContextBlock)
+  return sharedContextBlock
+}
 
-  var dividerBlock = {
+const dividerTemplate = () => {
+  return {
     "type": "divider"
-} 
- allBlocks.push(dividerBlock)
+  }
+}
 
-  var safeBrowseStatusBlock = {
-    "type": "context",
-    "elements": []
-}
-var threatBlock = {
-  "type": "context",
-  "elements": []
-}
-var threatTypes = messageData.threatTypes
-if(messageData.safeBrowseSuccess){
-  if (threatTypes){
-    var safeBrowseStatus = warnings.safe_browse_status.suspected_threats_found
-    for (threat of threatTypes){
-      threatBlock.elements.push(warnings.safe_browse_threats[threat])
+const setSafeBrowseStatus = (messageData) => {
+  var safeBrowseStatus = warnings.safe_browse_status
+  if (messageData.safeBrowseSuccess) {
+    if (messageData.threatTypes) {
+      return safeBrowseStatus.suspected_threats_found
+    } else {
+      return safeBrowseStatus.no_suspected_threats_found
     }
   } else {
-    var safeBrowseStatus = warnings.safe_browse_status.no_suspected_threats_found
+    return safeBrowseStatus.error_checking_safe_browse
   }
-} else {
-  var safeBrowseStatus = warnings.safe_browse_status.error_checking_safe_browse
-}
-safeBrowseStatusBlock.elements.push(safeBrowseStatus)
-allBlocks.push(safeBrowseStatusBlock)
-if (threatBlock.elements){
-  allBlocks.push(threatBlock)
 }
 
+const safeBrowseStatusTemplate = (safeBrowseStatus) => {
   return {
-    "response_type": "in_channel",
-    "blocks": allBlocks
+    "type": "context",
+    "elements": [
+      warningTemplate(safeBrowseStatus)
+    ]
   }
 }
 
