@@ -24,8 +24,8 @@ module.exports = {
                 "apps/safe-browse/warnings.js"
         ],
             "rules": {
-                "quote-props": "off",
-                "quotes": "off"
+                "quote-props": "warn",
+                "quotes": "warn"
             }
 
         }
