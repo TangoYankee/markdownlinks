@@ -1,3 +1,5 @@
+const { replaceLink } = require('./format/link-content')
+const { warnings } = require('../safe-browse/warnings')
 var messages = {}
 
 messages.helpMessage = (userId) => {
@@ -87,10 +89,76 @@ messages.markdownMessage = (markdownFormat, userId) => {
   }
 }
 
-/* compose markdown message */
-messages.devMarkdownMessage = (messageData) => {
+messages.devMarkdownMessage = (messageData) => {  
+  /* compose markdown message */
+  let message = messageData.message
+  var threatTypes = messageData.threatTypes
+  for (link of messageData.links){
+    let markdownLink = messageData.links[0].markdownLink
+    let messageLink = messageData.links[0].messageLink
+    message = replaceLink(markdownLink, messageLink, message)
+  }
+
+  var allBlocks = []
+
+  var messageBlock = {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": `${message}`
+    }
+  }
+  allBlocks.push(messageBlock)
+
+  var sharedContextBlock = {
+    "type": "context",
+    "elements": [
+      {
+        "type": "mrkdwn",
+        "text": `-shared by @${messageData.sharedBy}`
+      }
+    ]
+  }
+  if (!messageData.allSharedAsHttpSecure) {
+    sharedContextBlock.elements.push(warnings.shared_without_https)
+  }
+  allBlocks.push(sharedContextBlock)
+
+  var dividerBlock = {
+    "type": "divider"
+} 
+ allBlocks.push(dividerBlock)
+
+  var safeBrowseStatusBlock = {
+    "type": "context",
+    "elements": []
+}
+var threatBlock = {
+  "type": "context",
+  "elements": []
+}
+var threatTypes = messageData.threatTypes
+if(messageData.safeBrowseSuccess){
+  if (threatTypes){
+    var safeBrowseStatus = warnings.safe_browse_status.suspected_threats_found
+    for (threat of threatTypes){
+      threatBlock.elements.push(warnings.safe_browse_threats[threat])
+    }
+  } else {
+    var safeBrowseStatus = warnings.safe_browse_status.no_suspected_threats_found
+  }
+} else {
+  var safeBrowseStatus = warnings.safe_browse_status.error_checking_safe_browse
+}
+safeBrowseStatusBlock.elements.push(safeBrowseStatus)
+allBlocks.push(safeBrowseStatusBlock)
+if (threatBlock.elements){
+  allBlocks.push(threatBlock)
+}
+
   return {
-    "data": messageData
+    "response_type": "in_channel",
+    "blocks": allBlocks
   }
 }
 
