@@ -109,12 +109,11 @@ messages.devMarkdownMessage = (messageData) => {
   }
 
   var allBlocks = []
-  var messageBlock = messageTemplate(message)
+  var messageBlock = sectionTemplate(message)
   allBlocks.push(messageBlock)
   var sharedContextBlock = sharedContextTemplate(messageData)
   allBlocks.push(sharedContextBlock)
-  var dividerBlock = dividerTemplate()
-  allBlocks.push(dividerBlock)
+  allBlocks.push(dividerTemplate)
   var safeBrowseStatus = setSafeBrowseStatus(messageData)
   var safeBrowseStatusBlock = safeBrowseStatusTemplate(safeBrowseStatus)
   allBlocks.push(safeBrowseStatusBlock)
@@ -143,12 +142,12 @@ messages.devMarkdownMessage = (messageData) => {
   }
 }
 
-const messageTemplate = (message) => {
+const sectionTemplate = (text) => {
   return {
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": `${message}`
+      "text": text
     }
   }
 }
@@ -177,11 +176,9 @@ const sharedContextTemplate = (messageData) => {
   return sharedContextBlock
 }
 
-const dividerTemplate = () => {
-  return {
+const dividerTemplate = {
     "type": "divider"
   }
-}
 
 const setSafeBrowseStatus = (messageData) => {
   var safeBrowseStatus = warnings.safe_browse_status
