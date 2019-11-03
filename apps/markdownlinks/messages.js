@@ -109,7 +109,7 @@ messages.devMarkdownMessage = (messageData) => {
   let threatBlock = contextTemplate()
   if (messageData.safeBrowseSuccess) {
     threatBlock = threatLogic(threatBlock, messageData.threatTypes)
-    if(threatBlock) {
+    if (threatBlock) {
       blocks.push(threatBlock)
     }
   }
@@ -126,8 +126,8 @@ const inChannelHeadTemplate = (blocks) => {
 
 const contextTemplate = () => {
   return {
-  "type": "context",
-  "elements": []
+    "type": "context",
+    "elements": []
   }
 }
 
@@ -143,7 +143,7 @@ const sectionTemplate = (text) => {
 
 const dividerTemplate = () => {
   return {
-  "type": "divider"
+    "type": "divider"
   }
 }
 
@@ -155,14 +155,15 @@ const warningTemplate = (warning) => {
 }
 
 const sharedContextTemplate = (messageData) => {
-  return {"type": "context",
-  "elements": [
-    {
-      "type": "mrkdwn",
-      "text": `-shared by @${messageData.sharedBy}`
-    }
-  ]
-}
+  return {
+    "type": "context",
+    "elements": [
+      {
+        "type": "mrkdwn",
+        "text": `-shared by @${messageData.sharedBy}`
+      }
+    ]
+  }
 }
 
 const safeBrowseStatusTemplate = (safeBrowseStatus) => {
@@ -199,7 +200,7 @@ const messageLogic = (messageData) => {
     var sharedAsHttpSecure = link.sharedAsHttpSecure
     if (!sharedAsHttpSecure) {
       var httpSecureEmoji = sharedWithoutHttpsData.emoji
-      messageLink = appendEmoji (messageLink, httpSecureEmoji)
+      messageLink = appendEmoji(messageLink, httpSecureEmoji)
     }
     message = message.replace(markdownLink, messageLink, message)
   }
