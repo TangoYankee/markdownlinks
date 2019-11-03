@@ -1,7 +1,8 @@
 const { setAllLinkPositions, validLinkPositions } = require('./link-positions')
 const {
   checkLinkAddress, checkLinkString, createMessageLink,
-  findLinkAddress, findLinkString, findMarkdownLink, httpLinkAddress
+  findLinkAddress, findLinkString, findMarkdownLink,
+  httpLinkAddress, replaceLink
 } = require('./link-content')
 
 const format = (text) => {
@@ -19,7 +20,7 @@ const format = (text) => {
           var linkAddressHttped = httpLinkAddress(linkAddressTrimmedLowered)
           var messageLink = createMessageLink(linkAddressHttped, linkString)
           var markdownLink = findMarkdownLink(linkPositions, text)
-          message = message.replace(markdownLink, messageLink, message)
+          message = replaceLink(markdownLink, messageLink, message)
         }
       }
     }

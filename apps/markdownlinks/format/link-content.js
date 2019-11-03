@@ -47,6 +47,11 @@ const httpLinkAddress = (linkAddress) => {
   }
 }
 
+const replaceLink = (markdownLink, messageLink, message) => {
+  /* identify and replace the hyperlink based on its exact structure */
+  return message.replace(markdownLink, messageLink, message)
+}
+
 module.exports = {
   checkLinkAddress,
   checkLinkString,
@@ -54,5 +59,6 @@ module.exports = {
   findLinkAddress,
   findLinkString,
   findMarkdownLink,
-  httpLinkAddress
+  httpLinkAddress,
+  replaceLink
 }

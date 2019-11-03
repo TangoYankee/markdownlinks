@@ -12,20 +12,18 @@ module.exports = {
         {   /* datalayer is not recongized by eslint */
             "files": [ "public/js/analytics.js" ],
             "rules": {
-                "no-undef": "off"
+                "no-undef": "warn"
             }
         },
-        {   /* json specific quote syntax */
+        {   /* slack's block kit builder is specific on quotes syntax */
             "files": [
-                "apps/markdownlinks/messages/messages.test.js",
-                "apps/markdownlinks/messages/block-templates.js",
+                "apps/markdownlinks/messages.js",
                 "apps/safe-browse/safe-browse.js",
-                "apps/safe-browse/safe-browse.test.js",
-                "apps/safe-browse/warnings.js"
+                "apps/safe-browse/safe-browse.test.js"
         ],
             "rules": {
-                "quote-props": "off",
-                "quotes": "off"
+                "quote-props": "warn",
+                "quotes": "warn"
             }
 
         }
