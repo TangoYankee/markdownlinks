@@ -1,6 +1,6 @@
 const request = require('request')
 const { format } = require('./format.js')
-const messages = require('./messages.js')
+const messages = require('./messages/messages.js')
 const methods = {}
 
 methods.publish = (requestBody, res) => {
