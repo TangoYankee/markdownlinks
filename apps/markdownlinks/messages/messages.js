@@ -1,5 +1,5 @@
 const { contextTemplate, dividerTemplate, mrkdwnTemplate, responseHeadTemplate, sectionTemplate } = require('./block-templates')
-const { appendEmoji, messageLogic, setSafeBrowseStatus, setSharedByText, setWarningText, sharedContextLogic, threatLogic } = require('./block-contructor')
+const { messageLogic, setSafeBrowseStatus, setSharedByText, setWarningText, sharedContextLogic, threatLogic } = require('./block-contructor')
 var messages = {}
 
 messages.helpMessage = (userId) => {
