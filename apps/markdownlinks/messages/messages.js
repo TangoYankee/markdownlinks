@@ -91,7 +91,7 @@ const devMarkdownMessage = (messageData) => {
       blocks.push(threatBlock)
     }
   }
-  
+
   return responseHeadTemplate('in_channel', blocks)
 }
 
