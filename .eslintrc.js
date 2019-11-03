@@ -17,7 +17,6 @@ module.exports = {
         },
         {   /* json specific quote syntax */
             "files": [
-                "apps/markdownlinks/messages/messages.js",
                 "apps/markdownlinks/messages/messages.test.js",
                 "apps/markdownlinks/messages/block-templates.js",
                 "apps/safe-browse/safe-browse.js",

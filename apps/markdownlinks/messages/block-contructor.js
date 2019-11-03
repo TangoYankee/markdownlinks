@@ -37,10 +37,6 @@ const setSafeBrowseStatus = (messageData) => {
   }
 }
 
-const setSharedByText = (sharedBy) => {
-  return `-shared by @${sharedBy}`
-}
-
 const setWarningText = (warning) => {
   return `:${warning.emoji}: ${warning.text}`
 }
@@ -70,7 +66,6 @@ const threatLogic = (threatBlock, threatTypes) => {
 module.exports = {
   appendEmoji,
   setSafeBrowseStatus,
-  setSharedByText,
   setWarningText,
   messageLogic,
   sharedContextLogic,
