@@ -1,7 +1,7 @@
 const sharedWithoutHttpsData = {
-    "emoji": "eyes",
-    "text": "shared without <https://www.snopes.com/fact-check/http-vs-https/|https>"
-  }
+  "emoji": "eyes",
+  "text": "shared without <https://www.snopes.com/fact-check/http-vs-https/|https>"
+}
 
 const safeBrowseStatusData = {
   "suspected_threats_found": {
