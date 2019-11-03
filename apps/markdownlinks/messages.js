@@ -98,12 +98,12 @@ messages.devMarkdownMessage = (messageData) => {
     var threatMatch = link.threatMatch
     if (threatMatch) {
       var threatEmoji = warnings.safe_browse_threats[threatMatch].emoji
-      messageLink = `${messageLink}:${threatEmoji}:` // function to 'append emoji'
+      messageLink = appendEmoji(messageLink, threatEmoji)
     }
     var sharedAsHttpSecure = link.sharedAsHttpSecure
     if (!sharedAsHttpSecure) {
       var httpSecureEmoji = warnings.shared_without_https.emoji
-      messageLink = `${messageLink}:${httpSecureEmoji}:`
+      messageLink = appendEmoji (messageLink, httpSecureEmoji)
     }
     message = message.replace(markdownLink, messageLink, message)
   }
@@ -140,6 +140,10 @@ messages.devMarkdownMessage = (messageData) => {
     "response_type": "in_channel",
     "blocks": allBlocks
   }
+}
+
+const appendEmoji = (messageLink, emoji) => {
+  return `${messageLink}:${emoji}:`
 }
 
 const sectionTemplate = (text) => {
