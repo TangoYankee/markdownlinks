@@ -47,6 +47,16 @@ const httpLinkAddress = (linkAddress) => {
   }
 }
 
+const setCacheKeyFromUrl = (unhttpedLinkAddress) => {
+  /* remove http(s) and www */
+  var domainPrefixRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)/gm
+  return unhttpedLinkAddress.replace(domainPrefixRegex, '')
+}
+
+const setSharedAsHttpSecure = (unhttpedLinkAddress) => {
+  return unhttpedLinkAddress.startsWith('https://')
+}
+
 module.exports = {
   checkLinkAddress,
   checkLinkString,
@@ -54,5 +64,7 @@ module.exports = {
   findLinkAddress,
   findLinkString,
   findMarkdownLink,
-  httpLinkAddress
+  httpLinkAddress,
+  setCacheKeyFromUrl,
+  setSharedAsHttpSecure
 }

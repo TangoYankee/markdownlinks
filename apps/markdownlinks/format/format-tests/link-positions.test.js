@@ -1,4 +1,4 @@
-const { allIndexOf, allLinkPositions, validLinkPositions } = require('./link-positions')
+const { allIndexOf, allLinkPositions, validLinkPositions } = require('../link-positions')
 
 /* base arrays for character position tests */
 var bracketsParentheses = [16, 52, 91]

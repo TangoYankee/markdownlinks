@@ -1,7 +1,7 @@
 const {
   checkLinkAddress, checkLinkString,
   findMarkdownLink, httpLinkAddress
-} = require('./link-content')
+} = require('../link-content')
 
 var linkAddresses = [
   ['nasa', false], ['', false], ['http://.example.com', false],

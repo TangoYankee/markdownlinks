@@ -1,3 +1,4 @@
+const { mockSafeBrowseResponse } = require('./safe-browse-mock.js')
 const process = require('process')
 const request = require('request')
 
@@ -33,6 +34,7 @@ var setUncachedThreatUrlPositions = (threatUrls, cachedThreatMatches) => {
   return uncachedThreatDomainsLoc
 }
 
+//  Redundant, as prefixes were removed before placing the url into the message object
 const setThreatDomains = (threatUrls) => {
   /* strip the address prefixes, as they may not have been used in previous requests */
   const removeDomainPrefixes = (threatUrls) => {
@@ -41,6 +43,14 @@ const setThreatDomains = (threatUrls) => {
     return threatUrls.url.replace(domainPrefixRegex, '')
   }
   return threatUrls.map(removeDomainPrefixes)
+}
+
+const getThreatUrlsList = (links) => {
+  var threatUrls = []
+  for (var link of links) {
+    threatUrls.push(link)
+  }
+  return threatUrls
 }
 
 var setLookupThreatEntries = (uncachedThreatUrls) => {
@@ -66,6 +76,11 @@ var setLookupBody = (lookupThreatEntries) => {
       "threatEntries": lookupThreatEntries
     }
   }
+}
+
+var devPostLookupThreatMatches = () => {
+  console.log(mockSafeBrowseResponse)
+  return mockSafeBrowseResponse
 }
 
 var postLookupThreatMatches = (lookupBody) => {
@@ -103,6 +118,8 @@ var postCacheThreatMatches = (lookupThreatMatches) => {
 
 module.exports = {
   getCacheThreatMatches,
+  getThreatUrlsList,
+  devPostLookupThreatMatches,
   postCacheThreatMatches,
   postLookupThreatMatches,
   safeBrowse,
