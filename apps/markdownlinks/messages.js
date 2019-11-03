@@ -1,4 +1,4 @@
-const { warnings } = require('../safe-browse/warnings')
+const { sharedWithoutHttpsData, safeBrowseStatusData, safeBrowseThreatsData } = require('../safe-browse/warnings')
 var messages = {}
 
 messages.helpMessage = (userId) => {
@@ -90,66 +90,60 @@ messages.markdownMessage = (markdownFormat, userId) => {
 
 messages.devMarkdownMessage = (messageData) => {
   /* compose markdown message */
-  let message = messageData.message
-  // var threatTypes = messageData.threatTypes
-  for (var link of messageData.links) {
-    var markdownLink = link.markdownLink
-    let messageLink = link.messageLink
-    var threatMatch = link.threatMatch
-    if (threatMatch) {
-      var threatEmoji = warnings.safe_browse_threats[threatMatch].emoji
-      messageLink = `${messageLink}:${threatEmoji}:` // function to 'append emoji'
-    }
-    var sharedAsHttpSecure = link.sharedAsHttpSecure
-    if (!sharedAsHttpSecure) {
-      var httpSecureEmoji = warnings.shared_without_https.emoji
-      messageLink = `${messageLink}:${httpSecureEmoji}:`
-    }
-    message = message.replace(markdownLink, messageLink, message)
-  }
+  var blocks = []
 
-  var allBlocks = []
-  var messageBlock = messageTemplate(message)
-  allBlocks.push(messageBlock)
-  var sharedContextBlock = sharedContextTemplate(messageData)
-  allBlocks.push(sharedContextBlock)
-  var dividerBlock = dividerTemplate()
-  allBlocks.push(dividerBlock)
+  var message = messageLogic(messageData)
+  var messageBlock = sectionTemplate(message)
+  blocks.push(messageBlock)
+
+  let sharedContextBlock = sharedContextTemplate(messageData)
+  sharedContextBlock = sharedContextLogic(sharedContextBlock, messageData)
+  blocks.push(sharedContextBlock)
+
+  blocks.push(dividerTemplate())
+
   var safeBrowseStatus = setSafeBrowseStatus(messageData)
   var safeBrowseStatusBlock = safeBrowseStatusTemplate(safeBrowseStatus)
-  allBlocks.push(safeBrowseStatusBlock)
+  blocks.push(safeBrowseStatusBlock)
 
-  var threatBlock = {
-    "type": "context",
-    "elements": []
-  }
-
+  let threatBlock = contextTemplate()
   if (messageData.safeBrowseSuccess) {
-    var threatTypes = messageData.threatTypes
-    if (threatTypes) {
-      for (var threat of threatTypes) {
-        var threatWarning = warningTemplate(warnings.safe_browse_threats[threat])
-        threatBlock.elements.push(threatWarning)
-      }
+    threatBlock = threatLogic(threatBlock, messageData.threatTypes)
+    if (threatBlock) {
+      blocks.push(threatBlock)
     }
   }
-  if (threatBlock.elements) {
-    allBlocks.push(threatBlock)
-  }
 
+  return inChannelHeadTemplate(blocks)
+}
+
+const inChannelHeadTemplate = (blocks) => {
   return {
     "response_type": "in_channel",
-    "blocks": allBlocks
+    "blocks": blocks
   }
 }
 
-const messageTemplate = (message) => {
+const contextTemplate = () => {
+  return {
+    "type": "context",
+    "elements": []
+  }
+}
+
+const sectionTemplate = (text) => {
   return {
     "type": "section",
     "text": {
       "type": "mrkdwn",
-      "text": `${message}`
+      "text": text
     }
+  }
+}
+
+const dividerTemplate = () => {
+  return {
+    "type": "divider"
   }
 }
 
@@ -161,7 +155,7 @@ const warningTemplate = (warning) => {
 }
 
 const sharedContextTemplate = (messageData) => {
-  var sharedContextBlock = {
+  return {
     "type": "context",
     "elements": [
       {
@@ -169,30 +163,6 @@ const sharedContextTemplate = (messageData) => {
         "text": `-shared by @${messageData.sharedBy}`
       }
     ]
-  }
-  if (!messageData.allSharedAsHttpSecure) {
-    var httpsWarning = warningTemplate(warnings.shared_without_https)
-    sharedContextBlock.elements.push(httpsWarning)
-  }
-  return sharedContextBlock
-}
-
-const dividerTemplate = () => {
-  return {
-    "type": "divider"
-  }
-}
-
-const setSafeBrowseStatus = (messageData) => {
-  var safeBrowseStatus = warnings.safe_browse_status
-  if (messageData.safeBrowseSuccess) {
-    if (messageData.threatTypes) {
-      return safeBrowseStatus.suspected_threats_found
-    } else {
-      return safeBrowseStatus.no_suspected_threats_found
-    }
-  } else {
-    return safeBrowseStatus.error_checking_safe_browse
   }
 }
 
@@ -203,6 +173,62 @@ const safeBrowseStatusTemplate = (safeBrowseStatus) => {
       warningTemplate(safeBrowseStatus)
     ]
   }
+}
+
+const threatLogic = (threatBlock, threatTypes) => {
+  if (threatTypes) {
+    for (var threat of threatTypes) {
+      var threatWarning = warningTemplate(safeBrowseThreatsData[threat])
+      threatBlock.elements.push(threatWarning)
+    }
+    return threatBlock
+  } else {
+    return null
+  }
+}
+
+const messageLogic = (messageData) => {
+  let message = messageData.message
+  for (var link of messageData.links) {
+    var markdownLink = link.markdownLink
+    let messageLink = link.messageLink
+    var threatMatch = link.threatMatch
+    if (threatMatch) {
+      var threatEmoji = safeBrowseThreatsData[threatMatch].emoji
+      messageLink = appendEmoji(markdownLink, threatEmoji)
+    }
+    var sharedAsHttpSecure = link.sharedAsHttpSecure
+    if (!sharedAsHttpSecure) {
+      var httpSecureEmoji = sharedWithoutHttpsData.emoji
+      messageLink = appendEmoji(messageLink, httpSecureEmoji)
+    }
+    message = message.replace(markdownLink, messageLink, message)
+  }
+  return message
+}
+
+const sharedContextLogic = (sharedContextBlock, messageData) => {
+  if (!messageData.allSharedAsHttpSecure) {
+    var httpsWarning = warningTemplate(sharedWithoutHttpsData)
+    sharedContextBlock.elements.push(httpsWarning)
+  }
+  return sharedContextBlock
+}
+
+const setSafeBrowseStatus = (messageData) => {
+  if (messageData.safeBrowseSuccess) {
+    if (messageData.threatTypes) {
+      return safeBrowseStatusData.suspected_threats_found
+    } else {
+      return safeBrowseStatusData.no_suspected_threats_found
+    }
+  } else {
+    return safeBrowseStatusData.error_checking_safe_browse
+  }
+}
+
+const appendEmoji = (messageLink, emoji) => {
+  return `${messageLink}:${emoji}:`
 }
 
 exports.data = messages

@@ -2,7 +2,7 @@ const messages = require('./messages.js')
 
 test('format message based on object data', () => {
   var messageData = {
-    "message": "[Social Engineering Site](http://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/), [Malware Site](testsafebrowsing.appspot.com/s/malware.html), and [Nasa](https://nasa.gov)",
+    "message": "[Social Engineering Site](https://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/), [Malware Site](testsafebrowsing.appspot.com/s/malware.html), and [Nasa](nasa.gov)",
     "sharedBy": "TangoYankee",
     "safeBrowseSuccess": true,
     "allSharedAsHttpSecure": false,
@@ -14,9 +14,9 @@ test('format message based on object data', () => {
       {
         "cacheKeyFromUrl": "testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/",
         "cacheDuration": "300s",
-        "markdownLink": "[Social Engineering Site](http://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/)",
-        "messageLink": "<http://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/|Social Engineering Site>",
-        "sharedAsHttpSecure": false,
+        "markdownLink": "[Social Engineering Site](https://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/)",
+        "messageLink": "<https://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/|Social Engineering Site>",
+        "sharedAsHttpSecure": true,
         "threatMatch": "SOCIAL_ENGINEERING"
       },
       {
@@ -28,11 +28,11 @@ test('format message based on object data', () => {
         "threatMatch": "MALWARE"
       },
       {
-        "cacheKeyFromUrl": "https://nasa.gov",
+        "cacheKeyFromUrl": "nasa.gov",
         "cacheDuration": "",
-        "markdownLink": "[Nasa](https://nasa.gov)",
+        "markdownLink": "[Nasa](nasa.gov)",
         "messageLink": "<https://nasa.gov|Nasa>",
-        "sharedAsHttpSecure": true,
+        "sharedAsHttpSecure": false,
         "threatMatch": ""
       }
     ]
@@ -45,7 +45,7 @@ test('format message based on object data', () => {
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "<http://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/|Social Engineering Site>:biohazard_sign::eyes:, <https://testsafebrowsing.appspot.com/s/malware.html|Malware Site>:beetle::eyes:, and <https://nasa.gov|Nasa>"
+          "text": "[Social Engineering Site](https://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/):biohazard_sign:, [Malware Site](testsafebrowsing.appspot.com/s/malware.html):beetle::eyes:, and <https://nasa.gov|Nasa>:eyes:"
         }
       },
       {
