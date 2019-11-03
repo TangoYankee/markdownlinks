@@ -1,4 +1,102 @@
-const messages = require('./messages.js')
+const {
+  helpMessage,
+  errorMessage,
+  markdownMessage,
+  devMarkdownMessage
+} = require('./messages.js')
+
+test('help message', () => {
+  var userId = 12345678
+  var helpMessageData = {
+    "response_type": "ephemeral",
+    "blocks": [
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": `:confetti_ball: *welcome,* <@${userId}>!\n_format your hyperlinks like this..._`
+        }
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*your message*\n _/markdownlinks create [nice links](https://markdownguide.org/)._"
+        }
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*returned message*\n _create <https://markdownguide.org/|nice links>._"
+        }
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "context",
+        "elements": [
+          {
+            "type": "mrkdwn",
+            "text": "visit https://markdownlinks.io"
+          }
+        ]
+      }
+    ]
+  }
+  expect(helpMessage(userId)).toEqual(helpMessageData)
+})
+
+test('error message', () => {
+  var errorMessageData = {
+    "response_type": "ephemeral",
+    "blocks": [
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": ":warning:please provide input text"
+        }
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": "*For instructions, write...* _/markdownlinks help_"
+        }
+      }
+    ]
+  }
+  expect(errorMessage()).toEqual(errorMessageData)
+})
+
+test('markdown message', () => {
+  var markdownFormat = "example text"
+  var userId = 12345678
+  var markdownMessageData = {
+    "response_type": "in_channel",
+    "blocks": [
+      {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": `${markdownFormat}`
+        }
+      },
+      {
+        "type": "context",
+        "elements": [
+          {
+            "type": "mrkdwn",
+            "text": `-shared by <@${userId}>`
+          }
+        ]
+      }
+    ]
+  }
+  expect(markdownMessage(markdownFormat, userId)).toEqual(markdownMessageData)
+})
 
 test('format message based on object data', () => {
   var messageData = {
@@ -87,5 +185,6 @@ test('format message based on object data', () => {
       }
     ]
   }
-  expect(messages.data.devMarkdownMessage(messageData)).toEqual(messageFormat)
+
+  expect(devMarkdownMessage(messageData)).toEqual(messageFormat)
 })

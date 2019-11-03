@@ -1,95 +1,64 @@
 const { contextTemplate, dividerTemplate, mrkdwnTemplate, responseHeadTemplate, sectionTemplate } = require('./block-templates')
-const { messageLogic, setSafeBrowseStatus, setSharedByText, setWarningText, sharedContextLogic, threatLogic } = require('./block-contructor')
-var messages = {}
+const { messageLogic, setSafeBrowseStatus, setWarningText, sharedContextLogic, threatLogic } = require('./block-contructor')
 
-messages.helpMessage = (userId) => {
-  return {
-    "response_type": "ephemeral",
-    "blocks": [
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": `:confetti_ball: *welcome,* <@${userId}>!\n_format your hyperlinks like this..._`
-        }
-      },
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": "*your message*\n _/markdownlinks create [nice links](https://markdownguide.org/)._"
-        }
-      },
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": "*returned message*\n _create <https://markdownguide.org/|nice links>._"
-        }
-      },
-      {
-        "type": "divider"
-      },
-      {
-        "type": "context",
-        "elements": [
-          {
-            "type": "mrkdwn",
-            "text": "visit https://markdownlinks.io"
-          }
-        ]
-      }
-    ]
-  }
+const helpMessage = (userId) => {
+  /* in message usage instructions */
+  var blocks = []
+
+  var welcomeMrkdwn = mrkdwnTemplate(`:confetti_ball: *welcome,* <@${userId}>!\n_format your hyperlinks like this..._`)
+  var welcomeSection = sectionTemplate(welcomeMrkdwn)
+  blocks.push(welcomeSection)
+
+  var exampleInputMrkdwn = mrkdwnTemplate('*your message*\n _/markdownlinks create [nice links](https://markdownguide.org/)._')
+  var exampleInputSection = sectionTemplate(exampleInputMrkdwn)
+  blocks.push(exampleInputSection)
+
+  var exampleOutputMrkdwn = mrkdwnTemplate('*returned message*\n _create <https://markdownguide.org/|nice links>._')
+  var exampleOutputSection = sectionTemplate(exampleOutputMrkdwn)
+  blocks.push(exampleOutputSection)
+
+  blocks.push(dividerTemplate())
+
+  var homepageMrkdwn = mrkdwnTemplate('visit https://markdownlinks.io')
+  var homepageContext = contextTemplate()
+  homepageContext.elements.push(homepageMrkdwn)
+  blocks.push(homepageContext)
+
+  return responseHeadTemplate('ephemeral', blocks)
 }
 
-messages.errorMessage = () => {
-  return {
-    "response_type": "ephemeral",
-    "blocks": [
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": ":warning:please provide input text"
-        }
-      },
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": "*For instructions, write...* _/markdownlinks help_"
-        }
-      }
-    ]
-  }
+const errorMessage = () => {
+  /* handle out of bounds cases */
+  var blocks = []
+
+  var suggestionMrkdwn = mrkdwnTemplate(':warning:please provide input text')
+  var suggestionSection = sectionTemplate(suggestionMrkdwn)
+  blocks.push(suggestionSection)
+
+  var instructionsMrkdwn = mrkdwnTemplate('*For instructions, write...* _/markdownlinks help_')
+  var instructionsSection = sectionTemplate(instructionsMrkdwn)
+  blocks.push(instructionsSection)
+
+  return responseHeadTemplate('ephemeral', blocks)
 }
 
-messages.markdownMessage = (markdownFormat, userId) => {
-  return {
-    "response_type": "in_channel",
-    "blocks": [
-      {
-        "type": "section",
-        "text": {
-          "type": "mrkdwn",
-          "text": `${markdownFormat}`
-        }
-      },
-      {
-        "type": "context",
-        "elements": [
-          {
-            "type": "mrkdwn",
-            "text": `-shared by <@${userId}>`
-          }
-        ]
-      }
-    ]
-  }
+const markdownMessage = (markdownFormat, userId) => {
+  /* formatted hyperlinks in slack message */
+  var blocks = []
+
+  var messageMrkdwn = mrkdwnTemplate(markdownFormat)
+  var messageSection = sectionTemplate(messageMrkdwn)
+  blocks.push(messageSection)
+
+  var userContextMrkdwn = mrkdwnTemplate(`-shared by <@${userId}>`)
+  var userContextSection = contextTemplate()
+  userContextSection.elements.push(userContextMrkdwn)
+  blocks.push(userContextSection)
+
+  return responseHeadTemplate('in_channel', blocks)
 }
 
-messages.devMarkdownMessage = (messageData) => {
+const devMarkdownMessage = (messageData) => {
   /* compose markdown message */
   var blocks = []
 
@@ -99,7 +68,7 @@ messages.devMarkdownMessage = (messageData) => {
   blocks.push(messageBlock)
 
   var sharedBy = messageData.sharedBy
-  var sharedByText = setSharedByText(sharedBy)
+  var sharedByText = `-shared by @${sharedBy}`
   var sharedByMrkdwn = mrkdwnTemplate(sharedByText)
   let sharedContextBlock = contextTemplate()
   sharedContextBlock.elements.push(sharedByMrkdwn)
@@ -123,7 +92,12 @@ messages.devMarkdownMessage = (messageData) => {
     }
   }
 
-  return responseHeadTemplate("in_channel", blocks)
+  return responseHeadTemplate('in_channel', blocks)
 }
 
-exports.data = messages
+module.exports = {
+  helpMessage,
+  errorMessage,
+  markdownMessage,
+  devMarkdownMessage
+}
