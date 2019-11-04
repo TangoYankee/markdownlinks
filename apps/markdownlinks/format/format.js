@@ -61,6 +61,7 @@ const devFormat = (text, userId) => {
     // var threatUrls = getThreatUrlsList(messageData.links)
     // var lookupThreatEntries = setLookupThreatEntries(threatUrls)
     // var lookupBody = setLookupBody(lookupThreatEntries)
+    // var threatMatches
     var threatMatches = mockSafeBrowseReponse
     messageData = setThreatTypes(messageData, threatMatches)
     messageData = setAllSharedAsHttpSecure(messageData)

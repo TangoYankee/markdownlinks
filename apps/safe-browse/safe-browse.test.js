@@ -2,46 +2,49 @@ const process = require('process')
 const {
   setLookupBody,
   setLookupThreatEntries,
-  setThreatDomains,
-  setUncachedThreatUrlPositions
+  getThreatUrlsList
 } = require('./safe-browse.js')
 
-test('strip address prefixes', () => {
-  var threatUrls = [
-    { "url": "dmv.ca.gov" },
-    { "url": "https://nasa.gov" },
-    { "url": "http://www.example.com" }
+test('getThreatUrlsList() /* extract the urls from the message object */', () => {
+  var messageData = [
+    {
+      "cacheKeyFromUrl": "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/",
+      "cacheDuration": "300s",
+      "markdownLink": "[Social Engineering Site](https://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/)",
+      "messageLink": "<https://testsafebrowsing.appspot.com/apiv4/osx/sociakl_engineering/url/|Social Engineering Site>",
+      "sharedAsHttpSecure": true,
+      "threatMatch": "SOCIAL_ENGINEERING"
+    },
+    {
+      "cacheKeyFromUrl": "testsafebrowsing.appspot.com/s/malware.html",
+      "cacheDuration": "300s",
+      "markdownLink": "[Malware Site](testsafebrowsing.appspot.com/s/malware.html)",
+      "messageLink": "<https://testsafebrowsing.appspot.com/s/malware.html|Malware Site>",
+      "sharedAsHttpSecure": false,
+      "threatMatch": "MALWARE"
+    },
+    {
+      "cacheKeyFromUrl": "nasa.gov",
+      "cacheDuration": "",
+      "markdownLink": "[Nasa](nasa.gov)",
+      "messageLink": "<https://nasa.gov|Nasa>",
+      "sharedAsHttpSecure": false,
+      "threatMatch": ""
+    }
   ]
-  var threatDomains = [
-    "dmv.ca.gov",
-    "nasa.gov",
-    "example.com"
-  ]
-  expect(setThreatDomains(threatUrls)).toEqual(threatDomains)
+  var urlList = ["testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/", "testsafebrowsing.appspot.com/s/malware.html", "nasa.gov"]
+
+  expect(getThreatUrlsList(messageData)).toEqual(urlList)
 })
 
-test('determine which threat urls do not exist in the cache', () => {
-  var threatUrls = [
-    { "url": "https://dmv.ca.gov" },
-    { "url": "github.com" }
-  ]
-  var cachedThreatMatches = [
-    { "url": "dmv.ca.gov" },
-    { "url": "https://nasa.gov" },
-    { "url": "http://www.example.com" }
-  ]
-  var uncachedThreatUrlsLoc = [1]
-  expect(setUncachedThreatUrlPositions(threatUrls, cachedThreatMatches)).toEqual(uncachedThreatUrlsLoc)
-})
-
-test('place urls in an array', () => {
-  var uncachedThreatUrls = ["http://testsafebrowsing.appspot.com/s/phishing.html", "http://testsafebrowsing.appspot.com/s/malware.html"]
-  var lookupThreatEntries = [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }]
+test('setLookupThreatEntries() /* urls have a specific format when placed into Lookup API body */', () => {
+  var uncachedThreatUrls = ["testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/", "testsafebrowsing.appspot.com/s/malware.html", "nasa.gov"]
+  var lookupThreatEntries = [{ "url": "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/" }, { "url": "testsafebrowsing.appspot.com/s/malware.html" }, { "url": "nasa.gov" }]
   expect(setLookupThreatEntries(uncachedThreatUrls)).toEqual(lookupThreatEntries)
 })
 
-test('place urls in json object to send to safe browse api', () => {
-  var lookupThreatEntries = [{ "url": "http://testsafebrowsing.appspot.com/s/phishing.html" }, { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }]
+test('setLookupBody() /* place urls with uncached threats into a json template for the Safe Browse API */', () => {
+  var lookupThreatEntries = [{ "url": "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/" }, { "url": "testsafebrowsing.appspot.com/s/malware.html" }, { "url": "nasa.gov" }]
   var lookupBody = {
     "client": {
       "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID,
@@ -50,8 +53,9 @@ test('place urls in json object to send to safe browse api', () => {
     "threatInfo": {
       "platformTypes": ["ANY_PLATFORM"],
       "threatEntries": [
-        { "url": "http://testsafebrowsing.appspot.com/s/phishing.html" },
-        { "url": "http://testsafebrowsing.appspot.com/s/malware.html" }
+        { "url": "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/" },
+        { "url": "testsafebrowsing.appspot.com/s/malware.html" },
+        { "url": "nasa.gov" }
       ],
       "threatEntryTypes": ["URL"],
       "threatTypes": [

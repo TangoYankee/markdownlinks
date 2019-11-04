@@ -110,10 +110,10 @@ test('format message based on object data', () => {
     ],
     "links": [
       {
-        "cacheKeyFromUrl": "testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/",
+        "cacheKeyFromUrl": "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/",
         "cacheDuration": "300s",
         "markdownLink": "[Social Engineering Site](https://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/)",
-        "messageLink": "<https://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/|Social Engineering Site>",
+        "messageLink": "<https://testsafebrowsing.appspot.com/apiv4/osx/sociakl_engineering/url/|Social Engineering Site>",
         "sharedAsHttpSecure": true,
         "threatMatch": "SOCIAL_ENGINEERING"
       },
