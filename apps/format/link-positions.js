@@ -1,9 +1,9 @@
-const setAllLinkPositions = (text) => {
+const setAllHyperTextPositions = (text) => {
   var bracketsParentheses = allIndexOf(text, '](')
   var brackets = allIndexOf(text, '[')
   var parentheses = allIndexOf(text, ')')
   if (bracketsParentheses) {
-    return allLinkPositions(bracketsParentheses, brackets, parentheses)
+    return allHyperTextPositions(bracketsParentheses, brackets, parentheses)
   } else {
     return ''
   }
@@ -20,7 +20,7 @@ const allIndexOf = (text, searchChar) => {
   return indices
 }
 
-const allLinkPositions = (bracketsParentheses, brackets, parentheses) => {
+const allHyperTextPositions = (bracketsParentheses, brackets, parentheses) => {
   /* all of the positions of characters which compose markdown syntax links.
   a closed bracket/open parenthesis pair is used as the link indicator */
   var allPositions = []
@@ -71,7 +71,7 @@ const findOpenBracket = (brackets, currentPosition, previousPosition) => {
   return filteredBrackets.pop()
 }
 
-const validLinkPositions = (linkPositions) => {
+const validHyperTextPositions = (linkPositions) => {
   /* check that the set of positions for characters could represent a hyperlink */
   var hasValues = linkPositions.every(value => value >= 0)
   var hasNumbers = linkPositions.every(value => typeof (value) === 'number')
@@ -81,8 +81,8 @@ const validLinkPositions = (linkPositions) => {
 }
 
 module.exports = {
-  setAllLinkPositions,
+  setAllHyperTextPositions,
   allIndexOf,
-  allLinkPositions,
-  validLinkPositions
+  allHyperTextPositions,
+  validHyperTextPositions
 }

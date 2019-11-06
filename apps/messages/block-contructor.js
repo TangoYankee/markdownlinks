@@ -1,4 +1,4 @@
-const { sharedWithoutHttpsData, safeBrowseStatusData, safeBrowseThreatsData } = require('../../safe-browse/warnings')
+const { sharedWithoutHttpsData, safeBrowseStatusData, safeBrowseThreatsData } = require('../safe-browse/warnings')
 const { mrkdwnTemplate } = require('./block-templates')
 
 const appendEmoji = (messageLink, emoji) => {

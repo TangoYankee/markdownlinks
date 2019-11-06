@@ -1,13 +1,17 @@
+const { mockSafeBrowseReponse } = require('./safe-browse-mock')
 const process = require('process')
 const request = require('request')
 
-const safeBrowse = async (threatUrls) => {
+const safeBrowse = (messageData) => {
   /* control the workflow of scanning urls for threats using Google safe browsing Lookup API */
-  var lookupThreatEntries = setLookupThreatEntries(threatUrls)
-  var lookupBody = setLookupBody(lookupThreatEntries)
-  var lookupThreatMatches = postLookupThreatMatches(lookupBody)
-  var allThreatMatches = lookupThreatMatches
-  return allThreatMatches
+  var threatUrlsList = getThreatUrlsList(messageData.links)
+  var lookupThreatEntries = setLookupThreatEntries(threatUrlsList)
+  // var lookupBody = setLookupBody(lookupThreatEntries)
+  setLookupBody(lookupThreatEntries)
+  // var threatMatches = postLookupThreatMatches(lookupBody)
+  var threatMatches = mockSafeBrowseReponse
+  messageData = setThreatTypes(messageData, threatMatches)
+  return messageData
 }
 
 const getThreatUrlsList = (links) => {
@@ -60,6 +64,24 @@ const postLookupThreatMatches = (lookupBody) => {
       return body.matches
     }
   })
+}
+
+const setThreatTypes = (messageData, threatMatches) => {
+  messageData.safeBrowseSuccess = true
+  for (var threatMatch of threatMatches.matches) {
+    var threat = threatMatch.threat
+    if (threat) {
+      for (var link of messageData.links) {
+        var lowerThreatUrl = threat.url.toLowerCase()
+        if (link.cacheKeyFromUrl.toLowerCase() === lowerThreatUrl.toLowerCase()) {
+          link.threatMatch = threatMatch.threatType
+          link.cacheDuration = threatMatch.cacheDuration
+          messageData.threatTypes.push(threatMatch.threatType)
+        }
+      }
+    }
+  }
+  return messageData
 }
 
 module.exports = {

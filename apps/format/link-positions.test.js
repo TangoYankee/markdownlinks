@@ -1,4 +1,4 @@
-const { allIndexOf, allLinkPositions, validLinkPositions } = require('../link-positions')
+const { allIndexOf, allHyperTextPositions, validHyperTextPositions } = require('./link-positions')
 
 /* base arrays for character position tests */
 var bracketsParentheses = [16, 52, 91]
@@ -18,11 +18,11 @@ test.each(charPositions)(
 var foundAllLinkPositions = [[12, 16, 28], [38, 52, 75], [78, 91, 104]]
 test.each([[bracketsParentheses, brackets, parentheses, foundAllLinkPositions]])(
   'all of the positions of characters which compose markdown syntax links', (bracketsParentheses, brackets, parentheses, expectedArray) => {
-    expect(allLinkPositions(bracketsParentheses, brackets, parentheses)).toEqual(expectedArray)
+    expect(allHyperTextPositions(bracketsParentheses, brackets, parentheses)).toEqual(expectedArray)
   })
 
 var isValidLinkPositions = [[[12, 16, 28], true], [[undefined, 34, 23], false], [[56], false], [[12, 6, 20], false], [['0', 1, 2], false]]
 test.each(isValidLinkPositions)(
   'check that the set of positions for characters could represent a hyperlink', (linkPositions, expectedBoolean) => {
-    expect(validLinkPositions(linkPositions)).toBe(expectedBoolean)
+    expect(validHyperTextPositions(linkPositions)).toBe(expectedBoolean)
   })

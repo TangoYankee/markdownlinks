@@ -17,10 +17,12 @@ module.exports = {
         },
         {   /* json specific quote syntax */
             "files": [
-                "apps/markdownlinks/messages/messages.test.js",
-                "apps/markdownlinks/messages/block-templates.js",
-                "apps/markdownlinks/format/link-data.js",
-                "apps/markdownlinks/format/format-tests/link-data.test.js",
+                "apps/messages/messages.test.js",
+                "apps/messages/block-templates.js",
+                "apps/format/link-data.js",
+                "apps/format/link-data.test.js",
+                "apps/format/format.test.js",
+                "apps/format/format.js",
                 "apps/safe-browse/safe-browse.js",
                 "apps/safe-browse/safe-browse.test.js",
                 "apps/safe-browse/safe-browse-mock.js",
