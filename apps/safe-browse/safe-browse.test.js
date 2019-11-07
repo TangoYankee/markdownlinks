@@ -2,7 +2,8 @@ const process = require('process')
 const {
   setLookupBody,
   setLookupThreatEntries,
-  getThreatUrlsList
+  getThreatUrlsList,
+  postLookupThreatMatches
 } = require('./safe-browse.js')
 
 test('getThreatUrlsList() /* extract the urls from the message object */', () => {
@@ -68,4 +69,38 @@ test('setLookupBody() /* place urls with uncached threats into a json template f
     }
   }
   expect(setLookupBody(lookupThreatEntries)).toEqual(lookupBody)
+})
+
+test('postLookupThreatMatches() /* threats suspected by google safe-browse API */', async () => {
+  var lookupBody = { 
+    "client": 
+    { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID, 
+    "clientVersion": "1.5.2" }, 
+    "threatInfo": { 
+      "platformTypes": ["ANY_PLATFORM"], 
+      "threatEntries": [
+        { "url": "testsafebrowsing.appspot.com/s/malware.html" }
+      ], 
+        "threatEntryTypes": ["URL"], 
+        "threatTypes": [
+          "THREAT_TYPE_UNSPECIFIED", 
+          "MALWARE", "SOCIAL_ENGINEERING", 
+          "UNWANTED_SOFTWARE", 
+          "POTENTIALLY_HARMFUL_APPLICATION"] } }
+
+  var mockSafeBrowseReponse = {
+    "matches": [
+      {
+        "threatType": "MALWARE",
+        "platformType": "ANY_PLATFORM",
+        "threat": {
+          "url": "testsafebrowsing.appspot.com/s/malware.html"
+        },
+        "cacheDuration": "300s",
+        "threatEntryType": "URL"
+      }
+    ]
+  }
+  const data = await postLookupThreatMatches(lookupBody)
+  expect(data).toBe(mockSafeBrowseReponse)
 })

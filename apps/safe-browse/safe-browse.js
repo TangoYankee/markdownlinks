@@ -6,7 +6,7 @@ const safeBrowse = (messageData) => {
   /* control the workflow of scanning urls for threats using Google safe browsing Lookup API */
   var threatUrlsList = getThreatUrlsList(messageData.links)
   var lookupThreatEntries = setLookupThreatEntries(threatUrlsList)
-  // var lookupBody = setLookupBody(lookupThreatEntries)
+  var lookupBody = setLookupBody(lookupThreatEntries)
   setLookupBody(lookupThreatEntries)
   // var threatMatches = postLookupThreatMatches(lookupBody)
   var threatMatches = mockSafeBrowseReponse
@@ -48,20 +48,35 @@ const setLookupBody = (lookupThreatEntries) => {
   }
 }
 
-const postLookupThreatMatches = (lookupBody) => {
-  /* call the Google Safe Browse API to check for suspected threats */
+const postLookupThreatMatches = () => {
+  /* threats suspected by google safe-browse API */
   var requestUrl = `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${process.env.GOOGLE_SAFE_BROWSING_KEY}`
+  var lookupBody = { 
+    "client": 
+    { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID, 
+    "clientVersion": "1.5.2" }, 
+    "threatInfo": { 
+      "platformTypes": ["ANY_PLATFORM"], 
+      "threatEntries": [
+        { "url": "testsafebrowsing.appspot.com/s/malware.html" }
+      ], 
+        "threatEntryTypes": ["URL"], 
+        "threatTypes": [
+          "THREAT_TYPE_UNSPECIFIED", 
+          "MALWARE", "SOCIAL_ENGINEERING", 
+          "UNWANTED_SOFTWARE", 
+          "POTENTIALLY_HARMFUL_APPLICATION"] } }
   request.post({
     url: requestUrl,
     body: lookupBody,
     json: true
-  }, (error, response, body) => {
+  }, callback = async (error, response, body) => {
     if (error) {
-      console.log(`Error: ${error}`)
+      // console.log(`Error: ${error}`)
       return error
     } else {
-      console.log(`Response: ${response}`)
-      return body.matches
+      // console.log(`Response: ${response}; matches: ${body.matches[0].threatType}`)
+      return body
     }
   })
 }
@@ -83,6 +98,9 @@ const setThreatTypes = (messageData, threatMatches) => {
   }
   return messageData
 }
+
+var threatMatches = postLookupThreatMatches()
+console.log(threatMatches[0].threatType)
 
 module.exports = {
   getThreatUrlsList,
