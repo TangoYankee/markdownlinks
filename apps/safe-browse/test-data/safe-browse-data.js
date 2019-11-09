@@ -4,7 +4,7 @@ var threatEntries = [
   { "url": "nasa.gov" }
 ]
 
-var urlDomainKeysMeta = [
+var urlDomainKeys = [
     {
       "cacheKeyFromUrl": "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/",
       "cacheDuration": "300s",
@@ -56,6 +56,6 @@ var urlDomainKeysMeta = [
 
 module.exports = {  
   threatEntries,
-    urlDomainKeysMeta,
+    urlDomainKeys,
     requestBody
 }

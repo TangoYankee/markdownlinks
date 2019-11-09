@@ -1,6 +1,6 @@
-const { response } = require('../test-data/post-response')
+const { response } = require('../test-data/post-threat-matches-data')
   
-  const postSafeBrowse = (lookupBody) => {
+  const postThreatMatches = () => {
     return new Promise(resolve => {
       if (response.statusCode === 200) {
         resolve(response.body)
@@ -9,5 +9,5 @@ const { response } = require('../test-data/post-response')
   }
   
   module.exports = {
-    postSafeBrowse
+    postThreatMatches
   }

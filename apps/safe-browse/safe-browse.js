@@ -57,20 +57,16 @@ const postThreatMatches = (requestBody) => {
 }
 
 const setThreatTypes = (messageData, threatMatches) => {
-  /* add threat type data to information about the original message */
+  /* add threat type to the original message */
   messageData.safeBrowseSuccess = true
   for (var threatMatch of threatMatches.matches) {
-    var threat = threatMatch.threat
-    if (threat) {
       for (var link of messageData.links) {
-        var lowerThreatUrl = threat.url.toLowerCase()
-        if (link.cacheKeyFromUrl.toLowerCase() === lowerThreatUrl.toLowerCase()) {
+        if (link.cacheKeyFromUrl === threatMatch.threat) {
           link.threatMatch = threatMatch.threatType
           link.cacheDuration = threatMatch.cacheDuration
           messageData.threatTypes.push(threatMatch.threatType)
         }
       }
-    }
   }
   return messageData
 }
