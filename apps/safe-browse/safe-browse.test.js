@@ -72,20 +72,20 @@ test('setLookupBody() /* place urls with uncached threats into a json template f
 })
 
 // test('postLookupThreatMatches() /* threats suspected by google safe-browse API */', async () => {
-//   var lookupBody = { 
-//     "client": 
-//     { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID, 
-//     "clientVersion": "1.5.2" }, 
-//     "threatInfo": { 
-//       "platformTypes": ["ANY_PLATFORM"], 
+//   var lookupBody = {
+//     "client":
+//     { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID,
+//     "clientVersion": "1.5.2" },
+//     "threatInfo": {
+//       "platformTypes": ["ANY_PLATFORM"],
 //       "threatEntries": [
 //         { "url": "testsafebrowsing.appspot.com/s/malware.html" }
-//       ], 
-//         "threatEntryTypes": ["URL"], 
+//       ],
+//         "threatEntryTypes": ["URL"],
 //         "threatTypes": [
-//           "THREAT_TYPE_UNSPECIFIED", 
-//           "MALWARE", "SOCIAL_ENGINEERING", 
-//           "UNWANTED_SOFTWARE", 
+//           "THREAT_TYPE_UNSPECIFIED",
+//           "MALWARE", "SOCIAL_ENGINEERING",
+//           "UNWANTED_SOFTWARE",
 //           "POTENTIALLY_HARMFUL_APPLICATION"] } }
 
 //   var mockSafeBrowseReponse = {
@@ -105,22 +105,26 @@ test('setLookupBody() /* place urls with uncached threats into a json template f
 //   expect(data).toBe(mockSafeBrowseReponse)
 // })
 
-it('works with promises', async ()=> {
-    var lookupBody = { 
-    "client": 
-    { "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID, 
-    "clientVersion": "1.5.2" }, 
-    "threatInfo": { 
-      "platformTypes": ["ANY_PLATFORM"], 
+it('works with promises', async () => {
+  var lookupBody = {
+    "client":
+    {
+      "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID,
+      "clientVersion": "1.5.2"
+    },
+    "threatInfo": {
+      "platformTypes": ["ANY_PLATFORM"],
       "threatEntries": [
         { "url": "testsafebrowsing.appspot.com/s/malware.html" }
-      ], 
-        "threatEntryTypes": ["URL"], 
-        "threatTypes": [
-          "THREAT_TYPE_UNSPECIFIED", 
-          "MALWARE", "SOCIAL_ENGINEERING", 
-          "UNWANTED_SOFTWARE", 
-          "POTENTIALLY_HARMFUL_APPLICATION"] } }
+      ],
+      "threatEntryTypes": ["URL"],
+      "threatTypes": [
+        "THREAT_TYPE_UNSPECIFIED",
+        "MALWARE", "SOCIAL_ENGINEERING",
+        "UNWANTED_SOFTWARE",
+        "POTENTIALLY_HARMFUL_APPLICATION"]
+    }
+  }
 
   var mockSafeBrowseReponse = {
     "matches": [
@@ -138,4 +142,4 @@ it('works with promises', async ()=> {
   expect.assertions(1)
   const threatMatches = await postLookupThreatMatches(lookupBody)
   return expect(threatMatches).toEqual(mockSafeBrowseReponse)
-} )
+})

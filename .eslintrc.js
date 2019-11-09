@@ -26,7 +26,10 @@ module.exports = {
                 "apps/safe-browse/safe-browse.js",
                 "apps/safe-browse/safe-browse.test.js",
                 "apps/safe-browse/safe-browse-mock.js",
-                "apps/safe-browse/warnings.js"
+                "apps/safe-browse/warnings.js",
+                "async-tutorial/post-safe-browse.js",
+                "async-tutorial/__tests__/post-safe-browse-test.js",
+                "async-tutorial/__mocks__/post-safe-browse.js",
         ],
             "rules": {
                 "quote-props": "off",
