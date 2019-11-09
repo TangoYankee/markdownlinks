@@ -2,7 +2,7 @@ const process = require('process')
 const request = require('request')
 
 const safeBrowse = (messageData) => {
-  /* control the workflow of scanning urls for threats using Google safe browsing Lookup API */
+  /* scan urls for threats using Google safe browse 'lookup' API */
   var threatUrlsList = getThreatUrlsList(messageData.links)
   var lookupThreatEntries = setLookupThreatEntries(threatUrlsList)
   var lookupBody = setLookupBody(lookupThreatEntries)
@@ -84,9 +84,6 @@ const setThreatTypes = (messageData, threatMatches) => {
   }
   return messageData
 }
-
-// var threatMatches = postLookupThreatMatches()
-// console.log(threatMatches[0].threatType)
 
 module.exports = {
   getThreatUrlsList,
