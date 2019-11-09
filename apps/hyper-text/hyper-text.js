@@ -1,12 +1,12 @@
-const { setAllHyperTextPositions, validHyperTextPositions } = require('./link-positions')
+const { setAllHyperTextPositions, validHyperTextPositions } = require('./positions')
 const {
   validateDestUrl, validateDisplayText, setSlackHyperText,
   setDestUrl, setDisplayText, getMarkdownHyperText, setAllSharedAsHttpSecure,
   setHttpDestUrl, setUrlDomainKey, setSharedAsHttpSecure
-} = require('./link-content')
+} = require('./content')
 const { safeBrowse } = require('../safe-browse/safe-browse')
 
-const format = (text) => {
+const hyperText = (text) => {
   /* receive markdown hypertext syntax, return slack hypertext syntax */
   var allHyperTextPositions = setAllHyperTextPositions(text)
   if (allHyperTextPositions) {
@@ -70,9 +70,9 @@ const setMessageData = (text, userId) => {
   }
 }
 
-const setHyperTextData = (markdownHyperText, slackHyperText, cacheKeyFromUrl, sharedAsHttpSecure) => {
+const setHyperTextData = (markdownHyperText, slackHyperText, urlDomainKey, sharedAsHttpSecure) => {
   return {
-    cacheKeyFromUrl: cacheKeyFromUrl,
+    urlDomainKey: urlDomainKey,
     cacheDuration: '',
     markdownLink: markdownHyperText,
     messageLink: slackHyperText,
@@ -82,6 +82,6 @@ const setHyperTextData = (markdownHyperText, slackHyperText, cacheKeyFromUrl, sh
 }
 
 module.exports = {
-  format,
+  hyperText,
   devFormat
 }

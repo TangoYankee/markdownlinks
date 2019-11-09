@@ -42,7 +42,7 @@ const getMarkdownHyperText = (linkPositions, text) => {
 }
 
 const setHttpDestUrl = (linkAddress) => {
-  /* ensure that each link has http or https in the url */
+  /* each link has http or https in the url */
   if (linkAddress.startsWith('http://') || linkAddress.startsWith('https://')) {
     return linkAddress
   } else {
@@ -51,17 +51,18 @@ const setHttpDestUrl = (linkAddress) => {
 }
 
 const setUrlDomainKey = (unhttpedLinkAddress) => {
-  /* remove http(s) and www */
+  /* remove http(s) and www for consistency across safe browse, cache, and multiple user requests */
   var domainPrefixRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)/gm
   return unhttpedLinkAddress.replace(domainPrefixRegex, '')
 }
 
 const setSharedAsHttpSecure = (unhttpedLinkAddress) => {
+  /* url was originally prefaced with 'https' */
   return unhttpedLinkAddress.startsWith('https://')
 }
 
-// Possibly move to link-content
 const setAllSharedAsHttpSecure = (messageData) => {
+  /* all urls were originally prefaced with 'https' */
   messageData.allSharedAsHttpSecure = true
   for (var link in messageData.links) {
     if (!link.sharedAsHttpSecure) {
