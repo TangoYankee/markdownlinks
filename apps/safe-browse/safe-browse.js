@@ -1,4 +1,3 @@
-const { mockSafeBrowseReponse } = require('./safe-browse-mock')
 const process = require('process')
 const request = require('request')
 
@@ -9,7 +8,7 @@ const safeBrowse = (messageData) => {
   var lookupBody = setLookupBody(lookupThreatEntries)
   setLookupBody(lookupThreatEntries)
   // var threatMatches = postLookupThreatMatches(lookupBody)
-  var threatMatches = mockSafeBrowseReponse
+  var threatMatches = 'mockSafeBrowseReponse'
   messageData = setThreatTypes(messageData, threatMatches)
   return messageData
 }
