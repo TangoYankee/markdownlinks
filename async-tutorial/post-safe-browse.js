@@ -11,11 +11,11 @@ const postSafeBrowse = (lookupBody) => {
     }
     
     return new Promise(resolve => {
-        request.post(options, (error, response, body) => {
+        request.post(options, (error, response) => {
       if (error) {
         resolve(error)
-      } else {
-        resolve(body)
+      } else if (response.statusCode === 200) {
+        resolve(response.body)
       }
     })
     })

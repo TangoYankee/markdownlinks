@@ -1,6 +1,6 @@
 jest.mock('../post-safe-browse')
 
-const { getThreatMatches } = require('../safe-browse-dev')
+const { postSafeBrowse } = require('../post-safe-browse')
 
 it('postSafeBrowse /* threats suspected by google safe-browse API */', async () => {
     var threatMatches = {
@@ -17,6 +17,6 @@ it('postSafeBrowse /* threats suspected by google safe-browse API */', async () 
         ]
       }
     expect.assertions(1)
-    const threatMatchesResponse = await getThreatMatches('')
+    const threatMatchesResponse = await postSafeBrowse('')
     return expect(threatMatchesResponse).toEqual(threatMatches)
 })

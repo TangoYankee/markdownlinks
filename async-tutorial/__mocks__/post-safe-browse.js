@@ -1,4 +1,4 @@
-const threatMatchesResponse = {
+const response = {
            "body": {
               "matches": [
                 {
@@ -47,13 +47,14 @@ const threatMatchesResponse = {
                "slashes": true,
              },
            },
-           "statusCode": 200,
-          
+           "statusCode": 200,         
 }
 
 const postSafeBrowse = (lookupBody) => {
     return new Promise(resolve => {
-        resolve(threatMatchesResponse)
+        if (response.statusCode === 200) {
+            resolve(response.body)
+        }
     })
 }
 
