@@ -6,7 +6,7 @@ const {
 } = require('./link-content')
 const { safeBrowse } = require('../safe-browse/safe-browse')
 
-const format = (text, userId) => {
+const format = (text) => {
   /* receive markdown hypertext syntax, return slack hypertext syntax */
   var allHyperTextPositions = setAllHyperTextPositions(text)
   if (allHyperTextPositions) {
@@ -61,23 +61,23 @@ const devFormat = (text, userId) => {
 
 const setMessageData = (text, userId) => {
   return {
-    "message": text,
-    "sharedBy": userId,
-    "safeBrowseSuccess": true,
-    "allSharedAsHttpSecure": true,
-    "threatTypes": [],
-    "links": []
+    message: text,
+    sharedBy: userId,
+    safeBrowseSuccess: false,
+    allSharedAsHttpSecure: false,
+    threatTypes: [],
+    links: []
   }
 }
 
 const setHyperTextData = (markdownHyperText, slackHyperText, cacheKeyFromUrl, sharedAsHttpSecure) => {
   return {
-    "cacheKeyFromUrl": cacheKeyFromUrl,
-    "cacheDuration": "",
-    "markdownLink": markdownHyperText,
-    "messageLink": slackHyperText,
-    "sharedAsHttpSecure": sharedAsHttpSecure,
-    "threatMatch": ""
+    cacheKeyFromUrl: cacheKeyFromUrl,
+    cacheDuration: '',
+    markdownLink: markdownHyperText,
+    messageLink: slackHyperText,
+    sharedAsHttpSecure: sharedAsHttpSecure,
+    threatMatch: ''
   }
 }
 

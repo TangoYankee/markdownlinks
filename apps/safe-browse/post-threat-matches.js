@@ -1,12 +1,12 @@
 const process = require('process')
 const request = require('request')
 
-const postSafeBrowse = (lookupBody) => {
-  /* threats suspected by google safe-browse API */
-  var requestUrl = `https://safebrowsing.googleapis.com/v4/threatMatches:find`
+const postThreatMatches = (requestBody) => {
+  /* find threats that safe browse suspects */
+  var requestUrl = 'https://safebrowsing.googleapis.com/v4/threatMatches:find'
   var options = {
     url: requestUrl,
-    body: lookupBody,
+    body: requestBody,
     json: true,
     qs: process.env.GOOGLE_SAFE_BROWSING_KEY
   }
@@ -23,5 +23,5 @@ const postSafeBrowse = (lookupBody) => {
 }
 
 module.exports = {
-  postSafeBrowse
+  postThreatMatches
 }
