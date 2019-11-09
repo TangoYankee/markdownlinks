@@ -57,12 +57,10 @@ const postLookupThreatMatches = (lookupBody) => {
     json: true,
     qs: { key : process.env.GOOGLE_SAFE_BROWSING_KEY }
   }
-  return new Promise(resolve => {request.post(options, (error, body) => {
+  return new Promise(resolve => {request.post(options, (error, response, body) => {
     if (error) {
-      // console.log(`Error: ${error}`)
       resolve(error)
     } else {
-      // console.log(`Response: ${response}; matches: ${body.matches[0].threatType}`)
       resolve(body)
     }
   })

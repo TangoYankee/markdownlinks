@@ -11,7 +11,7 @@ const postSafeBrowse = (lookupBody) => {
     }
     
     return new Promise(resolve => {
-        request.post(options, (error, body) => {
+        request.post(options, (error, response, body) => {
       if (error) {
         resolve(error)
       } else {
