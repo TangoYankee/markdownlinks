@@ -3,36 +3,25 @@ const request = require('request')
 
 const safeBrowse = (messageData) => {
   /* scan urls for threats using Google safe browse 'lookup' API */
-  var threatUrlsList = getThreatUrlsList(messageData.links)
-  var lookupThreatEntries = setLookupThreatEntries(threatUrlsList)
-  var lookupBody = setLookupBody(lookupThreatEntries)
-  setLookupBody(lookupThreatEntries)
-  // var threatMatches = postLookupThreatMatches(lookupBody)
-  var threatMatches = 'mockSafeBrowseReponse'
+  var threatEntries = setThreatEntries(messageData.links)
+  var requestBody = setRequestBody(threatEntries)
+  // Add handling for unsuccessful requests
+  var threatMatches = postThreatMatches(requestBody)
   messageData = setThreatTypes(messageData, threatMatches)
   return messageData
 }
 
-const getThreatUrlsList = (links) => {
-  /* extract the urls from the message object */
-  var threatUrls = []
+const setThreatEntries = (links) => {
+  /* pair urls with key for safe browse threat entries */
+  var threatEntries = []
   for (var link of links) {
-    threatUrls.push(link.cacheKeyFromUrl)
+    threatEntries.push({ "url": link.cacheKeyFromUrl })
   }
-  return threatUrls
+  return threatEntries
 }
 
-const setLookupThreatEntries = (uncachedThreatUrls) => {
-  /* urls have a specific format when placed into Lookup API body */
-  var lookupThreatEntries = []
-  for (var threatUrl of uncachedThreatUrls) {
-    lookupThreatEntries.push({ "url": threatUrl })
-  }
-  return lookupThreatEntries
-}
-
-const setLookupBody = (lookupThreatEntries) => {
-  /* place urls with uncached threats into a json template for the Safe Browse API */
+const setRequestBody = (threatEntries) => {
+  /* pair threat entries urls with threat types to check */
   return {
     "client": {
       "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID,
@@ -42,17 +31,17 @@ const setLookupBody = (lookupThreatEntries) => {
       "threatTypes": ["THREAT_TYPE_UNSPECIFIED", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
       "platformTypes": ["ANY_PLATFORM"],
       "threatEntryTypes": ["URL"],
-      "threatEntries": lookupThreatEntries
+      "threatEntries": threatEntries
     }
   }
 }
 
-const postLookupThreatMatches = (lookupBody) => {
-  /* threats suspected by google safe-browse API */
+const postThreatMatches = (requestBody) => {
+  /* find threats that safe browse suspects */
   var requestUrl = `https://safebrowsing.googleapis.com/v4/threatMatches:find`
   var options = {
     url: requestUrl,
-    body: lookupBody,
+    body: requestBody,
     json: true,
     qs: { key: process.env.GOOGLE_SAFE_BROWSING_KEY }
   }
@@ -68,6 +57,7 @@ const postLookupThreatMatches = (lookupBody) => {
 }
 
 const setThreatTypes = (messageData, threatMatches) => {
+  /* add threat type data to information about the original message */
   messageData.safeBrowseSuccess = true
   for (var threatMatch of threatMatches.matches) {
     var threat = threatMatch.threat
@@ -86,9 +76,8 @@ const setThreatTypes = (messageData, threatMatches) => {
 }
 
 module.exports = {
-  getThreatUrlsList,
-  postLookupThreatMatches,
+  postThreatMatches,
   safeBrowse,
-  setLookupBody,
-  setLookupThreatEntries
+  setRequestBody,
+  setThreatEntries
 }

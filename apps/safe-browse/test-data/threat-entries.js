@@ -1,4 +1,10 @@
-var messageData = [
+var threatEntries = [
+  { "url": "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/" }, 
+  { "url": "testsafebrowsing.appspot.com/s/malware.html" }, 
+  { "url": "nasa.gov" }
+]
+
+var urlDomainKeysMeta = [
     {
       "cacheKeyFromUrl": "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/",
       "cacheDuration": "300s",
@@ -25,19 +31,7 @@ var messageData = [
     }
   ]
 
-  var urlList = [
-      "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/", 
-      "testsafebrowsing.appspot.com/s/malware.html", 
-      "nasa.gov"
-    ]
-
-    var lookupThreatEntries = [
-        { "url": "testsafebrowsing.appspot.com/apiv4/osx/social_engineering/url/" }, 
-        { "url": "testsafebrowsing.appspot.com/s/malware.html" }, 
-        { "url": "nasa.gov" }
-    ]
-
-    var lookupBody = {
+    var requestBody = {
         "client": {
           "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID,
           "clientVersion": "1.5.2"
@@ -60,9 +54,8 @@ var messageData = [
         }
       }
 
-module.exports = {
-    messageData,
-    urlList,
-    lookupThreatEntries,
-    lookupBody
+module.exports = {  
+  threatEntries,
+    urlDomainKeysMeta,
+    requestBody
 }
