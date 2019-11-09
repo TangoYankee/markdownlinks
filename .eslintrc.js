@@ -14,17 +14,6 @@ module.exports = {
             "rules": {
                 "no-undef": "off"
             }
-        },
-        {   /* json specific quote syntax */
-            "files": [
-                "apps/messages/messages.test.js",
-                "apps/messages/block-templates.js",
-        ],
-            "rules": {
-                "quote-props": "off",
-                "quotes": "off"
-            }
-
         }
     ]
 };

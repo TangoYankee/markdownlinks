@@ -5,7 +5,7 @@ const safeBrowse = (messageData) => {
   /* scan urls for threats using Google safe browse 'lookup' API */
   var threatEntries = setThreatEntries(messageData.links)
   var requestBody = setRequestBody(threatEntries)
-  // var threatMatches = postThreatMatches(requestBody)
+  var threatMatches = postThreatMatches(requestBody)
   messageData = setThreatTypes(messageData, threatMatches)
   return messageData
 }
