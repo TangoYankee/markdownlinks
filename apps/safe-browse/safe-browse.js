@@ -5,7 +5,8 @@ const safeBrowse = (messageData) => {
   /* scan urls for threats using Google safe browse 'lookup' API */
   var threatEntries = setThreatEntries(messageData.links)
   var requestBody = setRequestBody(threatEntries)
-  var threatMatches = postThreatMatches(requestBody)
+  var threatMatches = postThreatMatches(requestBody)  
+  messageData.safeBrowseSuccess = true
   messageData = setThreatTypes(messageData, threatMatches)
   return messageData
 }
@@ -37,7 +38,6 @@ const setRequestBody = (threatEntries) => {
 
 const setThreatTypes = (messageData, threatMatches) => {
   /* add threat type to the original message */
-  messageData.safeBrowseSuccess = true
   for (var threatMatch of threatMatches.matches) {
     for (var link of messageData.links) {
       if (link.cacheKeyFromUrl === threatMatch.threat.url) {

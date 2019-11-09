@@ -57,7 +57,7 @@ const requestBody = {
 const inputMessageData = {
   message: '[Social Engineering Site](https://testsafebrowsing.appspot.com/apiv4/OSX/SOCIAL_ENGINEERING/URL/), [Malware Site](testsafebrowsing.appspot.com/s/malware.html), and [Nasa](nasa.gov)',
   sharedBy: 'TangoYankee',
-  safeBrowseSuccess: false,
+  safeBrowseSuccess: true,
   allSharedAsHttpSecure: false,
   threatTypes: [],
   links: [
