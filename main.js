@@ -1,9 +1,9 @@
 'use strict'
 const bodyParser = require('body-parser')
 const express = require('express')
-const { publish } = require('./apps/messages/methods.js')
-const { oauth } = require('./apps/credential/oauth.js')
-const { signature } = require('./apps/credential/signature.js')
+const markdownlinks = require('./apps/markdownlinks/methods.js')
+const { oauth } = require('./apps/slack/oauth.js')
+const { signature } = require('./apps/slack/signature.js')
 
 var app = express()
 app.set('view engine', 'pug')
@@ -26,7 +26,7 @@ app.post('/publish', (req, res) => {
   /* send message in response to user input from slash command */
   var currentTime = Math.floor(new Date().getTime() / 1000)
   if (signature(req, currentTime)) {
-    publish(req.body, res)
+    markdownlinks.data.publish(req.body, res)
   } else {
     res.status(400).send('Ignore this request')
   }

@@ -1,17 +1,16 @@
-const setAllHyperTextPositions = (text) => {
-  /* locations of Markdown syntax hypertext in the user message */
+const setAllLinkPositions = (text) => {
   var bracketsParentheses = allIndexOf(text, '](')
   var brackets = allIndexOf(text, '[')
   var parentheses = allIndexOf(text, ')')
   if (bracketsParentheses) {
-    return allHyperTextPositions(bracketsParentheses, brackets, parentheses)
+    return allLinkPositions(bracketsParentheses, brackets, parentheses)
   } else {
     return ''
   }
 }
 
 const allIndexOf = (text, searchChar) => {
-  /* positions of a character in a string */
+  /* find all the positions of a character in a string */
   let startIndex = 0; let index; const indices = []; let count = 0
   while ((index = text.indexOf(searchChar, startIndex)) > -1 && count < 20) {
     indices.push(index)
@@ -21,9 +20,9 @@ const allIndexOf = (text, searchChar) => {
   return indices
 }
 
-const allHyperTextPositions = (bracketsParentheses, brackets, parentheses) => {
-  /* positions of characters for markdown syntax hyper text,
-    indicated by a bracket/open parenthesis pair */
+const allLinkPositions = (bracketsParentheses, brackets, parentheses) => {
+  /* all of the positions of characters which compose markdown syntax links.
+  a closed bracket/open parenthesis pair is used as the link indicator */
   var allPositions = []
   var bracketsParenthesesLen = bracketsParentheses.length
   for (var i = 0; i < bracketsParenthesesLen; i++) {
@@ -41,7 +40,7 @@ const allHyperTextPositions = (bracketsParentheses, brackets, parentheses) => {
 }
 
 const findPreviousPosition = (i, bracketsParentheses) => {
-  /* the bracket/parenthesis pair which occurs before the current one */
+  /* find the bracket/parenthesis pair that occurs before the current one */
   if (i === 0) {
     return 0
   } else {
@@ -51,7 +50,7 @@ const findPreviousPosition = (i, bracketsParentheses) => {
 }
 
 const findNextPosition = (i, bracketsParentheses, bracketParenthesesLen, parentheses) => {
-  /* the bracket/parenthesis pair which occurs after the current one */
+  /* find the bracket/parenthesis pair that occurs after the current one */
   if (i === (bracketParenthesesLen - 1)) {
     return parentheses[parentheses.length - 1]
   } else {
@@ -61,19 +60,19 @@ const findNextPosition = (i, bracketsParentheses, bracketParenthesesLen, parenth
 }
 
 const findClosedParenthensis = (parentheses, currentPosition, nextPosition) => {
-  /* the position of the closed parenthesis, associated with the hyperlink */
+  /* find the position of the closed parenthesis, associated with the hyperlink */
   var filteredParentheses = parentheses.filter(parenthesis => parenthesis > currentPosition && parenthesis <= nextPosition)
   return filteredParentheses[0]
 }
 
 const findOpenBracket = (brackets, currentPosition, previousPosition) => {
-  /* the position of the open bracket associated with the hyperlink */
+  /* find the position of the open bracket associated with the hyperlink */
   var filteredBrackets = brackets.filter(bracket => bracket < currentPosition && bracket >= previousPosition)
   return filteredBrackets.pop()
 }
 
-const validHyperTextPositions = (linkPositions) => {
-  /* the set of positions for characters could represent a hyperlink */
+const validLinkPositions = (linkPositions) => {
+  /* check that the set of positions for characters could represent a hyperlink */
   var hasValues = linkPositions.every(value => value >= 0)
   var hasNumbers = linkPositions.every(value => typeof (value) === 'number')
   var correctLength = linkPositions.length === 3
@@ -82,8 +81,8 @@ const validHyperTextPositions = (linkPositions) => {
 }
 
 module.exports = {
-  setAllHyperTextPositions,
+  setAllLinkPositions,
   allIndexOf,
-  allHyperTextPositions,
-  validHyperTextPositions
+  allLinkPositions,
+  validLinkPositions
 }

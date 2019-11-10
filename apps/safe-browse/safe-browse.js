@@ -1,58 +1,113 @@
 const process = require('process')
-const postThreatMatches = require('./post-threat-matches')
+const request = require('request')
 
-const safeBrowse = (messageData) => {
-  /* scan urls for threats using Google safe browse 'lookup' API */
-  var threatEntries = setThreatEntries(messageData.links)
-  var requestBody = setRequestBody(threatEntries)
-  var threatMatches = postThreatMatches(requestBody)
-  messageData.safeBrowseSuccess = true
-  messageData = setThreatTypes(messageData, threatMatches)
-  return messageData
+// On the homepage, advise that the protection is not perfect.
+
+var safeBrowse = async (threatUrls) => {
+  /* control the workflow of scanning urls for threats using Google safe browsing Lookup API */
+  var cachedThreatMatches = getCacheThreatMatches(threatUrls)
+  var uncachedThreatUrls = setUncachedThreatUrlPositions(threatUrls, cachedThreatMatches)
+  var lookupThreatEntries = setLookupThreatEntries(uncachedThreatUrls)
+  var lookupBody = setLookupBody(lookupThreatEntries)
+  var lookupThreatMatches = postLookupThreatMatches(lookupBody)
+  postCacheThreatMatches(lookupThreatMatches)
+  var allThreatMatches = lookupThreatMatches + cachedThreatMatches
+  return allThreatMatches
 }
 
-const setThreatEntries = (links) => {
-  /* pair urls with key for safe browse threat entries */
-  var threatEntries = []
-  for (var link of links) {
-    threatEntries.push({ url: link.cacheKeyFromUrl })
+// TODO: move to cache folder/application
+var getCacheThreatMatches = (threatUrls) => {
+  /* check cache for previously saved suspected threats */
+  // https://www.npmjs.com/package/node-cache
+  // possible cache check error
+  var cachedThreatMatches = threatUrls // url and threat found in cache
+  return cachedThreatMatches
+}
+
+var setUncachedThreatUrlPositions = (threatUrls, cachedThreatMatches) => {
+  /* determine which threat urls do not exist in the cache */
+  var threatDomains = setThreatDomains(threatUrls)
+  var cachedThreatDomains = setThreatDomains(cachedThreatMatches)
+  var uncachedThreatDomains = threatDomains.filter(threatDomain => !cachedThreatDomains.includes(threatDomain))
+  var uncachedThreatDomainsLoc = uncachedThreatDomains.map(threatDomain => threatDomains.indexOf(threatDomain))
+  return uncachedThreatDomainsLoc
+}
+
+const setThreatDomains = (threatUrls) => {
+  /* strip the address prefixes, as they may not have been used in previous requests */
+  const removeDomainPrefixes = (threatUrls) => {
+    /* nested regex function to remove http(s) and www */
+    var domainPrefixRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)/gm
+    return threatUrls.url.replace(domainPrefixRegex, '')
   }
-  return threatEntries
+  return threatUrls.map(removeDomainPrefixes)
 }
 
-const setRequestBody = (threatEntries) => {
-  /* pair threat entries urls with threat types to check */
+var setLookupThreatEntries = (uncachedThreatUrls) => {
+  /* urls have a specific format when placed into Lookup API body */
+  var lookupThreatEntries = []
+  for (var threatUrl of uncachedThreatUrls) {
+    lookupThreatEntries.push({ "url": threatUrl })
+  }
+  return lookupThreatEntries
+}
+
+var setLookupBody = (lookupThreatEntries) => {
+  /* place urls with uncached threats into a json template for the Safe Browse API */
   return {
-    client: {
-      clientId: process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID,
-      clientVersion: '1.5.2'
+    "client": {
+      "clientId": process.env.GOOGLE_SAFE_BROWSING_CLIENT_ID,
+      "clientVersion": "1.5.2"
     },
-    threatInfo: {
-      threatTypes: ['THREAT_TYPE_UNSPECIFIED', 'MALWARE', 'SOCIAL_ENGINEERING', 'UNWANTED_SOFTWARE', 'POTENTIALLY_HARMFUL_APPLICATION'],
-      platformTypes: ['ANY_PLATFORM'],
-      threatEntryTypes: ['URL'],
-      threatEntries: threatEntries
+    "threatInfo": {
+      "threatTypes": ["THREAT_TYPE_UNSPECIFIED", "MALWARE", "SOCIAL_ENGINEERING", "UNWANTED_SOFTWARE", "POTENTIALLY_HARMFUL_APPLICATION"],
+      "platformTypes": ["ANY_PLATFORM"],
+      "threatEntryTypes": ["URL"],
+      "threatEntries": lookupThreatEntries
     }
   }
 }
 
-const setThreatTypes = (messageData, threatMatches) => {
-  /* add threat type to the original message */
-  for (var threatMatch of threatMatches.matches) {
-    for (var link of messageData.links) {
-      if (link.cacheKeyFromUrl === threatMatch.threat.url) {
-        link.threatMatch = threatMatch.threatType
-        link.cacheDuration = threatMatch.cacheDuration
-        messageData.threatTypes.push(threatMatch.threatType)
-      }
+var postLookupThreatMatches = (lookupBody) => {
+  /* call the Google Safe Browse API to check for suspected threats */
+  var requestUrl = `https://safebrowsing.googleapis.com/v4/threatMatches:find?key=${process.env.GOOGLE_SAFE_BROWSING_KEY}`
+  request.post({
+    url: requestUrl,
+    body: lookupBody,
+    json: true
+  }, (error, response, body) => {
+    if (error) {
+      console.log(`Error: ${error}`)
+      return error
+    } else {
+      console.log(`Response: ${response}`)
+      return body.matches
     }
+  })
+}
+
+// TODO: move to cache folder/application
+// postCache
+// - accept array of "uncached_threat_url" and "threat_type"
+// - write the urls to the cache [threat_url, threat_type, cached_timeout]
+// - return success or error state
+var postCacheThreatMatches = (lookupThreatMatches) => {
+  /* save newly checked urls to the cache */
+  // If there are matches
+  if (lookupThreatMatches) {
+
   }
-  return messageData
+  var cacheResponse = ''
+  return cacheResponse
 }
 
 module.exports = {
+  getCacheThreatMatches,
+  postCacheThreatMatches,
+  postLookupThreatMatches,
   safeBrowse,
-  setRequestBody,
-  setThreatEntries,
-  setThreatTypes
+  setLookupBody,
+  setLookupThreatEntries,
+  setThreatDomains,
+  setUncachedThreatUrlPositions
 }

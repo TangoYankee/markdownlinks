@@ -13,14 +13,14 @@ const signature = (request, currentTime) => {
 }
 
 const isRecent = (timestamp, currentTime) => {
-  /* guard against replay attacks */
+  /* guard against replay attacks by checking the request was made recently */
   const timeTolerance = 3e2
   var timeDelta = Math.abs(currentTime - timestamp)
   return (timeDelta <= timeTolerance)
 }
 
 const isValidHash = (timestamp, request) => {
-  /* calculated application signature and slack signature match */
+  /* check that the calculated application signature  and slack signature match */
   const version = 'v0'
   var requestBody = qs.stringify(request.body, { format: 'RFC1738' })
   var baseString = getBaseString(version, timestamp, requestBody)
