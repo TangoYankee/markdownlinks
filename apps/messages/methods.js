@@ -1,5 +1,5 @@
 const request = require('request')
-const { hyperText } = require('./hyper-text/hyper-text.js')
+const { hyperText } = require('../hyper-text/hyper-text.js')
 const { setHelpMessage, setMarkdownMessage, setErrorMessage } = require('./messages.js')
 
 const publish = (requestBody, res) => {
