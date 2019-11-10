@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient
-const { checkTeam } = require('./db.js')
+const { checkTeam } = require('../db')
+const { teamId, teamTokenOne, teamTokentwo } = require('../test-data/db-data')
 
 describe('insert', () => {
   var connection
@@ -17,9 +18,6 @@ describe('insert', () => {
     await db.close()
   })
 
-  var teamId = '1234567890'
-  var teamTokenOne = 'qwertyasdfg'
-  var teamTokentwo = 'plmoknijb'
   it(
     'insert a team into the collection',
     async () => {
