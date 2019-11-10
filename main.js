@@ -1,9 +1,10 @@
 'use strict'
 const bodyParser = require('body-parser')
 const express = require('express')
-const { publish } = require('./apps/messages/methods.js')
-const { oauth } = require('./apps/credential/oauth.js')
-const { signature } = require('./apps/credential/signature.js')
+const { publish } = require('./apps/messages/methods')
+const { oauth } = require('./apps/credential/oauth')
+const { signature } = require('./apps/credential/signature')
+const { cacheStart } = require('./apps/cache/cache')
 
 var app = express()
 app.set('view engine', 'pug')
@@ -35,6 +36,13 @@ app.post('/publish', (req, res) => {
 app.use((req, res, next) => {
   /* handle 404 errors by rendering message box on home page */
   res.status(404).render('index', { message: 'page-not-found' })
+})
+
+cacheStart((err) => {
+  /* threat cache */
+  if(err){
+    console.log(err)
+  }
 })
 
 const port = 4390
