@@ -22,7 +22,7 @@ const allIndexOf = (text, searchChar) => {
 }
 
 const allHyperTextPositions = (bracketsParentheses, brackets, parentheses) => {
-  /* positions of characters for markdown syntax hyper text, 
+  /* positions of characters for markdown syntax hyper text,
     indicated by a bracket/open parenthesis pair */
   var allPositions = []
   var bracketsParenthesesLen = bracketsParentheses.length

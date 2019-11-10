@@ -10,33 +10,33 @@ const charsInMessage = [
   [message, '[', brackets]
 ]
 const expectedHyperTextPositions = [
-    [12, 16, 28],
-    [38, 52, 75],
-    [78, 91, 104]
+  [12, 16, 28],
+  [38, 52, 75],
+  [78, 91, 104]
 ]
 const charPositions = [
-    [bracketsParentheses, brackets, parentheses, expectedHyperTextPositions]
+  [bracketsParentheses, brackets, parentheses, expectedHyperTextPositions]
 ]
 const areValidPositions = [
-    [
-        [12, 16, 28], true
-    ], 
-    [
-        [undefined, 34, 23], false
-    ],
-    [
-        [56], false
-    ],
-    [
-        [12, 6, 20], false
-    ],
-    [
-        ['0', 1, 2], false
-    ]
+  [
+    [12, 16, 28], true
+  ],
+  [
+    [undefined, 34, 23], false
+  ],
+  [
+    [56], false
+  ],
+  [
+    [12, 6, 20], false
+  ],
+  [
+    ['0', 1, 2], false
+  ]
 ]
 
 module.exports = {
-    charsInMessage,
-    charPositions,
-    areValidPositions
+  charsInMessage,
+  charPositions,
+  areValidPositions
 }

@@ -2,7 +2,7 @@ const { allIndexOf, allHyperTextPositions, validHyperTextPositions } = require('
 const { charsInMessage, charPositions, areValidPositions } = require('../test-data/positions-data')
 
 test.each(charsInMessage)(
-  'allIndexOf() /* positions of a character in a string */', 
+  'allIndexOf() /* positions of a character in a string */',
   (text, char, expectedPositions) => {
     expect(allIndexOf(text, char)).toEqual(expectedPositions)
   })

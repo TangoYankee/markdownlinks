@@ -1,4 +1,4 @@
-var slackRequest = {
+const slackRequest = {
   body: {
     token: 'fake-token-value',
     team_id: 'fake-team-id',
@@ -26,4 +26,27 @@ var slackRequest = {
   }
 }
 
-module.exports = slackRequest
+const timestampStr = slackRequest.headers['x-slack-request-timestamp']
+const timestamp = Number(timestampStr)
+/* TODO: create a variable to explain 1e2 is a fake offset for the fake current time */
+const currentTime = (timestamp + 1e2)
+
+const validRequest = [
+  [slackRequest, currentTime, true]
+]
+
+const timestamps = [
+  [timestamp, timestamp, true],
+  [timestamp, (timestamp + 2e2), true],
+  [timestamp, (timestamp + 5e2), false]
+]
+
+const validHash = [
+  [timestamp, slackRequest, true]
+]
+
+module.exports = {
+  validRequest,
+  timestamps,
+  validHash
+}

@@ -1,75 +1,79 @@
 const {
-  helpMessage,
-  errorMessage,
-  markdownMessage,
+  setHelpMessage,
+  setErrorMessage,
+  setMarkdownMessage,
   devMarkdownMessage
 } = require('./messages.js')
 
-test('help message', () => {
-  var userId = 12345678
-  var helpMessageData = {
-    response_type: 'ephemeral',
-    blocks: [
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: `:confetti_ball: *welcome,* <@${userId}>!\n_format your hyperlinks like this..._`
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: '*your message*\n _/markdownlinks create [nice links](https://markdownguide.org/)._'
-        }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: '*returned message*\n _create <https://markdownguide.org/|nice links>._'
-        }
-      },
-      {
-        type: 'divider'
-      },
-      {
-        type: 'context',
-        elements: [
-          {
+test(
+  'help message',
+  () => {
+    var userId = 12345678
+    var helpMessageData = {
+      response_type: 'ephemeral',
+      blocks: [
+        {
+          type: 'section',
+          text: {
             type: 'mrkdwn',
-            text: 'visit https://markdownlinks.io'
+            text: `:confetti_ball: *welcome,* <@${userId}>!\n_format your hyperlinks like this..._`
           }
-        ]
-      }
-    ]
-  }
-  expect(helpMessage(userId)).toEqual(helpMessageData)
-})
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: '*your message*\n _/markdownlinks create [nice links](https://markdownguide.org/)._'
+          }
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: '*returned message*\n _create <https://markdownguide.org/|nice links>._'
+          }
+        },
+        {
+          type: 'divider'
+        },
+        {
+          type: 'context',
+          elements: [
+            {
+              type: 'mrkdwn',
+              text: 'visit https://markdownlinks.io'
+            }
+          ]
+        }
+      ]
+    }
+    expect(setHelpMessage(userId)).toEqual(helpMessageData)
+  })
 
-test('error message', () => {
-  var errorMessageData = {
-    response_type: 'ephemeral',
-    blocks: [
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: ':warning:please provide input text'
+test(
+  'error message',
+  () => {
+    var errorMessageData = {
+      response_type: 'ephemeral',
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: ':warning:please provide input text'
+          }
+        },
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: '*For instructions, write...* _/markdownlinks help_'
+          }
         }
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: '*For instructions, write...* _/markdownlinks help_'
-        }
-      }
-    ]
-  }
-  expect(errorMessage()).toEqual(errorMessageData)
-})
+      ]
+    }
+    expect(setErrorMessage()).toEqual(errorMessageData)
+  })
 
 test('markdown message', () => {
   var markdownFormat = 'example text'
@@ -95,7 +99,7 @@ test('markdown message', () => {
       }
     ]
   }
-  expect(markdownMessage(markdownFormat, userId)).toEqual(markdownMessageData)
+  expect(setMarkdownMessage(markdownFormat, userId)).toEqual(markdownMessageData)
 })
 
 test('format message based on object data', () => {

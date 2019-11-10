@@ -1,7 +1,7 @@
 const { contextTemplate, dividerTemplate, mrkdwnTemplate, responseHeadTemplate, sectionTemplate } = require('./block-templates')
 const { messageLogic, setSafeBrowseStatus, setWarningText, sharedContextLogic, threatLogic } = require('./block-contructor')
 
-const helpMessage = (userId) => {
+const setHelpMessage = (userId) => {
   /* in message usage instructions */
   var blocks = []
 
@@ -27,7 +27,7 @@ const helpMessage = (userId) => {
   return responseHeadTemplate('ephemeral', blocks)
 }
 
-const errorMessage = () => {
+const setErrorMessage = () => {
   /* handle out of bounds cases */
   var blocks = []
 
@@ -42,7 +42,7 @@ const errorMessage = () => {
   return responseHeadTemplate('ephemeral', blocks)
 }
 
-const markdownMessage = (markdownFormat, userId) => {
+const setMarkdownMessage = (markdownFormat, userId) => {
   /* formatted hyperlinks in slack message */
   var blocks = []
 
@@ -96,8 +96,8 @@ const devMarkdownMessage = (messageData) => {
 }
 
 module.exports = {
-  helpMessage,
-  errorMessage,
-  markdownMessage,
+  setHelpMessage,
+  setErrorMessage,
+  setMarkdownMessage,
   devMarkdownMessage
 }
