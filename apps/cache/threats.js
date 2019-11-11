@@ -15,10 +15,10 @@ const getCacheThreats = (hyperTexts) => {
 }
 
 const setUrlDomainKeys = (hyperTexts) => {
-    /* list of urls to check in cache */
+    /* list of urls to look for in cache */
     var urlDomainKeys = []
-    for( key of hyperTexts.urlDomainKey){
-        urlDomainKeys.push(key)
+    for( hyperText of hyperTexts){
+        urlDomainKeys.push(hyperText.urlDomainKey)
     }
     return urlDomainKeys
 }
@@ -29,6 +29,15 @@ const postCacheThreats = (hyperTexts) => {
     return cacheThreats.mset(cacheThreats)
 }
 
+const setCacheDuration = (cacheDurationUnits) => {
+    /* string with units to integar */
+    var numberRegex = /[0-9]/g
+    var durationSplit = cacheDurationUnits.match(numberRegex)
+    var durationJoined = durationSplit.join('')
+    var cacheDuration = parseInt(durationJoined)
+    return cacheDuration
+}
+
 const setCacheThreats = (hyperTexts) => {
     /* cache-friendly threat format */
     var cacheThreats = []
@@ -37,9 +46,9 @@ const setCacheThreats = (hyperTexts) => {
         if(threatMatch){
         cacheThreats.push(
             {
-                key: threatMatch.urlDomainKey, 
-                val: { threatMatch: threatMatch },
-                ttl: threatMatch.cacheDuration
+                key: hyperText.urlDomainKey, 
+                val: { threatMatch: hyperText.threatMatch },
+                ttl: setCacheDuration(hyperText.cacheDuration)
             },
         )
         }
@@ -49,5 +58,8 @@ const setCacheThreats = (hyperTexts) => {
 
 module.exports = {
     getCacheThreats,
-    postCacheThreats
+    setUrlDomainKeys,
+    postCacheThreats,
+    setCacheDuration,
+    setCacheThreats
 }

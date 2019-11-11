@@ -34,7 +34,7 @@ app.post('/publish', (req, res) => {
 })
 
 app.use((req, res, next) => {
-  /* handle 404 errors by rendering message box on home page */
+  /* render 404 message on home page */
   res.status(404).render('index', { message: 'page-not-found' })
 })
 
