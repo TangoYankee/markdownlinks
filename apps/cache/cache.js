@@ -1,17 +1,17 @@
-const nodeCache = require('node-cache')
-let cache = null;
+const NodeCache = require('node-cache')
+let cache = null
 
 const cacheStart = (done) => {
-    if (cache) {
-        return done()
-    }
-    cache = new nodeCache()
+  if (cache) {
+    return done()
+  }
+  cache = new NodeCache()
 }
 
 const cacheInstance = () => {
-    return cache
+  return cache
 }
 module.exports = {
-    cacheStart,
-    cacheInstance
+  cacheStart,
+  cacheInstance
 }
