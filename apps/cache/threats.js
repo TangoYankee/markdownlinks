@@ -1,17 +1,12 @@
-const { cacheInstance } = require('./cache')
+const { cacheStart, cacheInstance } = require('./cache')
+
+cacheStart()
+const cache = cacheInstance()
 
 const getCacheThreats = (hyperTexts) => {
   /* previously encountered threats */
   var urlDomainKeys = setUrlDomainKeys(hyperTexts)
-  cacheInstance.mget(urlDomainKeys, (err, value) => {
-    if (err) {
-      console.log(err)
-      return err
-    } else if (value) {
-      console.log(value)
-      return value
-    }
-  })
+  return cache.mget(urlDomainKeys)
 }
 
 const setUrlDomainKeys = (hyperTexts) => {
@@ -26,7 +21,7 @@ const setUrlDomainKeys = (hyperTexts) => {
 const postCacheThreats = (hyperTexts) => {
   /* remember threats */
   var cacheThreats = setCacheThreats(hyperTexts)
-  return cacheThreats.mset(cacheThreats)
+  return cache.mset(cacheThreats)
 }
 
 const setCacheDuration = (cacheDurationUnits) => {
@@ -47,7 +42,9 @@ const setCacheThreats = (hyperTexts) => {
       cacheThreats.push(
         {
           key: hyperText.urlDomainKey,
-          val: { threatMatch: hyperText.threatMatch },
+          val: {
+            threatMatch: hyperText.threatMatch
+          },
           ttl: setCacheDuration(hyperText.cacheDuration)
         }
       )

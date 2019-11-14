@@ -4,7 +4,6 @@ const express = require('express')
 const { publish } = require('./apps/messages/methods')
 const { oauth } = require('./apps/credential/oauth')
 const { signature } = require('./apps/credential/signature')
-const { cacheStart } = require('./apps/cache/cache')
 
 var app = express()
 app.set('view engine', 'pug')
@@ -36,13 +35,6 @@ app.post('/publish', (req, res) => {
 app.use((req, res, next) => {
   /* render 404 message on home page */
   res.status(404).render('index', { message: 'page-not-found' })
-})
-
-cacheStart((err) => {
-  /* threat cache */
-  if (err) {
-    console.log(err)
-  }
 })
 
 const port = 4390

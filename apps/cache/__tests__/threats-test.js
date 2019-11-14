@@ -1,8 +1,28 @@
-const { setUrlDomainKeys, setCacheThreats, setCacheDuration } = require('../threats')
 const {
-  hyperTexts, urlDomainKeys, hyperTextThreats,
-  cacheThreats, cacheDurationUnits, cacheDuration
+  setUrlDomainKeys, postCacheThreats,
+  setCacheThreats, setCacheDuration,
+  getCacheThreats
+} = require('../threats')
+const {
+  hyperTexts, urlDomainKeys,
+  hyperTextThreats, cacheThreats,
+  cacheDurationUnits, cacheDuration,
+  cacheThreatsResponse
 } = require('../test-data/threats-data')
+
+test(
+  'postCacheThreats() /* remember threats */',
+  () => {
+    expect(postCacheThreats(hyperTextThreats)).toBe(true)
+  }
+)
+
+test(
+  'getCacheThreats() /* previously encountered threats */',
+  () => {
+    return expect(getCacheThreats(hyperTexts)).toEqual(cacheThreatsResponse)
+  }
+)
 
 test(
   'setUrlDomainKeys() /* list of urls to look for in cache */',

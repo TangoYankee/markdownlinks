@@ -66,6 +66,10 @@ const cacheThreats = [
   }
 ]
 
+const cacheThreatsResponse = {
+  'testsafebrowsing.appspot.com/s/malware.html': { threatMatch: 'MALWARE' }
+}
+
 const cacheDurationUnits = '300s'
 const cacheDuration = 300
 
@@ -74,6 +78,7 @@ module.exports = {
   urlDomainKeys,
   hyperTextThreats,
   cacheThreats,
+  cacheThreatsResponse,
   cacheDurationUnits,
   cacheDuration
 }

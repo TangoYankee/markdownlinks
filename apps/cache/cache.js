@@ -11,6 +11,7 @@ const cacheStart = (done) => {
 const cacheInstance = () => {
   return cache
 }
+
 module.exports = {
   cacheStart,
   cacheInstance
