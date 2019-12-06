@@ -1,7 +1,8 @@
 const validateDestUrl = (destUrl) => {
   /* must fit the correct format of a url */
-  var domainRegex = /^(?i)(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm
-  if (destUrl.match(domainRegex)) {
+  var destUrlLower = destUrl.toLowerCase()
+  var domainRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm
+  if (destUrlLower.match(domainRegex)) {
     return true
   } else {
     return false
@@ -42,7 +43,7 @@ const getMarkdownHyperText = (linkPositions, text) => {
 
 const setHttpDestUrl = (destUrl) => {
   /* each link has http or https in the url */
-  destUrlLower = destUrl.toLowerCase()
+  var destUrlLower = destUrl.toLowerCase()
   if (destUrlLower.startsWith('http://') || destUrlLower.startsWith('https://')) {
     return destUrl
   } else {
@@ -52,13 +53,14 @@ const setHttpDestUrl = (destUrl) => {
 
 const setUrlDomainKey = (unhttpedLinkAddress) => {
   /* remove http(s) and www for consistency across safe browse, cache, and multiple user requests */
-  var domainPrefixRegex = /^(?i)(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)/gm
+  var domainPrefixRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)/gm
   return unhttpedLinkAddress.replace(domainPrefixRegex, '')
 }
 
 const setSharedAsHttpSecure = (unhttpedLinkAddress) => {
   /* url was originally prefaced with 'https' */
-  return unhttpedLinkAddress.startsWith('https://')
+  var unhttpedLinkAddressLower = unhttpedLinkAddress.toLowerCase()
+  return unhttpedLinkAddressLower.startsWith('https://')
 }
 
 const setAllSharedAsHttpSecure = (messageData) => {
