@@ -22,7 +22,7 @@ const setMessage = async (text, userId) => {
     // Refactor to length greater than or equal to one/ greater than zero
     if (messageData.links) {
       var postCacheThreatsStatus = postCacheThreats(messageData.links)
-      if (postCacheThreatsStatus === false){
+      if (postCacheThreatsStatus === false) {
         console.error('error saving to cache')
       }
     }
@@ -54,7 +54,7 @@ const setHyperText = (messageData, allHyperTextPositions, text) => {
 const getCache = (messageData) => {
   /* reference threat urls that are already saved locally */
   var cacheThreats = getCacheThreats(messageData.links)
-  if ( cacheThreats === undefined ){
+  if (cacheThreats === undefined) {
     console.error('error retrieving cache values')
   } else {
     messageData = setCacheThreatTypes(messageData, cacheThreats)
