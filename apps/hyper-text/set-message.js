@@ -51,7 +51,12 @@ const setHyperText = (messageData, allHyperTextPositions, text) => {
 const getCache = (messageData) => {
   /* reference threat urls that are already saved locally */
   var cacheThreats = getCacheThreats(messageData.links)
-  messageData = setCacheThreatTypes(messageData, cacheThreats)
+  if ( value === undefined ){
+    // handle miss!
+    console.error('error retrieving cache values')
+  } else {
+    messageData = setCacheThreatTypes(messageData, cacheThreats)
+  }
   return messageData
 }
 
