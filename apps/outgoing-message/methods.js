@@ -1,7 +1,7 @@
 'use strict'
 
 const request = require('request')
-const { setMessage } = require('../hyper-text/set-message')
+const { setIncomingMessage } = require('../message/set-message')
 
 const {
   setHelpMessage, setMarkdownMessage,
@@ -17,8 +17,8 @@ const publish = async (requestBody, res) => {
     res.json(setHelpMessage(userId))
   } else if (text) {
     res.send()
-    var message = await setMessage(text, userId)
-    var markdownMessage = setMarkdownMessage(message)
+    var incomingMessage = await setIncomingMessage(text, userId)
+    var markdownMessage = setMarkdownMessage(incomingMessage)
     postMessage(responseUrl, markdownMessage)
   } else {
     res.json(setErrorMessage(':warning:please provide input'))
@@ -36,8 +36,7 @@ const remove = (requestBody, res) => {
   /* delete the markdown message sending the request */
   res.send()
   var responseUrl = requestBody.response_url
-  var text = '_A member of your workspace removed this message_'
-  var responseMessage = setRemovedMessage(text)
+  // var responseMessage = setRemovedMessage()
   postMessage(responseUrl, responseMessage)
 }
 

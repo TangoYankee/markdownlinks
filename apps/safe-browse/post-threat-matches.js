@@ -3,10 +3,9 @@
 const process = require('process')
 const request = require('request')
 
-const postThreatMatches = (requestBody) => {
+const _postThreatMatches = (requestBody) => {
   /* find threats that safe browse suspects */
   var requestUrl = 'https://safebrowsing.googleapis.com/v4/threatMatches:find'
-  // Add timeout of 30s as an option
   var options = {
     url: requestUrl,
     body: requestBody,
@@ -30,5 +29,5 @@ const postThreatMatches = (requestBody) => {
 }
 
 module.exports = {
-  postThreatMatches
+  _postThreatMatches
 }

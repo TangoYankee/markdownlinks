@@ -2,9 +2,9 @@
 
 const bodyParser = require('body-parser')
 const express = require('express')
-const { publish, remove } = require('./apps/messages/methods')
-const { oauth } = require('./apps/credential/oauth')
-const { signature } = require('./apps/credential/signature')
+const { publish, remove } = require('./apps/outgoing-message/methods')
+const { OAuth } = require('./apps/credential/oauth')
+const { Signature } = require('./apps/credential/signature')
 
 var app = express()
 app.set('view engine', 'pug')
@@ -25,13 +25,15 @@ app.get('/privacy', (req, res) => {
 
 app.get('/oauth', (req, res) => {
   /* oauth with Slack */
-  oauth(req, res)
+  var oauth = new OAuth(req, res)
+  oauth.checkQueryCode()
+  oauth.postOAuth()
 })
 
 app.post('/publish', (req, res) => {
   /* send message in response to user input from slash command */
-  var currentTime = Math.floor(new Date().getTime() / 1000)
-  if (signature(req, currentTime)) {
+  var signature = new Signature(req)
+  if (signature.isValidSignature()) {
     publish(req.body, res)
   } else {
     res.status(400).send('Ignore this request')
@@ -40,8 +42,8 @@ app.post('/publish', (req, res) => {
 
 app.post('/remove', (req, res) => {
   /* delete messages already posted */
-  var currentTime = Math.floor(new Date().getTime() / 1000)
-  if (signature(req, currentTime)) {
+  var signature = new Signature(req)
+  if (signature.isValidSignature()) {
     var requestBody = JSON.parse(req.body.payload)
     remove(requestBody, res)
   } else {
