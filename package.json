@@ -20,7 +20,7 @@
         "express": "4.16.4",
         "mongodb": "3.3.0",
         "node-cache": "^5.0.1",
-        "pug": "2.0.4",
+        "pug": "3.0.1",
         "qs": "6.7.0",
         "request": "2.88.0",
         "request-promise": "^4.2.5"
